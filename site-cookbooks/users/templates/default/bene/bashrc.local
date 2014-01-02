@@ -1,0 +1,92 @@
+# blacklist for bash completion
+FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
+
+# give it some mem
+export JRUBY_OPTS="-J-Xmx24g -J-XX:MaxPermSize=1g"
+
+# project aliases
+alias pkk="cd ~/projects/kanbanero/kanbanero"
+alias pm="cd ~/projects/liquidm/platform"
+alias pmc="cd ~/projects/liquidm/chef"
+alias pms="cd ~/projects/liquidm/server"
+alias pzc="cd ~/projects/zenops/chef"
+alias pzz="cd ~/projects/zentoo/zentoo"
+
+# git aliases
+alias ga="git add -A"
+alias gap="git add -p"
+alias gb="git blame"
+alias gcl="git checkout live"
+alias gcm="git checkout master"
+alias gcn="git checkout next"
+alias gcu="git checkout upstream"
+alias gdm="git diff master"
+alias gd="git diff"
+alias gdc="git diff --cached"
+alias gl="git lg"
+alias gp="git pull"
+alias gpr="git pull --rebase"
+alias gpv="git push -f origin HEAD:vagrant/bene"
+alias grh="git reset HEAD"
+alias s="git status"
+
+# ruby/rails shortcuts
+alias b="bundle"
+alias be="bundle exec"
+alias brs="bundle exec rails server"
+alias con="bundle exec rails console"
+
+# chef helper
+alias kcu="knife cookbook upload"
+
+# always use system ruby to start vim
+vim() {
+	rvm system exec vim "$@"
+}
+
+# host shortcuts
+remote_tmux() {
+	if [[ $# -eq 2 ]]; then
+		ssh -XY -D $2 -t $1 /bin/bash -li -c 'T'
+	else
+		ssh -XY -t $1 /bin/bash -li -c 'T'
+	fi
+}
+
+function C() {
+	remote_tmux chaos
+}
+
+function Z() {
+	remote_tmux bene.dev.zenops.net 9991
+}
+
+# gentoo development
+export ECHANGELOG_USER="Benedikt Böhm <bb@xnull.de>"
+
+repm() {
+	repoman manifest
+}
+
+reps() {
+	repm
+	repoman scan
+}
+
+repf() {
+	repm
+	repoman full
+}
+
+# zentoo development
+geix() {
+	local base=~/projects/zentoo/zentoo
+	pushd ${base} >/dev/null
+	env \
+		PORTDIR=${base}/cache/gentoo-portage/ \
+		PORTAGE_PROFILE=${base}/cache/gentoo-portage/profiles/default/linux/amd64/13.0 \
+		eix --cache-file ./eix.cache.gentoo "$@"
+	popd >/dev/null
+}
+
+# vim: ft=sh

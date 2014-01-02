@@ -1,0 +1,70 @@
+{
+  "primary_ipaddress": "10.35.0.2",
+
+  "current_email": "bb@xnull.de",
+  "current_name": "Benedikt Böhm",
+
+  "portage": {
+    "profile": "/usr/portage/profiles/default/linux/amd64/13.0/desktop/kde",
+    "CFLAGS": "-march=native -mtune=native -O3 -pipe",
+    "ACCEPT_KEYWORDS": "~amd64",
+    "MAKEOPTS": "-j4",
+    "OPTS": "--jobs=4 --load-average=12",
+    "USE": [
+      "-bluetooth -cdr -consolekit -eds -projectm -samba -openrc -wext",
+      "avahi systemd upnp xorg zeroconf",
+      "aio cpudetection ssse3",
+      "aacplus ass bluray css ffmpeg theora xvmc",
+      "-input_devices_keyboard",
+      "-input_devices_mouse",
+      "-video_cards_dummy",
+      "-video_cards_fbdev",
+      "-video_cards_glint",
+      "video_cards_intel",
+      "video_cards_i915",
+      "video_cards_i965",
+      "-video_cards_mach64",
+      "-video_cards_mga",
+      "-video_cards_neomagic",
+      "-video_cards_nouveau",
+      "-video_cards_nv",
+      "-video_cards_r128",
+      "-video_cards_radeon",
+      "-video_cards_savage",
+      "-video_cards_sis",
+      "-video_cards_tdfx",
+      "-video_cards_trident",
+      "-video_cards_v4l",
+      "-video_cards_vesa",
+      "-video_cards_via",
+      "-video_cards_vmware",
+      "-video_cards_voodoo",
+      "-video_cards_nvidia"
+    ]
+  },
+
+  "baselayout": {
+    "groups": {
+      "audio": { "members": "bene" },
+      "cdrom": { "members": "bene" },
+      "video": { "members": "bene" }
+    }
+  },
+
+  "skip": {
+    "shorewall": true
+  },
+
+  "resolv": {
+    "nameservers": ["10.35.0.1"],
+    "search": ["fritz.box"]
+  },
+
+  "systemd": {
+    "target": "graphical"
+  },
+
+  "run_list": [
+    "recipe[base]"
+  ]
+}

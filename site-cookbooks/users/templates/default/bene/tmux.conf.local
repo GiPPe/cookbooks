@@ -1,0 +1,5 @@
+# toggle statusbar
+bind b set-option status
+
+# sync panes
+bind i setw synchronize-panes
