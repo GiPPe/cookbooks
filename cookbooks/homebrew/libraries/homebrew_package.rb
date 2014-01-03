@@ -39,22 +39,27 @@ class Chef
         end
 
         protected
+
+        def brew_command
+          "env -i PATH=$PATH HOME=$HOME /usr/local/bin/brew"
+        end
+
         def brew(*args)
           run_command_with_systems_locale(
-            :command => "brew #{args.join(' ')}"
+            :command => "#{brew_command} #{args.join(' ')}"
           )
         end
 
         def current_installed_version
-          get_version_from_command("brew list --versions | awk '/^#{@new_resource.package_name} / { print $NF }'")
+          get_version_from_command("#{brew_command} list --versions | awk '/^#{@new_resource.package_name} / { print $NF }'")
         end
 
         def candidate_version
-          brew_version = %x[brew --version].strip
+          brew_version = %x[#{brew_command} --version].strip
           if Gem::Version.new(brew_version) >= Gem::Version.new('0.9.2')
-            command = "brew info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name}:/ { print $3 }'"
+            command = "#{brew_command} info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name}:/ { print $3 }'"
           else
-            command = "brew info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name} / { print $2 }'"
+            command = "#{brew_command} info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name} / { print $2 }'"
           end
           get_version_from_command(command)
         end
