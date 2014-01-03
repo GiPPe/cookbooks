@@ -3,6 +3,17 @@ scriptencoding utf-8
 " don't be compatible with Vi
 set nocompatible
 
+" {{{ Encodings
+" http://stackoverflow.com/questions/5477565/how-to-setup-vim-properly-for-editing-in-utf-8
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+endif
+" }}}
+
 <% if !root? %>
 " {{{ NeoBundle
 " https://github.com/Shougo/neobundle.vim#quick-start
@@ -77,17 +88,6 @@ set smartcase
 set shiftwidth=4
 set tabstop=4
 set autoindent
-" }}}
-
-" {{{ Encodings
-" http://stackoverflow.com/questions/5477565/how-to-setup-vim-properly-for-editing-in-utf-8
-if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
-  set encoding=utf-8
-  setglobal fileencoding=utf-8
-endif
 " }}}
 
 " {{{ Syntax highlighting settings
