@@ -4,6 +4,12 @@ set -e
 
 cd $(perl -e 'use Cwd "abs_path";print abs_path(shift)' $0/../../)
 
+# install rvm & bundle
+if [[ $USER != "root" ]]; then
+	./scripts/bootstrap || exit 1
+fi
+
+# load configuration & run list
 config_name=$1
 
 if [[ -z ${config_name} ]]; then
@@ -48,20 +54,20 @@ if [[ -d /Applications ]]; then
 	fi
 
 	# select the correct xcode version
-	sudo "xcode-select" -switch /Applications/Xcode.app/Contents/Developer
+	sudo "xcode-select" -switch /Applications/Xcode.app/Contents/Developer || exit 1
 fi
 
 if [[ -e /etc/debian_version ]]; then
-	apt-get install -y curl whois
+	sudo apt-get install -y curl whois || exit 1
 fi
 
 # install chef if it is missing
 if ! type -P chef-solo >/dev/null; then
 	echo ">>> Trying to install Chef"
 	if [[ -f /etc/gentoo-release ]]; then
-		sudo emerge app-admin/chef
+		sudo emerge app-admin/chef || exit 1
 	else
-		curl -L https://www.opscode.com/chef/install.sh | sudo bash
+		curl -L https://www.opscode.com/chef/install.sh | sudo bash || exit 1
 	fi
 fi
 
@@ -70,7 +76,7 @@ if [[ -e ~/.rvm/scripts/rvm ]]; then
 fi
 
 echo ">>> Running chef-solo ..."
-chef-solo -c .chef/solo.rb ${solo_args}
+chef-solo -c .chef/solo.rb ${solo_args} || exit 1
 
 if [[ -d /Applications ]]; then
 	echo ">>> Switching shell to homebrew bash"
