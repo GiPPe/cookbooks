@@ -2,6 +2,7 @@
 
 set -e
 
+# some platforms don't have a realpath binary
 cd $(perl -e 'use Cwd "abs_path";print abs_path(shift)' $0/../../)
 
 # install rvm & bundle
@@ -30,20 +31,22 @@ else
 	fi
 fi
 
-echo ">>> Using configuration at config/solo/${config_name}.json"
+if [[ $USER != "root" ]]; then
+	echo ">>> Using sudo ... please enter your password if needed"
+	SUDO="sudo"
+else
+	SUDO=""
+fi
 
-# disable sudo password
-echo ">>> Using sudo ... please enter your password if needed"
-sudo sed -i -e 's/%admin.*/%admin ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
-
-# mac sanity check
+# MacOS X
 if [[ -d /Applications ]]; then
-	echo ">>> Detected Mac OS X ..."
-
-	if [[ ${config_name} == "root" ]]; then
+	if [[ $USER == "root" ]]; then
 		echo "!!! running as root is not supported on Mac OS"
 		exit 1
 	fi
+
+	# disable mac password temporarily
+	$SUDO sed -i -e 's/^%admin.*/%admin ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 
 	if [[ ! -e ~/.storerc ]]; then
 		echo ">>> Please enter you App Store credentials:"
@@ -54,52 +57,31 @@ if [[ -d /Applications ]]; then
 	fi
 
 	# select the correct xcode version
-	sudo "xcode-select" -switch /Applications/Xcode.app/Contents/Developer || exit 1
-fi
+	$SUDO "xcode-select" -switch /Applications/Xcode.app/Contents/Developer || exit 1
 
-if [[ -e /etc/debian_version ]]; then
-	sudo apt-get install -y curl whois || exit 1
+elif [[ -e /etc/debian_version ]]; then
+	$SUDO apt-get install -y curl whois || exit 1
 fi
 
 # install chef if it is missing
 if ! type -P chef-solo >/dev/null; then
 	echo ">>> Trying to install Chef"
 	if [[ -f /etc/gentoo-release ]]; then
-		sudo emerge app-admin/chef || exit 1
+		$SUDO emerge app-admin/chef || exit 1
 	else
-		curl -L https://www.opscode.com/chef/install.sh | sudo bash || exit 1
+		curl -s -L https://www.opscode.com/chef/install.sh | $SUDO bash || exit 1
 	fi
 fi
 
+# load rvm if available
 if [[ -e ~/.rvm/scripts/rvm ]]; then
 	source ~/.rvm/scripts/rvm
 fi
 
-echo ">>> Running chef-solo ..."
+echo ">>> Running Chef ..."
 chef-solo -c .chef/solo.rb ${solo_args} || exit 1
 
-if [[ -d /Applications ]]; then
-	echo ">>> Switching shell to homebrew bash"
-	current_shell=$(dscl . -read /Users/${config_name} | grep '^UserShell:' | awk '{print $2}')
-	new_shell="/usr/local/bin/bash"
-
-	if [[ -x ${new_shell} && ${current_shell} != ${new_shell} ]]; then
-		sudo chsh -s ${new_shell} ${config_name}
-	fi
-
-	echo ">>> Importing iTerm color schemes. Please accept any dialog boxes"
-	if [[ ! -e "/Applications/iTerm.app/Solarized Dark.itermcolors" ]]; then
-		curl -s -L https://raw.github.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Dark.itermcolors > '/Applications/iTerm.app/Solarized Dark.itermcolors'
-		open '/Applications/iTerm.app/Solarized Dark.itermcolors'
-	fi
-
-	if [[ ! -e "/Applications/iTerm.app/Solarized Light.itermcolors" ]]; then
-		curl -s -L https://raw.github.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Light.itermcolors > '/Applications/iTerm.app/Solarized Light.itermcolors'
-		open '/Applications/iTerm.app/Solarized Light.itermcolors'
-	fi
+# re-enable sudo password on mac
+if [[ $USER != "root" ]]; then
+	sudo sed -i -e 's/^%admin.*/%admin ALL=(ALL) ALL/' /etc/sudoers
 fi
-
-# enable sudo password
-sudo sed -i -e 's/%admin.*/%admin ALL=(ALL) ALL/' /etc/sudoers
-
-echo ">>> All done. Happy hacking!"
