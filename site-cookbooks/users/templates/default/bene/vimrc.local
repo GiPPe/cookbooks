@@ -29,6 +29,10 @@ set cursorline
 " easy pasting
 set pastetoggle=<F4>
 
+" ignore X11 clipboard
+" http://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
+set clipboard=exclude:.*
+
 " split windows at the bottom by default
 set splitbelow
 " }}}
@@ -39,8 +43,11 @@ NeoBundle 'MarcWeber/vim-addon-mw-utils'
 " }}}
 
 " {{{ syntax- & filetypes
+
+" ruby & co
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-cucumber'
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
@@ -93,9 +100,6 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
   let g:ctrlp_use_caching = 0
 endif
-
-" cd to buffer directory
-au BufEnter * execute ":silent! lcd " . expand("%:p:h")
 
 " Tagbar is a vim plugin for browsing the tags of source code files. It
 " provides a sidebar that displays the ctags-generated tags of the current
