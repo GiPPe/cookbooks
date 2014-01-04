@@ -118,6 +118,7 @@ bind '"\C-q": unix-filename-rubout'
 
 # ls helpers
 alias l="ls -lh"
+alias ll="ls -lh"
 alias la="ls -la"
 alias lt="ls -lrt"
 
