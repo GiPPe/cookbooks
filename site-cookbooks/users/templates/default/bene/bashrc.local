@@ -5,6 +5,7 @@ FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
 export JRUBY_OPTS="-J-Xmx24g -J-XX:MaxPermSize=1g"
 
 # project aliases
+alias pc="cd ~/projects/hollow/chef"
 alias pkk="cd ~/projects/kanbanero/kanbanero"
 alias pm="cd ~/projects/liquidm/platform"
 alias pmc="cd ~/projects/liquidm/chef"
@@ -31,7 +32,6 @@ alias grh="git reset HEAD"
 alias s="git status"
 
 # ruby/rails shortcuts
-alias b="bundle"
 alias be="bundle exec"
 alias brs="bundle exec rails server"
 alias con="bundle exec rails console"
@@ -47,9 +47,9 @@ vim() {
 # host shortcuts
 remote_tmux() {
 	if [[ $# -eq 2 ]]; then
-		ssh -XY -D $2 -t $1 /bin/bash -li -c 'T'
+		ssh -D $2 -t $1 /bin/bash -li -c 'T'
 	else
-		ssh -XY -t $1 /bin/bash -li -c 'T'
+		ssh -t $1 /bin/bash -li -c 'T'
 	fi
 }
 

@@ -65,6 +65,9 @@ au BufRead,BufNewFile *.applescript set ft=applescript
 
 " always expand tabs in C
 autocmd FileType c,cpp set ts=4 sw=4 tw=79 expandtab et
+
+" Git commit messages start at the top and in insert mode
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call feedkeys('ggi', 't')
 " }}}
 
 " {{{ colors & ui
