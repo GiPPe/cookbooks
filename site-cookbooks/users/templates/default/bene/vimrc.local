@@ -56,8 +56,15 @@ let g:ruby_path = '~/.rvm/rubies/default/bin/ruby'
 " JavaScript & derivatives
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'elzr/vim-json'
+autocmd BufNewFile,BufRead *.json set filetype=json
+autocmd BufNewFile,BufRead *.jsonp set filetype=json
+
 NeoBundle 'kchmck/vim-coffee-script'
+autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+
 NeoBundle 'heartsentwined/vim-emblem'
+autocmd BufNewFile,BufRead *.emblem set filetype=emblem
+autocmd FileType emblem set tabstop=2|set shiftwidth=2|set expandtab
 
 " recognize AppleScript syntax
 NeoBundle 'vim-scripts/applescript.vim'
