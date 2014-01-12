@@ -62,7 +62,7 @@ GEM
       rack
     coderay (1.1.0)
     diff-lcs (1.2.5)
-    docile (1.1.1)
+    docile (1.1.2)
     erubis (2.7.0)
     ffi (1.9.3)
     foodcritic (3.0.3)
@@ -93,7 +93,7 @@ GEM
     json (1.7.7)
     kitchen-vagrant (0.14.0)
       test-kitchen (~> 1.0)
-    liquid-development (0.1.0)
+    liquid-development (0.1.1)
       awesome_print
       brice
       fuubar
@@ -103,6 +103,7 @@ GEM
       ripl
       rspec
       simplecov
+      timecop
       yard
     liquid-ext (1.2.2)
       activesupport
@@ -112,7 +113,7 @@ GEM
       metriks
       mixlib-cli
       terminal-table
-    liquid-logging (2.0.0)
+    liquid-logging (2.0.1)
     log_switch (0.4.0)
     method_source (0.8.2)
     metriks (0.9.9.5)
@@ -127,7 +128,7 @@ GEM
     mixlib-config (2.1.0)
     mixlib-log (1.6.0)
     moneta (0.6.0)
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     multi_xml (0.5.5)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -155,7 +156,7 @@ GEM
       rack (~> 1.2)
     rack (1.5.2)
     rake (10.1.1)
-    reek (1.3.5)
+    reek (1.3.6)
       ruby2ruby (~> 2.0.7)
       ruby_parser (~> 3.2)
       sexp_processor
@@ -172,7 +173,7 @@ GEM
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.4)
     ruby-nuggets (0.9.6)
-    ruby-progressbar (1.3.2)
+    ruby-progressbar (1.4.0)
     ruby2ruby (2.0.7)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
@@ -201,12 +202,13 @@ GEM
     thor (0.18.1)
     thread_safe (0.1.3)
       atomic
+    timecop (0.7.1)
     tins (0.13.1)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.38)
-    xml-simple (1.1.2)
+    xml-simple (1.1.3)
     yajl-ruby (1.1.0)
     yard (0.8.7.3)
 

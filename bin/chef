@@ -7,6 +7,7 @@ cd $(perl -e 'use Cwd "abs_path";print abs_path(shift)' $0/../../)
 
 # install rvm & bundle
 if [[ $USER != "root" ]]; then
+	bundle_exec="bundle exec"
 	./scripts/bootstrap || exit 1
 fi
 
@@ -79,7 +80,7 @@ if [[ -e ~/.rvm/scripts/rvm ]]; then
 fi
 
 echo ">>> Running Chef ..."
-chef-solo -c .chef/solo.rb ${solo_args} || exit 1
+$bundle_exec chef-solo -c .chef/solo.rb ${solo_args} || exit 1
 
 # re-enable sudo password on mac
 if [[ $USER != "root" ]]; then
