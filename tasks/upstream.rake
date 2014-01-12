@@ -46,7 +46,7 @@ namespace :upstream do
     ].map do |pat|
       "-x '*/#{pat}'"
     end.join(' ')
-    sh("git diff upstream | filterdiff --clean #{excludes} | colordiff | less -R")
+    sh("git diff upstream | filterdiff --clean #{excludes} | colordiff 2>/dev/null | less -R")
   end
 
   desc "Interactively pick changes from HEAD into upstream"
