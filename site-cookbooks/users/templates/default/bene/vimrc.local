@@ -217,7 +217,7 @@ vmap <leader>a<Bar> :Tabularize /<Bar><CR>
 " {{{ completion
 " neocomplete provides keyword completion system by maintaining a cache of
 " keywords in the current buffer.
-NeoBundle 'Shougo/neocomplete.vim'
+"NeoBundle 'Shougo/neocomplete.vim'
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_auto_delimiter = 1
