@@ -212,6 +212,12 @@ nmap <leader>a, :Tabularize /,\zs<CR>
 vmap <leader>a, :Tabularize /,\zs<CR>
 nmap <leader>a<Bar> :Tabularize /<Bar><CR>
 vmap <leader>a<Bar> :Tabularize /<Bar><CR>
+
+" some focus and escape code optimizations for iterm/tmux
+NeoBundle 'sjl/vitality.vim'
+let g:vitality_always_assume_iterm = 1
+au BufLeave,FocusLost * silent! update
+set timeoutlen=1000 ttimeoutlen=0
 " }}}
 
 " {{{ completion
