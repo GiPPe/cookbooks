@@ -2,7 +2,7 @@
 FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
 
 # give it some mem
-export JRUBY_OPTS="--debug -J-Xmx24g -J-XX:MaxPermSize=1g"
+export JRUBY_OPTS="--debug -J-Xmx24g -J-XX:MaxPermSize=1g -J-XX:+UseParNewGC -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-XX:+CMSScavengeBeforeRemark -J-XX:+DisableExplicitGC -Xrewrite.java.trace=true"
 
 # project aliases
 alias pc="cd ~/projects/hollow/chef"
