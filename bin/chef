@@ -11,27 +11,22 @@ if [[ $USER != "root" ]]; then
 	./scripts/bootstrap || exit 1
 fi
 
-# user can supply config name as first argument
-if [[ -n $1 && -f config/solo/$1.json ]]; then
-	config_name=$1
-	shift
-fi
+# load configuration & run list
+node_name=$1
 
-if [[ -z ${config_name} ]]; then
+if [[ -z ${node_name} ]]; then
 	if [[ $USER == "root" ]]; then
-		config_name=$(hostname -f)
+		node_name=$(hostname -f)
 	else
-		config_name=$(whoami)
+		node_name=$(whoami)
 	fi
 fi
 
-if [[ -f config/solo/${config_name}.json ]]; then
-	solo_args="-j config/solo/${config_name}.json"
-else
+if [[ ! -f nodes/${node_name}.json ]]; then
 	if [[ $USER == "root" ]]; then
-		solo_args="-o role[base]"
+		chef_args="-orole[base]"
 	else
-		solo_args="-o role[workstation]"
+		chef_args="-orole[workstation]"
 	fi
 fi
 
@@ -68,7 +63,7 @@ elif [[ -e /etc/debian_version ]]; then
 fi
 
 # install chef if it is missing
-if ! type -P chef-solo >/dev/null; then
+if ! type -P chef-client >/dev/null; then
 	echo ">>> Trying to install Chef"
 	if [[ -f /etc/gentoo-release ]]; then
 		$SUDO emerge app-admin/chef || exit 1
@@ -83,7 +78,7 @@ if [[ -e ~/.rvm/scripts/rvm ]]; then
 fi
 
 echo ">>> Running Chef ..."
-$bundle_exec chef-solo -c .chef/config.rb ${solo_args} "$@" || exit 1
+$bundle_exec chef-client -z -c .chef/config.rb -N ${node_name} "${chef_args}" || exit 1
 
 # re-enable sudo password on mac
 if [[ $USER != "root" ]]; then
