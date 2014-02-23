@@ -1,0 +1,8 @@
+{
+  "name": "splunk-peer",
+  "description": "Splunk Indexer Peer",
+  "run_list": [
+    "role[splunk]",
+    "recipe[splunk::indexer]"
+  ]
+}

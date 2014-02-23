@@ -1,0 +1,11 @@
+[Unit]
+Description=Camus (Kafka -> Hadoop importer)
+
+[Service]
+ExecStart=/var/app/camus/bin/camus
+User=camus
+Group=camus
+SyslogIdentifier=camus
+
+[Install]
+WantedBy=default.target

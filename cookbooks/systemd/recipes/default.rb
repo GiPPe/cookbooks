@@ -1,20 +1,10 @@
 if gentoo?
   if root?
-    portage_package_use "sys-apps/dbus" do
-      if %x(qlist -ICe sys-apps/systemd).chomp == ""
-        use %w(-systemd)
-      else
-        use %w(systemd)
-      end
-    end
-
-    portage_package_use "sys-apps/systemd" do
-      use %w(python)
-    end
-
     package "sys-apps/systemd"
 
-    node.default[:portage][:USE] += %w(systemd)
+    link "/bin/systemctl" do
+      to "/usr/bin/systemctl"
+    end
 
     # by default, boot into multi-user.target
     service "#{node[:systemd][:target]}.target" do

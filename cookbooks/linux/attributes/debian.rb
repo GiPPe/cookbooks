@@ -32,9 +32,11 @@ if debian_based?
     netcat
     nmap
     pciutils
+    psmisc
     pwgen
     pydf
     realpath
+    ruby1.9.3
     strace
     sysstat
     tcpdump

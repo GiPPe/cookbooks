@@ -7,8 +7,8 @@ use_inline_resources
 action :create do
   nr = new_resource
 
-  content = nr.users.each do |login, password|
-    "#{user}:#{password}"
+  content = nr.users.map do |login, password|
+    "#{login}:#{password}"
   end.sort.join("\n")
 
   file nr.path do

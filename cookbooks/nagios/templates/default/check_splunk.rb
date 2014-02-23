@@ -5,7 +5,7 @@ require 'nokogiri'
 require 'json'
 
 SEARCH_HOST = "<%= @search[:primary_ipaddress] rescue 'localhost' %>"
-SEARCH_PORT = 8089
+SEARCH_PORT = 2047
 SEARCH_URI  = "https://#{SEARCH_HOST}:#{SEARCH_PORT}"
 SEARCH_USER = "admin"
 SEARCH_PASS = "<%= @master[:splunk][:pass4symmkey] rescue node[:splunk][:pass4symmkey] %>"
@@ -50,18 +50,44 @@ begin
   end
 
   # check values/ranges
-  data = JSON.load(res.body)['result']
-  range = data.delete('range')
+  range = nil
+  criticals = ""
+  warnings = ""
+  oks = ""
 
-  puts data.inspect
+  res.body.split("\n").each do |row|
+    data = JSON.load(row)['result']
+    row_range = data.delete('range') rescue nil
+    row_info = "#{row_range.upcase rescue "UNKNOWN"}: #{data.inspect}\n"
+
+    if row_range == 'critical'
+      criticals += row_info
+      range = row_range
+    elsif row_range == 'warning'
+      warnings += row_info
+      range = row_range unless range == 'critical'
+    else
+      oks += row_info
+      range = row_range
+    end
+  end
+
+  if range == nil
+    puts "Splunk did not return a (valid) search result"
+    puts res.body
+    exit(2)
+  end
+
+  puts "#{criticals}#{warnings}#{oks}"
 
   if range == 'critical'
     exit(2)
   elsif range == 'warning'
     exit(1)
+  else
+    exit(0)
   end
 
-  exit(0)
 rescue => e
   puts "exception: #{e.message}, #{e.backtrace}"
   exit(2)

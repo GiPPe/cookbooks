@@ -1,16 +1,17 @@
 use_inline_resources
 
 action :create do
+  nr = new_resource
+
   if root?
-    directory "/etc/portage/preserve-libs.d-#{rrand}" do
-      path "/etc/portage/preserve-libs.d"
+    directory "/etc/portage/preserve-libs.d" do
       owner "root"
       group "root"
       mode "0755"
     end
 
-    file "/etc/portage/preserve-libs.d/#{params[:name]}" do
-      content "#{params[:paths].join("\n")}\n"
+    file "/etc/portage/preserve-libs.d/#{nr.name}" do
+      content "#{nr.paths.join("\n")}\n"
       owner "root"
       group "root"
       mode "0644"

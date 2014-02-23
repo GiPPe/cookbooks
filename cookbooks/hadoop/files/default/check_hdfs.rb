@@ -59,8 +59,12 @@ module DfsBlocks
     out.split.map(&:to_i)
   end
 
+  def warning(m)
+    [m[0] > 100, m[1] > 0].any?
+  end
+
   def critical(m)
-    [m[0] > 0, m[1] > 1, m[2] > 0].any?
+    m[2] > 0
   end
 
   def to_s(m)

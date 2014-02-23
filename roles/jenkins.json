@@ -1,0 +1,17 @@
+{
+  "name": "jenkins",
+  "description": "Jenkins Continuous Integration",
+  "override_attributes": {
+    "mysql": {
+      "server": {
+        "binlog_format": "row",
+        "max_allowed_packet": "64M"
+      }
+    }
+  },
+  "run_list": [
+    "recipe[mysql::server]",
+    "recipe[firefox]",
+    "recipe[jenkins]"
+  ]
+}

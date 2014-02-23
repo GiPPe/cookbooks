@@ -1,0 +1,8 @@
+{
+  "name": "gitlab",
+  "description": "GitLab",
+  "run_list": [
+    "role[base]",
+    "recipe[gitlab]"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "zendns",
+  "description": "ZenDNS node",
+  "run_list": [
+    "role[base]",
+    "recipe[zendns]"
+  ]
+}

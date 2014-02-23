@@ -39,7 +39,7 @@ if root?
   end
 
   # always use global bashrc for root
-  %w(.bashrc .bash_profile .profile .bash_logout).each do |f|
+  %w(.bashrc .bash_profile .bash_logout).each do |f|
     file "#{node[:homedir]}/#{f}" do
       action :delete
     end
@@ -66,7 +66,7 @@ if root?
     to "#{node[:bash][:rcdir]}/bash_logout"
   end
 else
-  %w(.bashrc .bash_profile .profile).each do |f|
+  %w(.bashrc .bash_profile).each do |f|
     link "#{node[:homedir]}/#{f}" do
       to "#{node[:bash][:rcdir]}/bashrc"
     end

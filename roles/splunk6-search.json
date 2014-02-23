@@ -1,0 +1,7 @@
+{
+  "name": "splunk6-search",
+  "description": "Splunk 6 Search Head",
+  "run_list": [
+    "role[splunk6]"
+  ]
+}

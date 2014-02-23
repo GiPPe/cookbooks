@@ -89,13 +89,3 @@ systemd_unit "nginx.service"
 service "nginx" do
   action [:enable, :start]
 end
-
-if ganymed?
-  nginx_server "status" do
-    template "status.conf"
-  end
-
-  ganymed_collector "nginx" do
-    source "nginx.rb"
-  end
-end

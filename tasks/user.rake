@@ -10,8 +10,8 @@ namespace :user do
 
     name = args.name || ask('Name: ')
     email = args.email || ask('E-Mail: ')
-    tags = args.tags || ask('Tags (space-seperated): ')
-    keys = [args.key || ask('SSH Public Key: ')]
+    tags = (args.tags || ask('Tags (space-seperated): ')).split(' ')
+    key = args.key || ask('SSH Public Key: ')
 
     args = Rake::TaskArguments.new([:cn], [login])
     Rake::Task["ssl:do_cert"].execute(args)
@@ -28,12 +28,12 @@ namespace :user do
     password = random.crypt("$6$#{salt}$")
 
     b = binding()
-    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'user_databag.rb')))
+    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'user_databag.json')))
 
     path = File.join(BAGS_DIR, "users")
     FileUtils.mkdir_p(path)
 
-    File.open(File.join(path, "#{login}.rb"), "w") do |f|
+    File.open(File.join(path, "#{login}.json"), "w") do |f|
       f.puts(erb.result(b))
     end
   end
@@ -45,7 +45,7 @@ namespace :user do
     end
 
     user = Chef::DataBagItem.new
-    user.from_file(File.join(BAGS_DIR, 'users', "#{login}.rb"))
+    user.from_file(File.join(BAGS_DIR, 'users', "#{login}.json"))
     puts user.inspect
 
     name = user[:comment]
@@ -53,15 +53,15 @@ namespace :user do
     tags = user[:tags]
     random = "user account is disabled"
     password = password1 = '!'
-    keys = []
+    key = nil
 
     b = binding()
-    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'user_databag.rb')))
+    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'user_databag.json')))
 
     path = File.join(BAGS_DIR, "users")
     FileUtils.mkdir_p(path)
 
-    File.open(File.join(path, "#{login}.rb"), "w") do |f|
+    File.open(File.join(path, "#{login}.json"), "w") do |f|
       f.puts(erb.result(b))
     end
   end

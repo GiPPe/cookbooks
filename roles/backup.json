@@ -1,0 +1,8 @@
+{
+  "name": "backup",
+  "description": "Backup Server",
+  "run_list": [
+    "role[base]",
+    "recipe[backup]"
+  ]
+}

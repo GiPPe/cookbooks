@@ -47,6 +47,12 @@ end
 action :delete do
   path = "/usr/lib/systemd/system/#{new_resource.name}"
 
+  execute "systemd-reload" do
+    command "systemctl --system daemon-reload"
+    action :nothing
+    only_if { systemd_running? }
+  end
+
   file path do
     action :delete
     notifies :run, "execute[systemd-reload]", :immediately

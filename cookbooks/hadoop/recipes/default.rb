@@ -3,6 +3,12 @@ include_recipe "java"
 package "sys-cluster/hadoop"
 package "dev-lang/apache-pig-bin"
 
+package "app-arch/snappy"
+
+link "/opt/hadoop/lib/native/Linux-amd64-64/libsnappy.so" do
+  to "/usr/lib64/libsnappy.so"
+end
+
 %w(
   /var/lib/hadoop
   /var/log/hadoop

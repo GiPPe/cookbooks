@@ -33,16 +33,6 @@ if gentoo?
   end
 end
 
-if ganymed?
-  ganymed_collector "mongodb" do
-    source "mongodb.rb"
-    variables({
-      name: "mongodb",
-      port: node[:mongodb][:port],
-    })
-  end
-end
-
 if nagios_client?
   { # name             command         warn crit check note
     :connect     => %w(connect         2    5    1     15),

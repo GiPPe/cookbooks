@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # JVM options
-JVM_OPTS="-Dcom.sun.management.jmxremote.port=17000 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+JVM_OPTS="-Dcom.sun.management.jmxremote.port=17000"
+JVM_OPTS+=" -Dcom.sun.management.jmxremote.authenticate=false"
+JVM_OPTS+=" -Dcom.sun.management.jmxremote.ssl=false"
+JVM_OPTS+=" -Xmx16g"
 
 # zookeeper files
 MAIN="org.apache.zookeeper.server.quorum.QuorumPeerMain"

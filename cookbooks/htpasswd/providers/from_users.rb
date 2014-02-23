@@ -12,7 +12,6 @@ action :create do
   end
 
   htpasswd_file nr.path do
-    content content
     owner nr.owner
     group nr.group
     mode nr.mode

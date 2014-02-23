@@ -20,8 +20,8 @@ directory "/usr/local/share/ca-certificates"
 
 if root?
   # some environments (like CI or solo mode) do not have a CA
-  cookbook = node.run_context.cookbook_collection['openssl']
-  filenames = cookbook.relative_filenames_in_preferred_directory(node, :files, certificates) rescue []
+  cookbook = node.run_context.cookbook_collection['certificates']
+  filenames = cookbook.relative_filenames_in_preferred_directory(node, :files, 'certificates') rescue []
 
   if filenames.include?("ca.crt")
     if node[:chef_domain]

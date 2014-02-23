@@ -7,9 +7,6 @@ execute "sysctl-reload" do
   command "/sbin/sysctl -p /etc/sysctl.conf"
   command "/usr/lib/systemd/systemd-sysctl" if systemd_running?
   action :nothing
-  not_if do
-    node[:virtualization][:guest]
-  end
 end
 
 link "/etc/sysctl.conf" do

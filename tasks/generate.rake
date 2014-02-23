@@ -38,19 +38,13 @@ namespace :generate do
 
   desc "Generate the production environment"
   task :env do
-    env = File.open(File.join(ENVIRONMENTS_DIR, "production.rb"), "w")
-    env.printf %{description "The production environment"\n\n}
-
-    cookbook_metadata.each do |cookbook, cookbook_path, metadata|
-      platforms = metadata.platforms.keys - CHEF_SOLO_PLATFORMS
-      version = metadata.version
-
-      next if platforms.empty?
-
-      env.printf %{cookbook %-20s "= %s"\n}, %{"#{cookbook}",}, version
+    %w(production staging).each do |env|
+      b = binding()
+      erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'environment.json')))
+      File.open(File.join(ENVIRONMENTS_DIR, "#{env}.json"), "w") do |f|
+        f.puts(erb.result(b))
+      end
     end
-
-    env.close
   end
 
   desc "Generate a default OpenVPN/Tunnelblick config"

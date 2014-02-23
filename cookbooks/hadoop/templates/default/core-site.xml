@@ -15,6 +15,11 @@
 <% end %>
 
   <property>
+    <name>hadoop.relaxed.worker.version.check</name>
+    <value>true</value>
+  </property>
+
+  <property>
     <name>topology.script.file.name</name>
     <value>/opt/hadoop/conf/topology.sh</value>
   </property>
@@ -47,6 +52,12 @@
   <property>
     <name>fs.inmemory.size.mb</name>
     <value><%= node[:hadoop][:fs][:inmemory] %></value>
+  </property>
+
+  <property>
+    <!-- depend on ramfs for limits -->
+    <name>mapred.inmem.merge.threshold</name>
+    <value>0</value>
   </property>
 
 </configuration>

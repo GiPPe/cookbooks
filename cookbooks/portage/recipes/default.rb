@@ -3,9 +3,7 @@ if root?
     action :delete
   end
 
-  package "sys-apps/portage" do
-    action :upgrade
-  end
+  package "sys-apps/portage"
 
   %w(eix elogv gentoolkit gentoolkit-dev portage-utils).each do |pkg|
     package "app-portage/#{pkg}"

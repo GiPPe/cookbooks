@@ -1,11 +1,15 @@
 def wait_for_ssh(fqdn, login = true)
   wait_with_ping(fqdn, false)
   wait_with_ping(fqdn, true)
+  print "Waiting for ssh to be accessible "
   loop do
-    system("sudo /usr/lib/nagios/plugins/check_ssh #{fqdn}")
+    print "."
+    system("nc -zv #{fqdn} 22 &> /dev/null")
     break if $?.exitstatus == 0
     sleep 5
   end
+  print "\n"
+
   system("ssh -t #{fqdn} '/usr/bin/sudo -i uname -a'") if login
 end
 

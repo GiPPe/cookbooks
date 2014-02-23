@@ -1,7 +1,5 @@
 nodes.all do |node|
   [:default, :normal, :override].each do |level|
-  end
-  [:default, :normal, :override].each do |level|
     a = node.send((level.to_s + '_attrs').to_sym)
 
     # munin
@@ -15,6 +13,9 @@ nodes.all do |node|
 
     # ipv6
     a.delete(:ipv6_enabled) rescue nil
+
+    # zentoo next
+    a[:portage].delete("SYNC") rescue nil
   end
 
   node.save

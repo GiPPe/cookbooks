@@ -17,12 +17,6 @@ action :enable do
     only_if { systemd_running? }
   end
 
-  execute "systemd-reload-#{user[:name]}" do
-    command %{su -l -c 'env XDG_RUNTIME_DIR="/run/user/#{user[:uid]}" systemctl --user daemon-reload' #{user[:name]}}
-    action :nothing
-    only_if { systemd_running? }
-  end
-
   systemd_user_unit "#{user[:name]}-dbus.socket" do
     unit "dbus.socket"
     user user[:name]

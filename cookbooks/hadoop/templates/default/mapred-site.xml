@@ -43,7 +43,7 @@
 
   <property>
     <name>mapred.child.java.opts</name>
-    <value>-Duser.timezone=UTC -Dfile.encoding=UTF-8 -Xmx16g -Djava.io.tmpdir=<%= node[:hadoop][:java_tmp] %></value>
+    <value>-Duser.timezone=UTC -Dfile.encoding=UTF-8 -Xmx4g -Djava.io.tmpdir=<%= node[:hadoop][:java_tmp] %></value>
   </property>
 
   <property>
@@ -92,6 +92,29 @@
   <property>
     <name>mapred.map.output.compression.codec</name>
     <value>org.apache.hadoop.io.compress.GzipCodec</value>
+    <!-- <value>org.apache.hadoop.io.compress.SnappyCodec</value> -->
+  </property>
+
+
+  <property>
+    <name>io.sort.factor</name>
+    <value><%= node[:hadoop][:io][:sort][:factor] %></value>
+  </property>
+
+  <property>
+    <name>io.sort.mb</name>
+    <value><%= node[:hadoop][:io][:sort][:mb] %></value>
+  </property>
+
+  <property>
+    <name>io.sort.record.percent</name>
+    <!-- our currnt record size is avg 1000 bytes .. we might wanna change this in the future optimal is 16/(16+(bytes/records)) -->
+    <value>0.03</value>
+  </property>
+
+  <property>
+    <name>io.sort.spill.percent</name>
+    <value>0.95</value>
   </property>
 
 </configuration>

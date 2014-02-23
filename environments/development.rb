@@ -1,1 +1,0 @@
-description "The development environment"

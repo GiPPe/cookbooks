@@ -42,13 +42,11 @@ namespace :hetzner do
   end
 
   desc "enable rescue and rebootstrap"
-  task :reinstall, :fqdn, :profile do |t, args|
+  task :reinstall, :fqdn, :ipaddress, :profile do |t, args|
     args.with_defaults(:profile => 'generic-two-disk-md')
-    search("fqdn:#{args.fqdn}") do |node|
-      password = hetzner_enable_rescue_wait(node[:primary_ipaddress])
-      Rake::Task['node:quickstart'].reenable
-      Rake::Task['node:quickstart'].invoke(node[:fqdn], node[:primary_ipaddress], password, args.profile)
-    end
+    password = hetzner_enable_rescue_wait(args.ipaddress)
+    Rake::Task['node:quickstart'].reenable
+    Rake::Task['node:quickstart'].invoke(args.fqdn, args.ipaddress, password, args.profile)
   end
 
   desc "Set server names and reverse DNS"

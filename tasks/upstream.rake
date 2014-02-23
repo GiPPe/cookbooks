@@ -39,7 +39,7 @@ namespace :upstream do
       'config/hetzner.rb',
       'config/solo/*',
       'config/zendns.rb',
-      'databags/*',
+      'data_bags/*',
       'nodes/*',
       'site-cookbooks/*',
       'templates/default/user-*',

@@ -1,4 +1,4 @@
-if not node[:virtualization][:guest]
+if can_run_ntpd?
   if gentoo?
     package "net-misc/ntp" do
       notifies :restart, "service[ntpd]"
@@ -24,15 +24,9 @@ if not node[:virtualization][:guest]
     action [:enable, :start]
   end
 
-  if ganymed?
-    ganymed_collector "ntp" do
-      source "ntp.rb"
-    end
-  end
-
   if nagios_client?
     nrpe_command "check_time" do
-      command "/usr/lib/nagios/plugins/check_ntp_time -H #{node[:ntp][:server]} -w 5 -c 30"
+      command "/usr/lib/nagios/plugins/check_ntp_time -H pool.ntp.org -w 5 -c 30"
     end
 
     nagios_service "TIME" do

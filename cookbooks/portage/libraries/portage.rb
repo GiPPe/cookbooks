@@ -6,16 +6,31 @@ module Gentoo
       # changes (sets or deletes) something.
       # * action == :create || action == :delete
       # * conf_type =~ /\A(use|keywords|mask|unmask)\Z/
-      def manage_package_conf(action, conf_type, name, package = nil, flags = nil)
-        conf_file = package_conf_file(conf_type, name)
-        case action
+      def manage_package_conf(action, conf_type, new_resource)
+        conf_file = package_conf_file(conf_type, new_resource.name)
+        conf_dir = File.dirname(conf_file)
+        unless ::File.directory?(conf_dir)
+          run("/usr/bin/sudo -H /bin/rm -rf #{conf_dir}")
+          run("/usr/bin/sudo -H /bin/mkdir -p #{conf_dir}")
+        end
+        updated = case action
         when :create
-          create_package_conf_file(conf_file, normalize_package_conf_content(package, flags))
+          flags =
+            case conf_type
+            when "use"
+              new_resource.use
+            when "keywords"
+              new_resource.keywords
+            else
+              nil
+            end
+          create_package_conf_file(conf_file, new_resource.package, flags)
         when :delete
           delete_package_conf_file(conf_file)
         else
           raise Chef::Exceptions::Package, "Unknown action :#{action}."
         end
+        new_resource.updated_by_last_action(updated)
       end
 
       # Returns the portage package control file name:
@@ -23,45 +38,30 @@ module Gentoo
       # =net-analyzer/netdiscover => chef-net-analyzer-netdiscover
       def package_conf_file(conf_type, name)
         conf_dir = "/etc/portage/package.#{conf_type}"
-
-        unless ::File.directory?(conf_dir)
-          Chef::Mixin::Command.run_command_with_systems_locale(:command => "/usr/bin/sudo -H /bin/rm -rf #{conf_dir}")
-          Chef::Mixin::Command.run_command_with_systems_locale(:command => "/usr/bin/sudo -H /bin/mkdir -p #{conf_dir}")
-        end
-
         package_atom = name.strip.split(/\s+/).first
         package_file = package_atom.gsub(/[\/\.|]/, "-").gsub(/[^a-z0-9_\-]/i, "")
         return "#{conf_dir}/chef-#{package_file}"
-      end
-
-      # Normalizes package conf content
-      def normalize_package_conf_content(name, flags = nil)
-        [name, normalize_flags(flags)].join(' ')
-      end
-
-      # Normalizes String / Arrays
-      def normalize_flags(flags)
-        if flags.is_a?(Array)
-          flags.sort.uniq.join(' ')
-        else
-          flags
-        end
       end
 
       def same_content?(filepath, content)
         content.strip == ::File.read(filepath).strip
       end
 
-      def create_package_conf_file(conf_file, content)
+      def create_package_conf_file(conf_file, package, flags)
+        content = [package, [flags].compact.flatten.sort.uniq.join(' ')].join(' ')
         return nil if ::File.exists?(conf_file) && same_content?(conf_file, content)
-        Chef::Mixin::Command.run_command_with_systems_locale(:command => "echo -e '#{content}' | /usr/bin/sudo -H /usr/bin/tee #{conf_file}")
+        run("echo -e '#{content}' | /usr/bin/sudo -H /usr/bin/tee #{conf_file}")
         true
       end
 
       def delete_package_conf_file(conf_file)
         return nil unless ::File.exists?(conf_file)
-        Chef::Mixin::Command.run_command_with_systems_locale(:command => "/usr/bin/sudo -H /bin/rm -rf #{conf_file}")
+        run("/usr/bin/sudo -H /bin/rm -rf #{conf_file}")
         true
+      end
+
+      def run(command)
+        Chef::Mixin::Command.run_command_with_systems_locale(command: command)
       end
     end
 

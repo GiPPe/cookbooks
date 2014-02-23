@@ -91,6 +91,10 @@ template "/opt/splunk/etc/system/default/server.conf" do
   })
 end
 
+file "/opt/splunk/etc/system/local/server.conf" do
+  action :delete
+end
+
 execute "splunk-enable-boot" do
   command "/opt/splunk/bin/splunk enable boot-start --no-prompt --answer-yes --accept-license"
   creates "/etc/init.d/splunk"

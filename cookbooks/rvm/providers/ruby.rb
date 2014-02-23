@@ -136,11 +136,9 @@ def install_ruby_dependencies(rubie)
     when "debian", "ubuntu"
       pkgs += %w{
         g++
-        ant
       }
     when "gentoo"
       pkgs += %w{
-        dev-java/ant
         sys-devel/gcc
       }
     end

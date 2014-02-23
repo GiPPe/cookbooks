@@ -45,7 +45,7 @@ namespace :ssl do
       ENV['BATCH'] = "1"
       args = Rake::TaskArguments.new([:cn], ["*.#{chef_domain}"])
       Rake::Task["ssl:do_cert"].execute(args)
-      knife :cookbook_upload, ["openssl", "--force"]
+      knife :upload, ["cookbooks/certificates"]
     end
   end
 
@@ -85,7 +85,7 @@ namespace :ssl do
     end
 
     if ENV['BATCH'] != "1" and not Process.euid == 0
-      knife :cookbook_upload, ["openssl", "--force"]
+      knife :upload, ["cookbooks/certificates"]
     end
   end
 
@@ -104,7 +104,7 @@ namespace :ssl do
     end
 
     ENV['BATCH'] = old_batch
-    knife :cookbook_upload, ["openssl", "--force"]
+    knife :upload, ["cookbooks/certificates"]
   end
 
   desc "Revoke an existing SSL certificate"
@@ -118,7 +118,7 @@ namespace :ssl do
       sh("openssl ca -config #{SSL_CONFIG_FILE} -gencrl -out #{SSL_CERT_DIR}/ca.crl")
       cn = args.cn.gsub("*", "wildcard")
       sh("rm #{SSL_CERT_DIR}/#{cn}.{csr,crt,key}")
-      knife :cookbook_upload, ['openssl', '--force']
+      knife :upload, ["cookbooks/certificates"]
     end
   end
 
@@ -138,7 +138,7 @@ namespace :ssl do
     end
 
     ENV['BATCH'] = old_batch
-    knife :cookbook_upload, ["certificates"]
+    knife :upload, ["cookbooks/certificates"]
 
     sh("git add -A ca/ site-cookbooks/certificates || :")
     sh("git commit -q -m 'renew certificates' || :")

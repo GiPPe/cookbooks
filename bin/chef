@@ -11,8 +11,11 @@ if [[ $USER != "root" ]]; then
 	./scripts/bootstrap || exit 1
 fi
 
-# load configuration & run list
-config_name=$1
+# user can supply config name as first argument
+if [[ -n $1 && -f config/solo/$1.json ]]; then
+	config_name=$1
+	shift
+fi
 
 if [[ -z ${config_name} ]]; then
 	if [[ $USER == "root" ]]; then
@@ -80,7 +83,7 @@ if [[ -e ~/.rvm/scripts/rvm ]]; then
 fi
 
 echo ">>> Running Chef ..."
-$bundle_exec chef-solo -c .chef/solo.rb ${solo_args} || exit 1
+$bundle_exec chef-solo -c .chef/config.rb ${solo_args} "$@" || exit 1
 
 # re-enable sudo password on mac
 if [[ $USER != "root" ]]; then

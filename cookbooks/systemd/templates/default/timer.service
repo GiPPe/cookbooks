@@ -1,0 +1,16 @@
+[Unit]
+Description=<%= @description %>
+
+[Service]
+Type=oneshot
+ExecStart=<%= @command %>
+<% if @timeout %>
+TimeoutStartSec=<%= @timeout %>
+<% end %>
+<% @environment.each do |key, value| %>
+Environment=<%= key %>=<%= value %>
+<% end %>
+WorkingDirectory=<%= @directory %>
+User=<%= @user %>
+Group=<%= @group %>
+SyslogIdentifier=%p

@@ -1,10 +1,10 @@
+*.log
 *~
 .chef/checksums
 .chef/client.pem
-.chef/knife.rb
 .kitchen.local.yml
 .kitchen/
 .rake_test_cache
 .vagrant
 config/openssl.cnf
-*.log
+documentation/_build

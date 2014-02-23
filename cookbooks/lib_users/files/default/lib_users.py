@@ -31,6 +31,9 @@ NOLIBS = [
     "/tmp/winstone*",
     "/usr/lib/lxc/rootfs/*",
     "/usr/lib64/lxc/rootfs/*",
+    "/var/app/druid/*",
+    "/var/app/kafka/storage/*",
+    "/var/tmp/hadoop/*",
 ]
 
 FP_EXCLUDES = [

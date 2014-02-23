@@ -1,0 +1,13 @@
+[Unit]
+Description=Kafka Migration
+After=kafka.service
+
+[Service]
+User=kafka
+Group=kafka
+ExecStart=/var/app/kafka/bin/migration.sh
+Restart=always
+SyslogIdentifier=%p
+
+[Install]
+WantedBy=multi-user.target

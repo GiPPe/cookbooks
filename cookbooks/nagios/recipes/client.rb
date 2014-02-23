@@ -1,12 +1,6 @@
 include_recipe "nagios::nrpe"
 include_recipe "nagios::nsca"
 
-if gentoo?
-  package "dev-ruby/nagios" do
-    action :remove
-  end
-end
-
 directory "/usr/lib/ruby/site_ruby" do
   owner "root"
   group "root"

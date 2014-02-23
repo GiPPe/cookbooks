@@ -1,0 +1,12 @@
+[Unit]
+Description=Splunk Web Interface
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/opt/splunk/bin/splunk start splunkweb --answer-yes --no-prompt --accept-license
+ExecStop=/opt/splunk/bin/splunk stop splunkweb
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

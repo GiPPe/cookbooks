@@ -184,7 +184,9 @@ serve() {
 alias vi="vim"
 
 # replace reboot by systemctl reboot
-alias reboot="systemctl reboot"
+if [[ -x /usr/bin/systemctl ]]; then
+	alias reboot="systemctl reboot"
+fi
 
 # load local bashrc if it exists
 if [[ -e ${HOME}/.bashrc.local ]]; then

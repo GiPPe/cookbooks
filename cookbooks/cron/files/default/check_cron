@@ -1,22 +1,17 @@
 #!/bin/bash
 
-if pgrep -f /usr/sbin/crond >/dev/null; then
-	if [[ -e /tmp/.check_cron ]]; then
-		stamp=$(($(stat -c %Y /tmp/.check_cron) + 7200))
-		now=$(date +%s)
+if [[ -e /tmp/.check_cron ]]; then
+	stamp=$(($(stat -c %Y /tmp/.check_cron) + 7200))
+	now=$(date +%s)
 
-		if [[ $now -gt $stamp ]]; then
-			echo "WARNING - cron daemon running but jobs won't run"
-			exit 1
-		else
-			echo "OK - cron daemon running"
-			exit 0
-		fi
+	if [[ $now -gt $stamp ]]; then
+		echo "WARNING - cron daemon running but jobs won't run"
+		exit 1
 	else
-		echo "CRITICAL - /tmp/.check_cron not found"
-		exit 2
+		echo "OK - cron daemon running"
+		exit 0
 	fi
 else
-	echo "CRITICAL - cron daemon not running"
+	echo "CRITICAL - /tmp/.check_cron not found"
 	exit 2
 fi

@@ -9,29 +9,21 @@ if Process.euid > 0
     $stderr.puts "Bundler could not be loaded. Please make sure to run ./scripts/bootstrap"
     exit(1)
   end
-
   Bundler.setup if defined?(Bundler)
 end
 
 require 'chef'
-
-begin
-  require 'knife/dsl'
-  require 'benchmark'
-  require 'json'
-  require 'active_support/core_ext/hash/indifferent_access'
-rescue LoadError
-  $stderr.puts "Knife DSL cannot be loaded. Skipping some rake tasks ..."
-end
+require 'json'
 
 # load constants from rake config file.
 require File.expand_path('../config/rake', __FILE__)
 
-# load chef config
 begin
-  Chef::Config.from_file(KNIFE_CONFIG_FILE)
-rescue
-  # do nothing
+  require 'knife/dsl'
+  require 'benchmark'
+  require 'active_support/core_ext/hash/indifferent_access'
+rescue LoadError
+  $stderr.puts "Knife DSL cannot be loaded. Skipping some rake tasks ..."
 end
 
 # support files

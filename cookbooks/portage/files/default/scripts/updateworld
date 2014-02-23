@@ -18,17 +18,26 @@ latest_ruby() {
 	fi
 }
 
+is_chef() {
+	[[ -e /etc/chef/client.pem || -e /root/chef/Rakefile ]]
+}
+
+run_chef() {
+	if [[ -e /etc/chef/client.pem ]]; then
+		chef-client --force-logger
+	elif [[ -e /root/chef/Rakefile ]]; then
+		pushd /root/chef >/dev/null
+		rake solo
+		popd >/dev/null
+	fi
+}
+
 # force unicode locale
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # rubygems upgrade will remove auto_gem
 unset RUBYOPT
-
-# commit any changes to /etc
-cd /etc
-git add -A .
-git ci -q -m 'automatic commit before updateworld' || :
 
 # display news items and mark them as read.
 eselect news read new &>/dev/null || :
@@ -37,9 +46,9 @@ eselect news read new &>/dev/null || :
 latest_ruby
 
 # initial chef-client run
-if [[ -e /etc/chef/client.pem && -z $UPDATEWORLD_INITIAL_CHEF ]]; then
+if is_chef && [[ -z $UPDATEWORLD_INITIAL_CHEF ]]; then
 	rm /etc/portage/package.*/chef-*
-	chef-client --force-logger
+	run_chef
 	echo
 	export UPDATEWORLD_INITIAL_CHEF=1
 	exec $0 $*
@@ -62,6 +71,9 @@ current_gcc=$(gcc-config -c)
 if [[ $current_gcc != $latest_gcc ]]; then
 	gcc-config ${latest_gcc}
 fi
+
+# run chef to fixup stuff that portage broke
+run_chef
 
 # cleanup unneeded dependencies
 depclean
@@ -125,14 +137,9 @@ if [[ $(qlist -IC sys-kernel/zentoo-image) == "sys-kernel/zentoo-image" ]]; then
 fi
 
 # update config files and run chef
-if [[ -e /etc/chef/client.pem ]]; then
+if is_chef; then
 	yes | etc-update --automode -5
-	chef-client --force-logger
-elif [[ -e /root/chef/Rakefile ]]; then
-	yes | etc-update --automode -5
-	pushd /root/chef >/dev/null
-	rake solo
-	popd >/dev/null
+	run_chef
 else
 	etc-update
 fi

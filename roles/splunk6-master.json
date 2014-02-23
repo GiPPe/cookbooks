@@ -1,0 +1,7 @@
+{
+  "name": "splunk6-master",
+  "description": "Splunk 6 Master",
+  "run_list": [
+    "role[splunk6]"
+  ]
+}

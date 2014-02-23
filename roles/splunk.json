@@ -1,0 +1,9 @@
+{
+  "name": "splunk",
+  "description": "Splunk",
+  "run_list": [
+    "role[base]",
+    "recipe[splunk]",
+    "recipe[splunk::web]"
+  ]
+}

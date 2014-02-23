@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if sudo /etc/init.d/splunk status | grep -q 'splunkd is running'; then
+	echo "OK: splunkd is running"
+	exit 0
+else
+	echo "CRITICAL: splunkd is dead"
+	exit 2
+fi

@@ -7,6 +7,8 @@ module AccountHelpers
     user[:group] = Mash[pwent.members.zip(pwent.values)]
 
     user
+  rescue
+    {}
   end
 
   def authorized_keys_for(users)

@@ -1,0 +1,13 @@
+[Unit]
+Description=Druid <%= @druid_service %> %I
+After=network.target
+
+[Service]
+User=druid
+Group=druid
+ExecStart=/usr/libexec/druid-<%= @druid_service %>
+SyslogIdentifier=druid-<%= @druid_service %>
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

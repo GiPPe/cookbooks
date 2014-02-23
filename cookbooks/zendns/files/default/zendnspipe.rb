@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'madvertise-logging'
-$log = ImprovedLogger.new(:syslog, "zendnspipe")
-
 require 'mongo'
 $con = Mongo::ReplSetConnection.new(['localhost:27017'])
 $db = $con.db("zendns_production")
@@ -12,16 +9,20 @@ def failed(reason)
   nil
 end
 
+def debug(msg)
+  STDERR.puts(msg)
+end
+
 def get_domain(qname, domain_id)
   if domain_id and domain_id > 0
-    $log.debug("trying to find domain with id=#{domain_id}")
+    debug("trying to find domain with id=#{domain_id}")
     return $db['domains'].find_one(:_id => domain_id)
   end
 
   sdom = qname.dup
 
   while sdom.index('.')
-    $log.debug("trying to find domain with name=#{sdom}")
+    debug("trying to find domain with name=#{sdom}")
     result = $db['domains'].find_one(:name => sdom)
     return result if result
     sdom.sub!(/^[^.]+\./, '')
@@ -47,7 +48,7 @@ def get_records(domain, host, qtype)
       query[:type] = qtype unless qtype == "ANY"
     end
 
-    $log.debug("using query=#{query}")
+    debug("using query=#{query}")
     cursor = $db['records'].find(query)
     return cursor if cursor.count > 0
 
@@ -80,13 +81,13 @@ def print_records(domain, qname = nil, qtype = nil)
 
   host = qname.sub(/\.#{domain['name']}$/, '') if qname and qname != domain['name']
 
-  $log.debug("getting records for qname=#{qname}, qtype=#{qtype}, host=#{host}, domain=#{domain['name']}")
+  debug("getting records for qname=#{qname}, qtype=#{qtype}, host=#{host}, domain=#{domain['name']}")
 
   get_records(domain, host, qtype).each do |record|
     print_record(record, qname)
   end
 
-  $log.debug("record lookup done")
+  debug("record lookup done")
 end
 
 def process_query(qname, qclass, qtype, domain_id, remote_ip)
@@ -100,7 +101,7 @@ def process_query(qname, qclass, qtype, domain_id, remote_ip)
 
   qname.downcase!
 
-  $log.debug("starting normal record lookup with qname=#{qname}, qtype=#{qtype}")
+  debug("starting normal record lookup with qname=#{qname}, qtype=#{qtype}")
 
   domain = print_domain(qname, domain_id)
   return unless domain
@@ -113,7 +114,7 @@ def process_axfr(qname)
   end
 
   domain_id = qname.to_i
-  $log.debug("starting AXFR with domain_id=#{domain_id}")
+  debug("starting AXFR with domain_id=#{domain_id}")
 
   domain = print_domain(qname, domain_id)
   return unless domain
@@ -121,7 +122,7 @@ def process_axfr(qname)
 end
 
 def process(query)
-  $log.debug("processing query=#{query.inspect}")
+  debug("processing query=#{query.inspect}")
   qformat, qname, qclass, qtype, domain_id, remote_ip, _ = query.split(/\t/)
 
   if not %w(Q AXFR).include?(qformat)
@@ -139,7 +140,7 @@ def process(query)
   STDOUT.flush
 end
 
-$log.info("starting ZenDNS backend")
+STDERR.puts("starting ZenDNS backend")
 
 ARGF.each do |query|
   if query.chomp == "HELO\t1"
@@ -149,14 +150,14 @@ ARGF.each do |query|
   end
 end
 
-$log.info("HELO ok. now processing queries")
+STDERR.puts("HELO ok. now processing queries")
 
 ARGF.each do |query|
   begin
     process(query.chomp)
-  rescue => e
-    $log.exception(e)
+  rescue
     puts "END"
     STDOUT.flush
+    raise
   end
 end

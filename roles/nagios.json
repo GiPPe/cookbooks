@@ -1,0 +1,9 @@
+{
+  "name": "nagios",
+  "description": "Nagios Server",
+  "run_list": [
+    "role[base]",
+    "recipe[nagios::server]",
+    "recipe[chef::nagios]"
+  ]
+}

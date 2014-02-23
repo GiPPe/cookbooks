@@ -1,0 +1,9 @@
+{
+  "name": "splunk-server",
+  "description": "Splunk Server (single instance)",
+  "run_list": [
+    "role[splunk]",
+    "recipe[splunk::indexer]",
+    "recipe[splunk::search]"
+  ]
+}

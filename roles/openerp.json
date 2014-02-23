@@ -1,0 +1,8 @@
+{
+  "name": "openerp",
+  "description": "OpenERP",
+  "run_list": [
+    "role[base]",
+    "recipe[openerp]"
+  ]
+}

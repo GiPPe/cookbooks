@@ -17,18 +17,6 @@ end
 # contacts
 default[:contacts][:hostmaster] = "hostmaster@#{node[:chef_domain]}"
 
-# virtualization foo
-default[:virtualization][:role] = "host"
-if gentoo?
-  %x(systemd-detect-virt &>/dev/null)
-  default[:virtualization][:guest] = $?.exitstatus == 0
-end
-default[:skip][:hardware] = node[:virtualization][:guest]
-
-# provide sane default values in case ohai didn't find them
-default_unless[:cpu][:total] = 1
-default_unless[:virtualization] = {}
-
 # support non-root runs
 if root?
   default[:homedir] = "/root"

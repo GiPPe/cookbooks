@@ -2,7 +2,7 @@
 Description=Timer for <%= @service %>
 
 [Timer]
-Unit=<%= @service %>.service
+Unit=<%= @unit %>.service
 <% [@schedule].flatten.each do |schedule| %>
 <%= schedule %>
 <% end %>

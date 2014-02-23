@@ -23,8 +23,3 @@ if gentoo?
 elsif debian_based?
   # do not touch debians pam for now
 end
-
-service "unscd" do
-  action [:disable, :stop]
-  only_if { File.exist?("/etc/init.d/unscd") }
-end

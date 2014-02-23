@@ -1,20 +1,15 @@
-git "/opt/splunk/etc/apps/Splunk_TA_nix" do
-  repository "https://github.com/zenops/splunk-Unix-TA"
-  reference "master"
-  action :sync
+directory "/opt/splunk/etc/apps/Splunk_TA_nix" do
+  action :delete
+  recursive true
   notifies :restart, "service[splunk]" if splunk_forwarder?
 end
 
-if node.role?("splunk-search") or node.role?("splunk-server")
-  git "/opt/splunk/etc/apps/SA-nix" do
-    repository "https://github.com/zenops/splunk-Unix-SA"
-    reference "master"
-    action :sync
-  end
+directory "/opt/splunk/etc/apps/SA-nix" do
+  action :delete
+  recursive true
+end
 
-  git "/opt/splunk/etc/apps/splunk_app_for_nix" do
-    repository "https://github.com/zenops/splunk-Unix"
-    reference "master"
-    action :sync
-  end
+directory "/opt/splunk/etc/apps/splunk_app_for_nix" do
+  action :delete
+  recursive true
 end

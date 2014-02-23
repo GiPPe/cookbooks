@@ -19,9 +19,7 @@ if root? or mac_os_x?
     notifies :restart, "service[zookeeper]"
   end
 
-  myid = zookeeper_nodes.index do |n|
-    n[:fqdn] == node[:fqdn]
-  end.to_i + 1
+  include_recipe "base"
 
   template "#{node[:zookeeper][:confdir]}/zoo.cfg" do
     source "zoo.cfg"
@@ -30,11 +28,12 @@ if root? or mac_os_x?
   end
 
   directory node[:zookeeper][:datadir] do
+    owner "zookeeper"
     recursive true
   end
 
   file "#{node[:zookeeper][:datadir]}/myid" do
-    content "#{myid}\n"
+    content "#{node[:zookeeper][:myid]}\n"
     mode "0644"
     notifies :restart, "service[zookeeper]"
   end
@@ -50,7 +49,6 @@ if root? or mac_os_x?
     minute "0"
     hour "3"
     command "/opt/zookeeper/bin/zkCleanup.sh /var/lib/zookeeper/ -n 5"
-    only_if { root? }
   end
 end
 
@@ -79,7 +77,7 @@ if nagios_client?
 
   if zookeeper_nodes.count > 1
     nrpe_command "check_zookeeper_followers" do
-      command "/usr/lib/nagios/plugins/check_zookeeper -m Followers -n #{zookeeper_nodes.map { |n| n[:fqdn] }.join(" -n ")}"
+      command "/usr/lib/nagios/plugins/check_zookeeper -m Followers -n #{zookeeper_nodes.map { |n| n[:primary_ipaddress] }.join(" -n ")}"
     end
 
     nagios_service "ZOOKEEPER-FOLLOWERS" do
@@ -89,7 +87,7 @@ if nagios_client?
 
   {
     :connections => [2000, 3000],
-    :watches => [50000, 100000],
+    :watches => [100000, 200000],
     :latency => [1000, 2000],
     :requests => [20, 50],
     :files => [2048, 4096],

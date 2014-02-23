@@ -3,9 +3,7 @@ if gentoo?
     use %w(minimal) unless node.role?("nagios")
   end
 
-  package "net-analyzer/nsca" do
-    action :upgrade
-  end
+  package "net-analyzer/nsca"
 
 elsif debian_based?
   package "nsca"

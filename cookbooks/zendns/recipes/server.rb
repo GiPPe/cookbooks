@@ -13,9 +13,6 @@ template "/etc/powerdns/pdns.conf" do
   notifies :restart, "service[pdns]"
 end
 
-package "dev-ruby/madvertise-logging"
-package "dev-ruby/syslogger"
-
 cookbook_file "/usr/libexec/zendnspipe" do
   source "zendnspipe.rb"
   owner "root"
@@ -37,10 +34,4 @@ end
 shorewall_rule "zendns-udp" do
   destport "domain"
   proto "udp"
-end
-
-if ganymed?
-  ganymed_collector 'zendns' do
-    source 'zendns.rb'
-  end
 end

@@ -10,6 +10,5 @@ version "4.5.0"
 
 supports "gentoo"
 
-depends "ganymed"
 depends "nagios"
 depends "splunk"

@@ -15,7 +15,7 @@ def define(name, id)
         _chef = chef
         chef.binary_env = "LANG=en_US.UTF-8"
         chef.cookbooks_path = ["cookbooks", "site-cookbooks"]
-        chef.data_bags_path = "databags"
+        chef.data_bags_path = "data_bags"
         chef.environments_path = "environments"
         chef.environment = "staging"
         chef.roles_path = "roles"

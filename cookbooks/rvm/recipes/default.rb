@@ -2,7 +2,7 @@ if gentoo?
   # portage package provider will take care of using sudo
   package "dev-ruby/rvm" do
     action :nothing
-  end.run_action(:upgrade)
+  end.run_action(:install)
 else
   # omnibus ruby
   chef_gem 'rvm' do

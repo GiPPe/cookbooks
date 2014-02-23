@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 ExecStartPre=-/usr/sbin/ntpdate pool.ntp.org
-ExecStart=/usr/sbin/ntpd -n
+ExecStart=/usr/sbin/ntpd -g -n
 ExecStopPost=-/sbin/hwclock --systohc
 PrivateTmp=true
 Restart=always

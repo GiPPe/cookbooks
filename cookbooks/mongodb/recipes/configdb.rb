@@ -22,16 +22,6 @@ service "mongoc" do
   action [:enable, :start]
 end
 
-if ganymed?
-  ganymed_collector "mongoc" do
-    source "mongodb.rb"
-    variables({
-      name: "mongoc",
-      port: node[:mongoc][:port],
-    })
-  end
-end
-
 if nagios_client?
   { # name             command         warn crit check note
     :connect     => %w(connect         2    5    1     15),

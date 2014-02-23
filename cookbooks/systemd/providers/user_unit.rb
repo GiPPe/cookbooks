@@ -6,6 +6,12 @@ action :create do
   user = get_user(new_resource.user)
   path = "#{user[:dir]}/.config/systemd/user/#{new_resource.unit}"
 
+  execute "systemd-reload-#{user[:name]}" do
+    command %{su -l -c 'env XDG_RUNTIME_DIR="/run/user/#{user[:uid]}" systemctl --user daemon-reload' #{user[:name]}}
+    action :nothing
+    only_if { systemd_running? }
+  end
+
   if new_resource.template
     template path do
       source new_resource.unit
@@ -31,6 +37,12 @@ end
 action :delete do
   user = get_user(new_resource.user)
   path = "#{user[:dir]}/.config/systemd/user/#{new_resource.unit}"
+
+  execute "systemd-reload-#{user[:name]}" do
+    command %{su -l -c 'env XDG_RUNTIME_DIR="/run/user/#{user[:uid]}" systemctl --user daemon-reload' #{user[:name]}}
+    action :nothing
+    only_if { systemd_running? }
+  end
 
   cookbook_file path do
     action :delete

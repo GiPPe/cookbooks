@@ -1,0 +1,11 @@
+[Unit]
+Description=Dumbo (Hadoop -> Druid importer)
+
+[Service]
+ExecStart=/var/app/dumbo/bin/dumbo-runner.sh
+User=dumbo
+Group=dumbo
+SyslogIdentifier=druid-dumbo
+
+[Install]
+WantedBy=default.target

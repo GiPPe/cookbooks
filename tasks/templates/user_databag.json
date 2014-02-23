@@ -1,0 +1,17 @@
+{
+  "id": "<%= login %>",
+  "comment": "<%= name %>",
+  "email": "<%= email %>",
+  "tags": [
+<% tags.each_with_index do |tag, idx| %>
+    "<%= tag %>"<%= idx == tags.length - 1 ? "" : "," %>
+<% end %>
+  ],
+  "password": "<%= password %>",
+  "password1": "<%= password1 %>",
+  "authorized_keys": [
+<% if key %>
+    "<%= key %>"
+<% end %>
+  ]
+}

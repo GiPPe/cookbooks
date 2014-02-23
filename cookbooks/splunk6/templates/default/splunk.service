@@ -1,0 +1,18 @@
+[Unit]
+Description=Splunk Daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStartPre=-/bin/rm -f /opt/splunk/var/run/splunk/conf-mutator.pid
+ExecStart=/opt/splunk/bin/splunk start splunkd --answer-yes --no-prompt --accept-license
+<% if node.role?("splunk-peer") %>
+ExecStop=/opt/splunk/bin/splunk offline
+<% else %>
+ExecStop=/opt/splunk/bin/splunk stop splunkd
+<% end %>
+TimeoutStopSec=900
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

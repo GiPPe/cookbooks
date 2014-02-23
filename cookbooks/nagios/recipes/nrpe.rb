@@ -23,6 +23,7 @@ end
 systemd_unit "nrpe.service"
 
 service "nrpe" do
+  service_name "nagios-nrpe-server" if debian_based?
   action [:enable, :start]
   supports [:reload]
 end

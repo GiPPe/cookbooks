@@ -12,3 +12,4 @@ supports "debian"
 supports "gentoo"
 
 depends "account"
+depends "core_ext"

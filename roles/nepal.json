@@ -1,0 +1,14 @@
+{
+  "name": "nepal",
+  "description": "Nepal",
+  "override_attributes": {
+    "skip": {
+      "postfix_satelite": true
+    }
+  },
+  "run_list": [
+    "role[base]",
+    "recipe[nepal]",
+    "recipe[mysql::backup]"
+  ]
+}
