@@ -78,7 +78,7 @@ if [[ -e ~/.rvm/scripts/rvm ]]; then
 fi
 
 echo ">>> Running Chef ..."
-$bundle_exec chef-client -z -c .chef/config.rb -N ${node_name} "${chef_args}" || exit 1
+$bundle_exec chef-client -z -c .chef/config.rb -N ${node_name} ${chef_args} || exit 1
 
 # re-enable sudo password on mac
 if [[ $USER != "root" ]]; then
