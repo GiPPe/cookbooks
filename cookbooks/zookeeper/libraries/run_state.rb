@@ -8,7 +8,7 @@ module ZookeeperRunStateHelpers
 
   def zookeeper_connect(zk_root, ensemble = node.cluster_name)
     url = zookeeper_nodes(ensemble).map do |n|
-      "#{n[:primary_ipaddress]}:2181"
+      "#{n[:ipaddress]}:2181"
     end.join(',')
 
     if zk_root

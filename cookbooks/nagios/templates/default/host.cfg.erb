@@ -4,7 +4,7 @@
 
 define host {
   use generic-host
-  address <%= @host[:primary_ipaddress] %>
+  address <%= @host[:ipaddress] %>
   host_name <%= @host[:fqdn] %>
 <% if @host[:virtualization][:host] %>
   parents <%= @host[:virtualization][:host] %>

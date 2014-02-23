@@ -180,7 +180,7 @@ if root?
   if zenops_mirror_node
     rsync_module "portage-packages" do
       path "/usr/portage/packages"
-      hosts_allow zenops_mirror_node[:primary_ipaddress]
+      hosts_allow zenops_mirror_node[:ipaddress]
       uid "nobody"
       gid "nobody"
     end

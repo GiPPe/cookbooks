@@ -19,7 +19,7 @@ set_unless[:shorewall6][:zones] = {}
 begin
   link = %x(ip link show)
          .split(/\n/)
-         .select { |line| line =~ /master #{node[:primary_interface]}/ }
+         .select { |line| line =~ /master #{node[:network][:default_interface]}/ }
          .map { |line| line.split[1].sub(/:$/, '') }
          .reject { |device| device =~ /^veth/ }
 rescue
@@ -28,7 +28,7 @@ end
 
 case link.size
 when 0
-  default[:primary_interface_bridged] = false
+  default[:network][:default_interface_bridged] = false
 else
-  default[:primary_interface_bridged] = link.first
+  default[:network][:default_interface_bridged] = link.first
 end

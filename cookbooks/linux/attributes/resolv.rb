@@ -1,4 +1,4 @@
-%x(whois #{node[:primary_ipaddress]} | grep -q HETZNER-RZ)
+%x(whois #{node[:ipaddress]} | grep -q HETZNER-RZ)
 if $?.exitstatus == 0
   default[:resolv][:nameservers] = %w(213.133.98.98 213.133.99.99)
 else

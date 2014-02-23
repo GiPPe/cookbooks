@@ -9,36 +9,20 @@
 
 # IPv4 and IPv6 localhost aliases
 127.0.0.1 localhost
-<% if node[:primary_ip6address] %>
+<% if node[:ip6address] %>
 ::1 localhost
 <% end %>
 
 # this node
-<% if node[:primary_ipaddress] %>
-<%= node[:primary_ipaddress] %> <%= node[:fqdn] %> <%= node[:hostname] %>
+<% if node[:ipaddress] %>
+<%= node[:ipaddress] %> <%= node[:fqdn] %> <%= node[:hostname] %>
 <% end %>
 <% if node[:ec2] and node[:ec2][:local_ipv4] %>
 <%= node[:ec2][:local_ipv4] %> <%= node[:local_hostname] %>
 <% end %>
 
-<% if node[:primary_ip6address] %>
-<%= node[:primary_ip6address] %> <%= node[:fqdn] %> <%= node[:hostname] %>
-<% end %>
-
-<% if node[:cluster][:name] != "default" %>
-# local nodes in cluster <%= node[:cluster][:name] %>
-<%
-@nodes.select do |n|
-  n[:cluster] and
-  n[:cluster][:name] == node[:cluster][:name] and
-  n[:local_ipaddress]
-end.sort_by do |n|
-  n[:hostname]
-end.each do |n|
-  aliases = (n[:resolv][:aliases] || []).map { |a| " #{a}.local" }
-%>
-<%= n[:local_ipaddress] %> <%= n[:hostname] %>.local<%= aliases.join(" ") %>
-<% end %>
+<% if node[:ip6address] %>
+<%= node[:ip6address] %> <%= node[:fqdn] %> <%= node[:hostname] %>
 <% end %>
 
 # custom nodes

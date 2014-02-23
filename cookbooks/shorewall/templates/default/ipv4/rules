@@ -22,8 +22,8 @@ ACCEPT all all tcp ssh
 
 # accept all connections from chef nodes
 <% node.run_state[:nodes].each do |n| %>
-<% next unless n[:primary_ipaddress] %>
-ACCEPT net:<%= n[:primary_ipaddress] %> all - -
+<% next unless n[:ipaddress] %>
+ACCEPT net:<%= n[:ipaddress] %> all - -
 <% end %>
 
 <% node[:shorewall][:rules].sort_by {|r| r[0]}.each do |name, rule| %>

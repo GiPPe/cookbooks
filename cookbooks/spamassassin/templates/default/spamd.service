@@ -3,7 +3,7 @@ Description=Spamassassin Daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/sbin/spamd --create-prefs --max-children 5 --username spamd --helper-home-dir /var/lib/spamassassin -A 127.0.0.1 -A <%= node[:bind_ipaddress] %>
+ExecStart=/usr/sbin/spamd --create-prefs --max-children 5 --username spamd --helper-home-dir /var/lib/spamassassin -A 127.0.0.1 -A <%= node[:ipaddress] %>
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 

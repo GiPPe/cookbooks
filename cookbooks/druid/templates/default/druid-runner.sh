@@ -2,7 +2,7 @@
 
 # host & port for our listen socket
 PORT=<%= @druid_port %>
-HOST=<%= node[:primary_ipaddress]%>:${PORT}
+HOST=<%= node[:ipaddress]%>:${PORT}
 JMXPORT=<%= @druid_port + 10000 %>
 
 echo "spawning druid <%= @druid_service %> on $PORT, JMX on $JMXPORT"

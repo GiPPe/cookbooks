@@ -1,5 +1,5 @@
 # seed with host specific data to make it idempotent
-srand(IPAddr.new(node[:primary_ipaddress]).to_i)
+srand(IPAddr.new(node[:ipaddress]).to_i)
 
 set_unless[:cron][:hourly][:minute] = rand(60)
 

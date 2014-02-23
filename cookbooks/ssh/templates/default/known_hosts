@@ -1,15 +1,6 @@
 <% node.run_state[:nodes].each do |n| %>
 <% %w(dsa rsa).each do |t| %>
-<%
-localstr = ""
-
-if node[:cluster][:name] != "default"
-  if n[:cluster] and n[:cluster][:name] == node[:cluster][:name] and n[:local_ipaddress]
-    localstr += ",#{n[:hostname]}.local"
-  end
-end
-%>
-<%= n[:fqdn] %>,<%= n[:primary_ipaddress] %>,<%= n[:hostname] %><%= localstr %> ssh-<%= t %> <%= n[:keys][:ssh]["host_#{t}_public"] %>
+<%= n[:fqdn] %>,<%= n[:ipaddress] %>,<%= n[:hostname] %> ssh-<%= t %> <%= n[:keys][:ssh]["host_#{t}_public"] %>
 <% end %>
 <% end %>
 <% node[:ssh][:additional_host_keys].each do |k| %>

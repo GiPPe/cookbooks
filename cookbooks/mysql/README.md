@@ -43,7 +43,7 @@ external resources are mentioned to help in optimizing server performance.
 
 ## Replication & Binary Log
 
-`mysql[:server][:server_id] = IPAddr.new(node[:primary_ipaddress]).to_i`
+`mysql[:server][:server_id] = IPAddr.new(node[:ipaddress]).to_i`
   : This option is common to both master and slave replication servers, and is
   used in replication to enable master and slave servers to identify themselves
   uniquely.

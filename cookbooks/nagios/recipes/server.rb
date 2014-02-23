@@ -63,7 +63,7 @@ end.flatten.compact.map do |v|
   Chef::Node.new.tap do |n|
     n.chef_environment "production"
     n.default[:fqdn] = v[:name]
-    n.default[:primary_ipaddress] = v[:name]
+    n.default[:ipaddress] = v[:name]
     n.default[:virtualization] = {}
     n.default[:nagios][:services] = {}
     add_services_for_vhost(n)

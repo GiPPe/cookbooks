@@ -1,4 +1,4 @@
-%x(whois #{node[:primary_ipaddress]} | grep -q HETZNER-RZ)
+%x(whois #{node[:ipaddress]} | grep -q HETZNER-RZ)
 if $?.exitstatus == 0
   default[:ntp][:server] = %w(
     ntp1.hetzner.de

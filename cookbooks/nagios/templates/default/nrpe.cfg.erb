@@ -19,7 +19,7 @@ server_port=5666
 # SERVER ADDRESS
 # Address that nrpe should bind to in case there are more than one interface
 # and you do not want nrpe to bind on all interfaces.
-server_address=<%= node[:bind_ipaddress] %>
+server_address=0.0.0.0
 
 # NRPE USER
 # This determines the effective user that the NRPE daemon should run as.  

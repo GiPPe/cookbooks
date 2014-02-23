@@ -4,7 +4,7 @@ require 'net/http'
 require 'nokogiri'
 require 'json'
 
-SEARCH_HOST = "<%= @search[:primary_ipaddress] rescue 'localhost' %>"
+SEARCH_HOST = "<%= @search[:ipaddress] rescue 'localhost' %>"
 SEARCH_PORT = 2047
 SEARCH_URI  = "https://#{SEARCH_HOST}:#{SEARCH_PORT}"
 SEARCH_USER = "admin"

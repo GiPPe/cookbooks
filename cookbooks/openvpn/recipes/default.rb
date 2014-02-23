@@ -61,6 +61,6 @@ end
 cidr = IPAddr.new(node[:openvpn][:netmask]).to_i.to_s(2).count("1")
 
 shorewall_masq "vpn" do
-  interface node[:primary_interface]
+  interface node[:network][:default_interface]
   source "#{node[:openvpn][:network]}/#{cidr}"
 end

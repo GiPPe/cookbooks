@@ -1,7 +1,7 @@
 module PostfixRunStateHelpers
   def postfix_networks
     node.run_state[:nodes].map do |n|
-      n[:primary_ipaddress]
+      n[:ipaddress]
     end + node[:postfix][:mynetworks]
   end
 

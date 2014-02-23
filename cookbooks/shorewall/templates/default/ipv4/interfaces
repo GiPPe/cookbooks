@@ -9,16 +9,10 @@
 ###############################################################################
 #ZONE	INTERFACE	BROADCAST	OPTIONS
 
-<% if node[:primary_interface_bridged] %>
-net <%= node[:primary_interface] %> detect bridge
+<% if node[:network][:default_interface_bridged] %>
+net <%= node[:network][:default_interface] %> detect bridge
 <% else %>
-net <%= node[:primary_interface] %>
-<% end %>
-
-<% if node[:local_ipaddress] %>
-<% if node[:local_interface] != node[:primary_interface] %>
-loc <%= node[:local_interface] %>
-<% end %>
+net <%= node[:network][:default_interface] %>
 <% end %>
 
 <% node[:shorewall][:interfaces].each do |zone, interface| %>

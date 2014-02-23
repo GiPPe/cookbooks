@@ -16,9 +16,9 @@ node.set[:shorewall6][:zones] = {}
 
 unless node[:skip][:shorewall]
   # detect bridge
-  if node[:primary_interface_bridged]
+  if node[:network][:default_interface_bridged]
     shorewall_interface "br" do
-      interface "#{node[:primary_interface]}:#{node[:primary_interface_bridged]}"
+      interface "#{node[:network][:default_interface]}:#{node[:network][:default_interface_bridged]}"
     end
 
     shorewall_zone "br:net" do

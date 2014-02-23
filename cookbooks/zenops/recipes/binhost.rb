@@ -17,7 +17,7 @@ template "/usr/sbin/pkgsync" do
   owner "root"
   group "root"
   mode "0755"
-  variables :clients => pkgsync_client_nodes.map { |n| n[:primary_ipaddress] }
+  variables :clients => pkgsync_client_nodes.map { |n| n[:ipaddress] }
 end
 
 systemd_unit "pkgsync.service"

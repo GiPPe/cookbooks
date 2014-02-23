@@ -6,7 +6,7 @@ generate_vendor_paths('/usr/lib/nepal')
 from nepal.settings import *
 
 # main IP address
-MAIN_IPADDRESS = '<%= node[:primary_ipaddress] %>'
+MAIN_IPADDRESS = '<%= node[:ipaddress] %>'
 FQDN = '<%= node[:fqdn] %>'
 
 # database configuration

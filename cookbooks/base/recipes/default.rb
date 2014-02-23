@@ -6,7 +6,7 @@ if Chef::Config[:solo]
 else
   node.run_state[:roles] = search(:role)
   node.run_state[:users] = search(:users)
-  node.run_state[:nodes] = search(:node, "primary_ipaddress:[* TO *] AND fqdn:[* TO *]").sort_by do |n|
+  node.run_state[:nodes] = search(:node, "ipaddress:[* TO *] AND fqdn:[* TO *]").sort_by do |n|
     n[:fqdn]
   end
 end

@@ -75,7 +75,7 @@ directory "/etc/postfix" do
   mode "0755"
 end
 
-ipv6_str = node[:primary_ip6address] ? ", ipv6" : ""
+ipv6_str = node[:ip6address] ? ", ipv6" : ""
 
 postconf "base" do
   set({

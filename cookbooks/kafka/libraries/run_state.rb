@@ -8,7 +8,7 @@ module KafkaRunStateHelpers
 
   def kafka_connect(cluster = node.cluster_name)
     kafka_brokers(cluster).map do |broker|
-      "#{broker[:primary_ipaddress]}:9092"
+      "#{broker[:ipaddress]}:9092"
     end.join(',')
   end
 end
