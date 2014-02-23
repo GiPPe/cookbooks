@@ -10,7 +10,7 @@ module NagiosRunStateHelpers
   end
 
   def nagios_client?
-    nagios_nodes.any?
+    root? && nagios_nodes.any?
   end
 
   def nagios_client_nodes

@@ -11,7 +11,27 @@ if mac_os_x?
 
   cookbook_file "#{node[:homedir]}/Library/Fonts/Menlo-Powerline.otf" do
     source "Menlo+Regular+for+Powerline.otf"
-    notifies :run, "execute[fc-cache-menlo-powerline]"
+    notifies :run, "execute[fc-cache-menlo-powerline]", :immediately
+  end
+
+  execute "iterm-solarized-dark-open" do
+    command "open '/Applications/iTerm.app/Solarized Dark.itermcolors'"
+    action :nothing
+  end
+
+  remote_file "/Applications/iTerm.app/Solarized Dark.itermcolors" do
+    source "https://raw.github.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Dark.itermcolors"
+    notifies :run, "execute[iterm-solarized-dark-open]", :immediately
+  end
+
+  execute "iterm-solarized-light-open" do
+    command "open '/Applications/iTerm.app/Solarized Light.itermcolors'"
+    action :nothing
+  end
+
+  remote_file "/Applications/iTerm.app/Solarized Light.itermcolors" do
+    source "https://raw.github.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Light.itermcolors"
+    notifies :run, "execute[iterm-solarized-light-open]", :immediately
   end
 
   mac_userdefaults "hide tab bar when there is only one tab" do

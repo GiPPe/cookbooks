@@ -10,3 +10,5 @@ version "2.0.0"
 
 supports "gentoo"
 supports "mac_os_x"
+
+depends "users"

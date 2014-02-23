@@ -163,6 +163,7 @@ GEM
       sexp_processor (~> 4.0)
     ruby_parser (3.4.1)
       sexp_processor (~> 4.1)
+    rvm (1.11.3.9)
     safe_yaml (1.0.1)
     sexp_processor (4.4.1)
     simplecov (0.8.2)
@@ -205,5 +206,6 @@ DEPENDENCIES
   liquid-development
   mixlib-shellout!
   rake
+  rvm
   tailor!
   test-kitchen
