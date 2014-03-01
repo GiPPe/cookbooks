@@ -18,12 +18,11 @@ require 'json'
 # load constants from rake config file.
 require File.expand_path('../config/rake', __FILE__)
 
+# load chef config
 begin
-  require 'knife/dsl'
-  require 'benchmark'
-  require 'active_support/core_ext/hash/indifferent_access'
-rescue LoadError
-  $stderr.puts "Knife DSL cannot be loaded. Skipping some rake tasks ..."
+  Chef::Config.from_file(CONFIG_FILE)
+rescue
+  # do nothing
 end
 
 # support files

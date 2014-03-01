@@ -18,7 +18,7 @@ template "/srv/system/etc/php/fpm.conf" do
   not_if { File.exist?("/srv/system/etc/php/fpm.conf") }
 end
 
-node.set[:php][:fpm][:conf] = "/srv/system/etc/php/fpm.conf"
+node.default[:php][:fpm][:conf] = "/srv/system/etc/php/fpm.conf"
 include_recipe "php::fpm"
 
 include_recipe "apache::fastcgi"

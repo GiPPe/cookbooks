@@ -5,8 +5,10 @@ chef_repo_path File.expand_path(File.join(File.dirname(__FILE__), ".."))
 
 if Process.euid == 0
   chef_root = "/var/lib/chef"
+  node_name %x(hostname -f).chomp
 else
   chef_root = File.expand_path("~/.chef")
+  node_name %x(whoami).chomp
 end
 
 cookbook_path [

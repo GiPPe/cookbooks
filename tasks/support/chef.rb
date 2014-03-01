@@ -36,10 +36,6 @@ def search(default_query)
   end
 end
 
-def chef_domain
-  URI.parse(Chef::Config[:chef_server_url]).host.split(".")[1..-1].join(".")
-end
-
 # overwrite knife from knife-dsl
 class << eval("self", TOPLEVEL_BINDING)
   def knife(command, args)

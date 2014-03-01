@@ -1,3 +1,3 @@
 define :shorewall_host, options: "-" do
-  node.set[:shorewall][:hosts][params[:name]] = params
+  node.default[:shorewall][:hosts][params[:name]] = params
 end

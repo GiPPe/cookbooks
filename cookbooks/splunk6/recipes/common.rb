@@ -10,7 +10,7 @@ end
 
 if splunk6_master_node.nil? or splunk6_master_node[:fqdn] == node[:fqdn]
   pass4symmkey = get_password("splunk/pass4symmkey")
-  node.set[:splunk][:pass4symmkey] = pass4symmkey
+  node.default[:splunk][:pass4symmkey] = pass4symmkey
 else
   pass4symmkey = splunk6_master_node[:splunk][:pass4symmkey]
 end
@@ -55,6 +55,7 @@ end
   inputs
   outputs
   prefs
+  times
   web
 ).each do |c|
   template "/opt/splunk/etc/system/local/#{c}.conf" do

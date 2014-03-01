@@ -106,6 +106,12 @@ service "gitlab-sidekiq" do
 end
 
 ## nginx proxy
+include_recipe "nginx"
+
+ssl_certificate "/etc/ssl/nginx/gitlab" do
+  cn node[:gitlab][:certificate]
+end
+
 nginx_server "gitlab" do
   template "nginx.conf"
   homedir homedir

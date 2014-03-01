@@ -3,5 +3,5 @@ define :sudo_rule, host: "ALL", runas: "ALL" do
     params[:command] = [params[:command]]
   end
   params[:command] = params[:command].join(", ")
-  node.set[:sudo][:rules][params[:name]] = params
+  node.default[:sudo][:rules][params[:name]] = params
 end

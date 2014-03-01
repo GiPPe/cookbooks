@@ -1,7 +1,5 @@
 include_recipe "ssh"
 
-node.set[:ssh][:server][:matches] = {}
-
 template "/etc/ssh/sshd_config" do
   source "sshd_config"
   owner "root"

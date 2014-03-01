@@ -13,13 +13,25 @@ service "hadoop@namenode" do
   subscribes :restart, 'template[/opt/hadoop/conf/hdfs-site.xml]'
 end
 
-## Hadoop Balancer cronjob:
 cron "hadoop_balancer" do
-  minute "0"
-  hour "3"
-  day "*"
-  command "/opt/hadoop/bin/start-balancer.sh"
-  action :create
+  action :delete
+end
+
+systemd_timer "hadoop-balancer" do
+  schedule %w(OnCalendar=3:00)
+  unit(command: "/opt/hadoop/bin/start-balancer.sh")
+end
+
+cookbook_file "/opt/hadoop/bin/hdfs-clean.rb" do
+  source "hdfs-clean.rb"
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
+systemd_timer "hadoop-cleaner" do
+  schedule %w(OnCalendar=5:00)
+  unit(command: "/opt/hadoop/bin/hdfs-clean.rb")
 end
 
 if nagios_client?

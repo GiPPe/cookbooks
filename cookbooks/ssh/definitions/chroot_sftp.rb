@@ -1,7 +1,7 @@
 define :ssh_chroot_sftp do
   include_recipe "ssh"
 
-  node.set[:ssh][:server][:matches]["chroot_sftp_#{params[:name]}"] = {
+  node.default[:ssh][:server][:matches]["chroot_sftp_#{params[:name]}"] = {
     "match" => "User #{params[:name]}",
     "ChrootDirectory" => params[:directory],
     "ForceCommand" => "internal-sftp",

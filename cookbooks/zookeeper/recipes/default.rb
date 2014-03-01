@@ -46,9 +46,12 @@ if root? or mac_os_x?
   end
 
   cron "zk-log-clean" do
-    minute "0"
-    hour "3"
-    command "/opt/zookeeper/bin/zkCleanup.sh /var/lib/zookeeper/ -n 5"
+    action :delete
+  end
+
+  systemd_timer "zookeeper-cleanup" do
+    schedule %w(OnCalendar=3:00)
+    unit(command: "/opt/zookeeper/bin/zkCleanup.sh /var/lib/zookeeper/ -n 5")
   end
 end
 

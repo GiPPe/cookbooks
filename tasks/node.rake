@@ -16,36 +16,21 @@ namespace :node do
     end
   end
 
-  desc "Create a new node with SSL certificates"
-  task :create => [ :pull ]
-  task :create, :fqdn, :ipaddress do |t, args|
-    fqdn, ipaddress = args.fqdn, args.ipaddress
-    run_task('node:checkdns', fqdn, ipaddress)
-    nf = File.join(TOPDIR, "nodes", "#{fqdn}.json")
-    unless File.exists?(nf)
-      ENV['BATCH'] = "1"
-      ENV['ROLE'] ||= "base"
-      run_task('ssl:do_cert', fqdn)
-      b = binding()
-      erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'node.json')))
-      File.open(nf, "w") do |f|
-        f.puts(erb.result(b))
-      end
-      knife :upload, [
-        "cookbooks/certificates",
-        "nodes/#{fqdn}.json",
-      ]
-    end
-  end
-
   desc "Bootstrap the specified node"
   task :bootstrap, :fqdn, :ipaddress do |t, args|
+    ENV['BATCH'] = "1"
     ENV['DISTRO'] ||= "gentoo"
-    run_task('node:create', args.fqdn, args.ipaddress)
+    run_task('node:checkdns', args.fqdn, args.ipaddress)
+    run_task('ssl:do_cert', args.fqdn)
     knife :bootstrap, [args.fqdn, "--distro", ENV['DISTRO'], "-P", "tux"]
-    env = "/usr/bin/env UPDATEWORLD_DONT_ASK=1"
+    run_task('node:updateworld', args.fqdn) unless ENV['NO_UPDATEWORLD']
+  end
+
+  desc "Update node packages"
+  task :updateworld, :fqdn do |t, args|
+    env = "/usr/bin/env UPDATEWORLD_DONT_ASK=1" if ENV['BATCH']
     system("ssh -t #{args.fqdn} '/usr/bin/sudo -i #{env} /usr/local/sbin/updateworld'")
-    reboot_wait(args.fqdn)
+    reboot_wait(args.fqdn) if ENV['REBOOT']
   end
 
   desc "Quickstart & Bootstrap the specified node"
@@ -54,8 +39,7 @@ namespace :node do
     raise "missing parameters!" unless args.fqdn && args.ipaddress && args.password
 
     # create DNS/rDNS records
-    name = args.fqdn.sub(/\.#{chef_domain}$/, '')
-    hetzner_server_name_rdns(args.ipaddress, name, args.fqdn)
+    hetzner_server_name_rdns(args.ipaddress, args.fqdn)
     zendns_add_record(args.fqdn, args.ipaddress)
     run_task('node:checkdns', args.fqdn, args.ipaddress)
 
@@ -76,14 +60,14 @@ namespace :node do
     wait_with_ping(args.ipaddress, true)
 
     # run normal bootstrap
+    ENV['REBOOT'] = "1"
     run_task('node:bootstrap', args.fqdn, args.ipaddress)
   end
 
   desc "Delete node, rename host and bootstrap again"
   task :rename, :old, :fqdn do |t, args|
     ipaddress = Resolv.getaddress(args.old)
-    name = args.fqdn.sub(/\.#{chef_domain}$/, '')
-    hetzner_server_name_rdns(ipaddress, name, args.fqdn)
+    hetzner_server_name_rdns(ipaddress, args.fqdn)
     zendns_add_record(args.fqdn, ipaddress)
     run_task('node:checkdns', args.fqdn, ipaddress)
 
@@ -93,6 +77,7 @@ namespace :node do
     sh("ssh #{args.old} sudo sed -i -e '/PermitRootLogin/s/no/yes/g' /etc/ssh/sshd_config")
     sh("ssh #{args.old} sudo systemctl reload sshd")
 
+    ENV['NO_UPDATEWORLD'] = "1"
     run_task('node:bootstrap', args.fqdn, ipaddress)
     run_task('node:delete', args.old)
   end

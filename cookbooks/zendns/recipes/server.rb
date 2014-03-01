@@ -1,5 +1,5 @@
-node.set[:mongodb][:replication][:set] = "zendns"
-node.set[:mongodb][:bind_ip] = "0.0.0.0"
+node.default[:mongodb][:replication][:set] = "zendns"
+node.default[:mongodb][:bind_ip] = "0.0.0.0"
 
 include_recipe "mongodb::server"
 

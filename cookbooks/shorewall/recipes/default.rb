@@ -1,19 +1,3 @@
-# reset all attributes to make sure cruft is being deleted on chef-client run
-node.set[:shorewall][:accounting] = {}
-node.set[:shorewall6][:accounting] = {}
-node.set[:shorewall][:hosts] = {}
-node.set[:shorewall6][:hosts] = {}
-node.set[:shorewall][:interfaces] = {}
-node.set[:shorewall6][:interfaces] = {}
-node.set[:shorewall][:policies] = {}
-node.set[:shorewall6][:policies] = {}
-node.set[:shorewall][:rules] = {}
-node.set[:shorewall6][:rules] = {}
-node.set[:shorewall][:tunnels] = {}
-node.set[:shorewall6][:tunnels] = {}
-node.set[:shorewall][:zones] = {}
-node.set[:shorewall6][:zones] = {}
-
 unless node[:skip][:shorewall]
   # detect bridge
   if node[:network][:default_interface_bridged]

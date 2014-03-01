@@ -26,7 +26,7 @@ if can_run_ntpd?
 
   if nagios_client?
     nrpe_command "check_time" do
-      command "/usr/lib/nagios/plugins/check_ntp_time -H pool.ntp.org -w 5 -c 30"
+      command "/usr/lib/nagios/plugins/check_ntp_peer -H localhost -w 0.5 -c 1"
     end
 
     nagios_service "TIME" do

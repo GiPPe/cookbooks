@@ -18,5 +18,10 @@ nodes.all do |node|
     a[:portage].delete("SYNC") rescue nil
   end
 
+  a = node.normal_attrs
+  a.keys.each do |attr|
+    a.delete(attr) rescue nil
+  end
+
   node.save
 end

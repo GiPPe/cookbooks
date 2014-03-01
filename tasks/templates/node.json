@@ -1,7 +1,0 @@
-{
-  "name": "<%= fqdn %>",
-  "chef_environment": "production",
-  "run_list": [
-    "role[<%= ENV['ROLE'] %>]"
-  ]
-}

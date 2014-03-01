@@ -24,6 +24,7 @@ Chef::Log.level = :error
 
 # The top of the repository checkout
 TOPDIR = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+CONFIG_FILE = File.expand_path(File.join(TOPDIR, ".chef", "config.rb"))
 
 # directories for entities
 BAGS_DIR = File.expand_path(File.join(TOPDIR, "data_bags"))

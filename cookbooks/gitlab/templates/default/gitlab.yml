@@ -15,7 +15,7 @@ production: &base
   ## GitLab settings
   gitlab:
     ## Web server settings
-    host: <%= node[:gitlab][:host] %>
+    host: <%= node[:gitlab][:server_name] %>
     port: 80
     https: true
 

@@ -113,7 +113,8 @@ end
 
 def sl_task(fqdn, user, pass, email, mode)
   # We use bottom-level of domain name for alias on Serverloft
-  lm_name = fqdn[/[^\.]+/]
+  # lm_name = fqdn[/[^\.]+/]
+  lm_name = fqdn
   auth(user, pass)
   sl_name = get_sl_name(lm_name)
 

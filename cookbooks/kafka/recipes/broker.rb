@@ -10,6 +10,8 @@ folders.each do |dir|
   end
 end
 
+node.default[:kafka][:zookeeper][:cluster] = node.cluster_name
+
 template "/etc/kafka/server.config" do
   source "server.config"
   owner "root"

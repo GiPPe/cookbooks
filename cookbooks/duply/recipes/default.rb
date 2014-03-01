@@ -22,7 +22,7 @@ if nagios_client?
   nagios_plugin "check_duplybackup"
 end
 
-node.set[:lftp][:bookmarks][:backup] = node[:backup][:target_base_url].sub(/^ssh:/, "sftp:")
+node.default[:lftp][:bookmarks][:backup] = node[:backup][:target_base_url].sub(/^ssh:/, "sftp:")
 
 node[:backup][:configs].each do |name, params|
   directory "/etc/duply/#{name}" do

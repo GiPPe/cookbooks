@@ -1,6 +1,6 @@
 if gentoo?
   # base packages
-  node.set[:packages] = %w(
+  default[:packages] = %w(
     app-admin/apache-tools
     app-admin/pwgen
     app-admin/pydf

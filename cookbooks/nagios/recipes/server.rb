@@ -74,12 +74,6 @@ hosts = (vhosts + hosts).sort_by do |n|
   n[:fqdn]
 end
 
-roles = node.run_state[:roles].reject do |r|
-  r.name == "base"
-end.sort_by do |r|
-  r.name
-end
-
 # build hostgroups
 hostgroups = {}
 
@@ -195,6 +189,11 @@ spawn_fcgi "nagios" do
   })
 end
 
+include_recipe "nginx"
+
+ssl_certificate "/etc/ssl/nginx/nagios" do
+  cn node[:nagios][:certificate]
+end
 
 nginx_server "nagios" do
   template "nginx.conf"

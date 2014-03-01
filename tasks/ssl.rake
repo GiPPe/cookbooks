@@ -4,7 +4,7 @@ require 'tempfile'
 
 namespace :ssl do
   desc "Initialize the OpenSSL CA"
-  task :init do
+  task :init, :domain do |t, args|
     FileUtils.mkdir_p(SSL_CERT_DIR)
     FileUtils.mkdir_p(File.join(SSL_CA_DIR, "crl"))
     FileUtils.mkdir_p(File.join(SSL_CA_DIR, "newcerts"))
@@ -41,12 +41,10 @@ namespace :ssl do
       sh("openssl ca -config #{SSL_CONFIG_FILE} -gencrl -out #{SSL_CERT_DIR}/ca.crl")
     end
 
-    if chef_domain != ""
-      ENV['BATCH'] = "1"
-      args = Rake::TaskArguments.new([:cn], ["*.#{chef_domain}"])
-      Rake::Task["ssl:do_cert"].execute(args)
-      knife :upload, ["cookbooks/certificates"]
-    end
+    ENV['BATCH'] = "1"
+    args = Rake::TaskArguments.new([:cn], ["*.#{args.domain}"])
+    Rake::Task["ssl:do_cert"].execute(args)
+    knife :upload, ["cookbooks/certificates"]
   end
 
   task :do_cert => [ :init ]

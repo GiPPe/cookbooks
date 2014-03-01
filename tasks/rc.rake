@@ -5,23 +5,7 @@ namespace :rc do
   desc "Update gentoo packages"
   task :updateworld do
     search("platform:gentoo") do |node|
-      env = "/usr/bin/env UPDATEWORLD_DONT_ASK=1" if ENV['DONT_ASK']
-      system("ssh -t #{node.name} '/usr/bin/sudo -i #{env} /usr/local/sbin/updateworld'")
-      reboot_wait(node.name) if ENV['REBOOT']
-    end
-  end
-
-  desc "Update portage tree"
-  task :sync do
-    search("platform:gentoo") do |node|
-      system("ssh -t #{node.name} '/usr/bin/sudo -i /usr/bin/eix-sync'")
-    end
-  end
-
-  desc "Run chef-client"
-  task :converge do
-    search("*:*") do |node|
-      system("ssh -t #{node.name} '/usr/bin/sudo -i /usr/bin/env LANG=en_US.UTF-8 /usr/bin/chef-client'")
+      run_task('node:updateworld', node.name)
     end
   end
 
@@ -63,15 +47,4 @@ namespace :rc do
     end
   end
 
-  desc "Run custom command"
-  task :cmd do
-    raise "CMD must be supplied" if not ENV.key?('CMD')
-    search("*:*") do |node|
-      if ENV.key?('NOSUDO')
-        system("ssh -t #{node.name} '#{ENV['CMD']}'")
-      else
-        system("ssh -t #{node.name} '/usr/bin/sudo -H #{ENV['CMD']}'")
-      end
-    end
-  end
 end

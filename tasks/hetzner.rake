@@ -53,14 +53,13 @@ namespace :hetzner do
   task :dns do
     search("*:*") do |node|
       fqdn = node[:fqdn]
-      name = fqdn.sub(/\.#{node[:chef_domain]}$/, '')
       ip = Resolv.getaddress(fqdn)
 
       if ip != node[:ipaddress]
         puts "IP #{node[:ipaddress]} does not match resolved address #{ip} for FQDN #{fqdn}"
       end
 
-      hetzner_server_name_rdns(ip, name, fqdn)
+      hetzner_server_name_rdns(ip, fqdn)
     end
   end
 
