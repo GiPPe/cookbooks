@@ -2,6 +2,7 @@
   "name": "workstation",
   "description": "Developer Workstations",
   "run_list": [
+    "recipe[ohai]",
     "recipe[base]",
     "recipe[bash]",
     "recipe[firefox]",
