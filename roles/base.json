@@ -2,6 +2,7 @@
   "name": "base",
   "description": "base role for all nodes",
   "run_list": [
+    "recipe[ohai]",
     "recipe[base]",
     "recipe[account]",
     "recipe[bash]",

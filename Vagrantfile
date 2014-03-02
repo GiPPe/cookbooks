@@ -6,20 +6,16 @@ def define(name, id)
     config.vm.define name do |base|
       _chef = nil
       user = (ENV["USER"] || ENV["USERNAME"]).downcase.tr(" ", "-")
-      base.vm.hostname = "#{user}.#{name}.vagrantup.com"
+      base.vm.hostname = "#{name}.#{user}.vagrantup.com"
       base.vm.network "private_network", ip: "10.10.#{id/100}.#{id%100}/16"
       if File.exist?("vagrant/provision/#{name}.sh")
         base.vm.provision :shell, path: "vagrant/provision/#{name}.sh"
       end
-      base.vm.provision :chef_solo do |chef|
+      base.vm.provision :chef_client do |chef|
         _chef = chef
-        chef.binary_env = "LANG=en_US.UTF-8"
-        chef.cookbooks_path = ["cookbooks", "site-cookbooks"]
-        chef.data_bags_path = "data_bags"
-        chef.environments_path = "environments"
-        chef.environment = "staging"
-        chef.roles_path = "roles"
       end
+      base.chef_zero.chef_repo_path = "."
+      base.chef_zero.cookbooks = Dir["./cookbooks/*"] + Dir["./site-cookbooks/*"]
       base.vm.provider "virtualbox" do |vb|
         vb.gui = false
         vb.customize ["modifyvm", :id, "--vrde", "on"]

@@ -9,7 +9,7 @@ action :create do
   rails_env = nr.rails_env || node.chef_environment
 
   template "#{path}/shared/config/unicorn.rb" do
-    source "rails/unicorn.rb"
+    source "rails/unicorn.rb.erb"
     cookbook "deploy"
     owner user[:name]
     group user[:group][:name]

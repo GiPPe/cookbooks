@@ -6,5 +6,6 @@
 .kitchen/
 .rake_test_cache
 .vagrant
+.zero-knife.rb
 config/openssl.cnf
 documentation/_build

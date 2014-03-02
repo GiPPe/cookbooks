@@ -47,6 +47,7 @@ if root?
 
   file "/etc/make.profile" do
     action :delete
+    manage_symlink_source false
   end
 
   link "/etc/portage/make.profile" do

@@ -24,10 +24,10 @@ is_chef() {
 
 run_chef() {
 	if [[ -e /etc/chef/client.pem ]]; then
-		chef-client --force-logger
-	elif [[ -e /root/chef/Rakefile ]]; then
+		chef-client
+	elif [[ -e /root/chef/bin/chef ]]; then
 		pushd /root/chef >/dev/null
-		rake solo
+		./bin/chef
 		popd >/dev/null
 	fi
 }
@@ -47,7 +47,7 @@ latest_ruby
 
 # initial chef-client run
 if is_chef && [[ -z $UPDATEWORLD_INITIAL_CHEF ]]; then
-	rm /etc/portage/package.*/chef-*
+	rm /etc/portage/package.*/chef-* || :
 	run_chef
 	echo
 	export UPDATEWORLD_INITIAL_CHEF=1

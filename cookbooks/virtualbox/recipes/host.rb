@@ -12,7 +12,7 @@ if gentoo?
     end
 
     shorewall_interface "net" do
-      interface "vboxnet0 0.0.0.0 optional"
+      interface "vboxnet+ 0.0.0.0 optional"
     end
   end
 
