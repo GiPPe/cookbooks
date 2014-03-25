@@ -3,11 +3,8 @@
 " personal leader key
 let mapleader = ","
 
-" Set GUI window size
-if has("gui_running")
-    set lines=50
-    set columns=150
-endif
+" allow virtual editing
+set virtualedit=all
 
 " use the wildmenu
 set wildmenu
@@ -35,6 +32,12 @@ set clipboard=exclude:.*
 
 " split windows at the bottom by default
 set splitbelow
+
+" Set GUI window size
+if has("gui_running")
+    set lines=50
+    set columns=150
+endif
 " }}}
 
 " {{{ libraries
