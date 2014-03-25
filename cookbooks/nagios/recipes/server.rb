@@ -97,6 +97,7 @@ end
 servicegroups = []
 hosts.each do |h|
   next unless h[:nagios]
+  next unless h[:nagios][:services]
   h[:nagios][:services].each do |name, params|
     if params[:servicegroups]
       servicegroups |= params[:servicegroups].split(",")

@@ -12,16 +12,10 @@ directory "/var/cache/mirror/zentoo/amd64/packages" do
   mode "0755"
 end
 
-template "/usr/sbin/pkgsync" do
-  source "pkgsync.sh"
-  owner "root"
-  group "root"
-  mode "0755"
-  variables :clients => pkgsync_client_nodes.map { |n| n[:ipaddress] }
+file "/usr/sbin/pkgsync" do
+  action :delete
 end
 
-systemd_unit "pkgsync.service"
-
 systemd_timer "pkgsync" do
-  schedule "OnCalendar=*:25"
+  action :delete
 end

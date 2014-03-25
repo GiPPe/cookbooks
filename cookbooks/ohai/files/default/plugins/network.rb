@@ -83,7 +83,7 @@ def find_ip(family = "inet")
     elsif network[gw_attr] and
         network["interfaces"][network[int_attr]] and
         network["interfaces"][network[int_attr]]["addresses"]
-      if [ "0.0.0.0", "::" ].include? network[gw_attr]
+      if [ "0.0.0.0", "::", /^fe80:/ ].include? network[gw_attr]
         # link level default route
         Ohai::Log.debug("link level default #{family} route, picking ip from #{network[gw_attr]}")
         r = gw_if_ips.first
@@ -156,6 +156,8 @@ FAMILIES.keys.sort.each do |family|
   elsif family == "inet6" and ip6address.nil?
     if r["ip"].nil?
       Ohai::Log.warn("unable to detect ip6address")
+    elsif r["ip"] =~ /^fe80:/
+      Ohai::Log.debug("default ip6address would be link-local. skipping ...")
     else
       ip6address r["ip"]
       if r["mac"] and macaddress.nil? and ipaddress.nil?
@@ -170,4 +172,13 @@ end
 if results["inet"]["iface"] and results["inet6"]["iface"] and
     results["inet"]["iface"] != results["inet6"]["iface"]
   Ohai::Log.debug("ipaddress and ip6address are set from different interfaces (#{results["inet"]["iface"]} & #{results["inet6"]["iface"]}), macaddress has been set using the ipaddress interface")
+end
+
+# hack for vagrant
+if ipaddress == "10.0.2.15"
+  network["interfaces"]["eth1"]["addresses"].each do |ip, params|
+    if params['family'] == ('inet')
+        ipaddress ip
+    end
+  end
 end

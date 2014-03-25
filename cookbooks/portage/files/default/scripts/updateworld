@@ -72,6 +72,24 @@ if [[ $current_gcc != $latest_gcc ]]; then
 	gcc-config ${latest_gcc}
 fi
 
+# force latest binutils
+latest_binutils=$(binutils-config -l|tail -n1|awk '{print $2}')
+current_binutils=$(binutils-config -c)
+
+if [[ $current_binutils != $latest_binutils ]]; then
+	binutils-config ${latest_binutils}
+fi
+
+# run chef to fixup stuff that portage broke
+run_chef
+
+# some packages may fail due to gcc/binutils update, so try this again
+if [[ -z $UPDATEWORLD_DONT_ASK ]]; then
+	emerge @world -NDua
+else
+	emerge @world -NDu
+fi
+
 # run chef to fixup stuff that portage broke
 run_chef
 

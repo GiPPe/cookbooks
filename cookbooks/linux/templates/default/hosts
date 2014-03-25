@@ -9,18 +9,12 @@
 
 # IPv4 and IPv6 localhost aliases
 127.0.0.1 localhost
-<% if node[:ip6address] %>
 ::1 localhost
-<% end %>
 
 # this node
 <% if node[:ipaddress] %>
 <%= node[:ipaddress] %> <%= node[:fqdn] %> <%= node[:hostname] %>
 <% end %>
-<% if node[:ec2] and node[:ec2][:local_ipv4] %>
-<%= node[:ec2][:local_ipv4] %> <%= node[:local_hostname] %>
-<% end %>
-
 <% if node[:ip6address] %>
 <%= node[:ip6address] %> <%= node[:fqdn] %> <%= node[:hostname] %>
 <% end %>

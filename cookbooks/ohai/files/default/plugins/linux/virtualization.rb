@@ -54,9 +54,6 @@ if File.exists?("/proc/modules")
   elsif modules =~ /^vboxdrv/
     virtualization[:system] = "vbox"
     virtualization[:role] = "host"
-  elsif modules =~ /^vboxguest/
-    virtualization[:system] = "vbox"
-    virtualization[:role] = "guest"
   end
 end
 
@@ -103,10 +100,12 @@ if File.exists?("/usr/sbin/dmidecode")
         virtualization[:system] = "xen"
         virtualization[:role] = "guest"
       end
+    when /Product Name: VirtualBox/
+      virtualization[:system] = "vbox"
+      virtualization[:role] = "guest"
     else
       nil
     end
-
   end
 end
 
@@ -120,6 +119,19 @@ if File.exists?("/proc/self/status")
       virtualization[:role] = "host"
     else
       virtualization[:role] = "guest"
-     end
+    end
+  end
+end
+
+# Detect LXC/Docker
+# Pattern will vary by platform, and init system.
+# Generally, it will look like this inside a container:
+# <index #>:<component>:<path>/lxc/<hexadecimal container id>
+# Full notes, https://tickets.opscode.com/browse/OHAI-551
+# Kernel docs, https://www.kernel.org/doc/Documentation/cgroups
+if File.exists?("/proc/self/cgroup")
+  if File.read("/proc/self/cgroup") =~ %r{\d+:.+:/lxc/[\w]+}
+    virtualization[:system] = "lxc"
+    virtualization[:role] = "guest"
   end
 end

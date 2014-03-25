@@ -13,8 +13,10 @@ group :support do
   gem 'httparty'
   gem 'knife-dsl', github: 'zenops/knife-dsl'
   gem 'liquid-development'
+  gem 'listen'
   gem 'mixlib-shellout', github: 'zenops/mixlib-shellout'
   gem 'rake'
+  gem 'rb-inotify', '~> 0.8.8'
   gem 'tailor', github: 'hollow/tailor'
 end
 

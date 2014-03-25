@@ -1,7 +1,0 @@
-[Unit]
-Description=Package Sync
-After=network.target
-
-[Service]
-ExecStart=/usr/sbin/pkgsync
-SyslogIdentifier=pkgsync

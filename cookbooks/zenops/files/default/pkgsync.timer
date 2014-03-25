@@ -1,9 +1,0 @@
-[Unit]
-Description=Package Sync Timer
-
-[Timer]
-Unit=pkgsync.service
-OnCalendar=*:25
-
-[Install]
-WantedBy=multi-user.target

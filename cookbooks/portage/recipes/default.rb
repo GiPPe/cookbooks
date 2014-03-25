@@ -177,13 +177,4 @@ if root?
       mode "0755"
     end
   end
-
-  if zenops_mirror_node
-    rsync_module "portage-packages" do
-      path "/usr/portage/packages"
-      hosts_allow zenops_mirror_node[:ipaddress]
-      uid "nobody"
-      gid "nobody"
-    end
-  end
 end

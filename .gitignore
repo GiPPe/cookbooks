@@ -5,7 +5,7 @@
 .kitchen.local.yml
 .kitchen/
 .rake_test_cache
-.vagrant
+.vagrant/machines/
 .zero-knife.rb
 config/openssl.cnf
 documentation/_build

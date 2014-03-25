@@ -1,5 +1,3 @@
-default[:skip][:shorewall] = vbox_guest?
-
 default[:shorewall][:accounting] = {}
 default[:shorewall6][:accounting] = {}
 default[:shorewall][:hosts] = {}

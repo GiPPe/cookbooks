@@ -1,23 +1,3 @@
-#
-# Author:: Seth Chisamore <schisamo@opscode.com>
-# Cookbook Name:: python
-# Provider:: pip
-#
-# Copyright:: 2011, Opscode, Inc <legal@opscode.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 require 'chef/mixin/shell_out'
 require 'chef/mixin/language'
 include Chef::Mixin::ShellOut
@@ -150,13 +130,11 @@ def remove_package(version)
 end
 
 def pip_cmd(subcommand, version='')
-  options = { :timeout => new_resource.timeout, :user => new_resource.user, :group => new_resource.group }
+  options = { timeout: new_resource.timeout, user: new_resource.user, group: new_resource.group }
   options[:environment] = { 'HOME' => ::File.expand_path("~#{new_resource.user}") } if new_resource.user
   shell_out!("/usr/bin/sudo -H #{which_pip(new_resource)} #{subcommand} #{new_resource.options} #{new_resource.package_name}#{version}", options)
 end
 
-# TODO remove when provider is moved into Chef core
-# this allows PythonPip to work with Chef::Resource::Package
 def which_pip(nr)
   if nr.respond_to?("virtualenv") && nr.virtualenv
     ::File.join(nr.virtualenv, '/bin/pip')

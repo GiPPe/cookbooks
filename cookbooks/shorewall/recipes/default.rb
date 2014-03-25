@@ -1,4 +1,4 @@
-unless node[:skip][:shorewall]
+unless vbox_guest?
   # detect bridge
   if node[:network][:default_interface_bridged]
     shorewall_interface "br" do

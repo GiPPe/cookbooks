@@ -11,4 +11,6 @@ template "/etc/resolv.conf" do
   group "root"
   mode "0644"
   source "resolv.conf"
+  manage_symlink_source false
+  force_unlink true if File.exist?("/etc/resolv.conf")
 end

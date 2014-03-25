@@ -1,9 +1,5 @@
 {
   "name": "<%= env %>",
-  "description": "The <%= env %> environment",
-  "cookbook_versions": {
-<% cookbook_metadata.each_with_index do |(cookbook, cookbook_path, metadata), idx| %>
-    "<%= cookbook %>": "= <%= metadata.version %>"<%= idx == cookbook_metadata.length - 1 ? "" : "," %>
-<% end %>
+  "description": "The <%= env %> environment"
   }
 }

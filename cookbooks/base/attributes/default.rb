@@ -1,6 +1,11 @@
 # cluster support
 default[:chef_domain] = node[:domain]
-default[:cluster][:name] = node[:fqdn]
+
+if match = node[:fqdn].sub(node[:chef_domain], '').match(/^(.+?)\.(.+?)\.$/)
+  default[:cluster][:name] = match[2]
+else
+  default[:cluster][:name] = node[:fqdn]
+end
 
 if match = node[:hostname].match(/(.+?)(\d+)$/)
   default[:cluster][:host][:group] = match[1]
