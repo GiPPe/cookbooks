@@ -180,8 +180,8 @@ let NERDCreateDefaultMappings = 0
 NeoBundle 'scrooloose/nerdcommenter'
 nmap <leader>cl <Plug>NERDCommenterAlignBoth
 xmap <leader>cl <Plug>NERDCommenterAlignBoth
-nmap <leader>cu <Plug>NERDComUncommentLine
-xmap <leader>cu <Plug>NERDComUncommentLine
+nmap <leader>cu <Plug>NERDCommenterUncomment
+xmap <leader>cu <Plug>NERDCommenterUncomment
 
 " A simple Vim plugin to switch segments of text with predefined replacements
 NeoBundle 'AndrewRadev/switch.vim'
@@ -291,9 +291,11 @@ map <leader>fc /^<<<<<cr>
 xnoremap P Pgvy
 
 " grep
-nmap <silent> <leader>gw :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-command -nargs=+ -complete=file -bar Grep silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Grep<SPACE>
+NeoBundle "dkprice/vim-easygrep"
+let g:EasyGrepCommand = 1
+let g:EasyGrepRecursive = 1
+let g:EasyGrepJumpToMatch = 0
+map <silent> <Leader>gw <plug>EgMapGrepCurrentWord_v
 
 " disable search hilight
 nmap <silent> <leader>n :silent :nohlsearch<cr>

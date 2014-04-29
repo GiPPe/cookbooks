@@ -76,6 +76,9 @@ java_yourkit() {
 # by default set debug options
 jruby_debug
 
+# Go settings
+export GOPATH=~/.go
+
 # gentoo development
 export ECHANGELOG_USER="Benedikt Böhm <bb@xnull.de>"
 
