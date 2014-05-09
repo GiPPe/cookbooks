@@ -1,0 +1,9 @@
+ForwardAgent yes
+ForwardX11Trusted yes
+HashKnownHosts no
+
+Host *.lqm.*
+    User giuseppe
+
+Host *.madvertise.*
+	User giuseppe

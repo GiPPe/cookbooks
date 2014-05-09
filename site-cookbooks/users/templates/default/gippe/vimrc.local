@@ -1,0 +1,314 @@
+" {{{ global settings
+
+" personal leader key
+let mapleader = ","
+
+" allow virtual editing
+set virtualedit=all
+
+" use the wildmenu
+set wildmenu
+set wildmode=full
+
+" reload files changed outside of vim
+set autoread
+
+" use hidden buffers and write on quit
+set hidden
+set autowriteall
+
+" no backup files (we have git after all)
+set nobackup
+
+" highlight current line
+set cursorline
+
+" easy pasting
+set pastetoggle=<F4>
+
+" ignore X11 clipboard
+" http://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
+set clipboard=exclude:.*
+
+" split windows at the bottom by default
+set splitbelow
+
+" Set GUI window size
+if has("gui_running")
+    set lines=50
+    set columns=150
+endif
+" }}}
+
+" {{{ libraries
+NeoBundle 'vim-scripts/genutils.git'
+NeoBundle 'MarcWeber/vim-addon-mw-utils'
+" }}}
+
+" {{{ syntax- & filetypes
+
+" ruby & co
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-cucumber'
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+let g:ruby_path = '~/.rvm/rubies/default/bin/ruby'
+
+" JavaScript & derivatives
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'elzr/vim-json'
+let g:vim_json_syntax_conceal = 0
+autocmd BufNewFile,BufRead *.json set filetype=json
+autocmd BufNewFile,BufRead *.jsonp set filetype=json
+
+NeoBundle 'kchmck/vim-coffee-script'
+autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+
+NeoBundle 'heartsentwined/vim-emblem'
+autocmd BufNewFile,BufRead *.emblem set filetype=emblem
+autocmd FileType emblem set tabstop=2|set shiftwidth=2|set expandtab
+
+" recognize AppleScript syntax
+NeoBundle 'vim-scripts/applescript.vim'
+au BufRead,BufNewFile *.applescript set ft=applescript
+
+" always expand tabs in C
+autocmd FileType c,cpp set ts=4 sw=4 tw=79 expandtab et
+
+" Git commit messages start at the top and in insert mode
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call feedkeys('ggi', 't')
+" }}}
+
+" {{{ colors & ui
+NeoBundle 'kien/vim-colors-solarized'
+set t_Co=256
+set background=dark
+colorscheme solarized
+call togglebg#map("<F8>")
+
+NeoBundle 'bling/vim-airline'
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+
+" This plugin is used for displaying thin vertical lines at each indentation
+" level for code indented with spaces.
+NeoBundle 'Yggdroot/indentLine'
+
+" The NERD tree allows you to explore your filesystem and to open files and
+" directories.
+NeoBundle 'scrooloose/nerdtree'
+
+" close nerdtree if its the last window
+" https://github.com/scrooloose/nerdtree/issues/21
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
+NeoBundle 'hollow/ctrlp.vim'
+let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_working_path_mode = 'ra'
+
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_use_caching = 0
+endif
+
+" Tagbar is a vim plugin for browsing the tags of source code files. It
+" provides a sidebar that displays the ctags-generated tags of the current
+" file, ordered by their scope.
+NeoBundle 'majutsushi/tagbar'
+nnoremap <silent> <F9> :TagbarOpenAutoClose<cr>
+
+" Syntastic is a syntax checking plugin that runs files through external
+" syntax checkers and displays any resulting errors to the user.
+NeoBundle 'scrooloose/syntastic'
+let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+let g:syntastic_mode_map = { 'mode': 'active',
+            \ 'active_filetypes': [],
+            \ 'passive_filetypes': ['c', 'cpp', 'rst'] }
+let g:syntastic_mri_checkers = ['mri']
+let g:syntastic_ruby_exec = '~/.rvm/rubies/default/bin/ruby'
+
+" a Git wrapper so awesome, it should be illegal
+NeoBundle 'tpope/vim-fugitive'
+autocmd BufReadPost fugitive://* set bufhidden=delete
+map <leader>ga :silent :Git add %<cr>:redraw!<cr>
+map <leader>gb :silent :Gblame<cr>
+map <leader>gc :silent :Gcommit<cr>ggi
+map <leader>gd :silent :Git diff<cr>:redraw!<cr>
+map <leader>gl :silent :Git lg<cr>:redraw!<cr>
+map <leader>gp :silent :Git add -p %<cr>:redraw!<cr>
+map <leader>gs :silent :Gstatus<cr>
+
+" }}}
+
+" {{{ editing
+" Repeat.vim remaps . in a way that plugins can tap into it.
+NeoBundle 'tpope/vim-repeat'
+
+" use abolish.vim for coercion:
+" MixedCase (crm)
+" camelCase (crc)
+" snake_case (crs)
+" and UPPER_CASE (cru)
+NeoBundle 'tpope/vim-abolish'
+
+" This is a simple plugin that helps to end certain structures automatically.
+" In Ruby, this means adding end after if, do, def and several other keywords.
+NeoBundle 'tpope/vim-endwise'
+
+" This plugin automatically adjusts 'shiftwidth' and 'expandtab' heuristically
+" based on the current file, or, in the case the current file is new, blank,
+" or otherwise insufficient, by looking at other files of the same type in the
+" current and parent directories.
+NeoBundle 'tpope/vim-sleuth'
+
+" Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML
+" tags, and more. The plugin provides mappings to easily delete, change and
+" add such surroundings in pairs.
+NeoBundle 'tpope/vim-surround.git'
+
+" The NERD commenter provides many different commenting operations and styles
+" which are invoked via key mappings and a menu. These operations are
+" available for most filetypes.
+let NERDCreateDefaultMappings = 0
+NeoBundle 'scrooloose/nerdcommenter'
+nmap <leader>cl <Plug>NERDCommenterAlignBoth
+xmap <leader>cl <Plug>NERDCommenterAlignBoth
+nmap <leader>cu <Plug>NERDCommenterUncomment
+xmap <leader>cu <Plug>NERDCommenterUncomment
+
+" A simple Vim plugin to switch segments of text with predefined replacements
+NeoBundle 'AndrewRadev/switch.vim'
+nnoremap - :Switch<cr>
+
+" A vim plugin that simplifies the transition between multiline and
+" single-line code
+NeoBundle 'AndrewRadev/splitjoin.vim'
+function! s:try(cmd, default)
+  if exists(':' . a:cmd) && !v:count
+    let tick = b:changedtick
+    exe a:cmd
+    if tick == b:changedtick
+      execute 'normal! '.a:default
+    endif
+  else
+    execute 'normal! '.v:count.a:default
+  endif
+endfunction
+nnoremap <silent> J :<C-U>call <SID>try('SplitjoinJoin', 'J')<CR>
+nnoremap <silent> S :<C-U>call <SID>try('SplitjoinSplit', 'S')<CR>
+
+" Vim script for text filtering and alignment
+NeoBundle 'godlygeek/tabular'
+nmap <leader>a& :Tabularize /&<CR>
+vmap <leader>a& :Tabularize /&<CR>
+nmap <leader>a= :Tabularize /=<CR>
+vmap <leader>a= :Tabularize /=<CR>
+nmap <leader>a: :Tabularize /:\zs<CR>
+vmap <leader>a: :Tabularize /:\zs<CR>
+nmap <leader>a, :Tabularize /,\zs<CR>
+vmap <leader>a, :Tabularize /,\zs<CR>
+nmap <leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <leader>a<Bar> :Tabularize /<Bar><CR>
+
+" some focus and escape code optimizations for iterm/tmux
+NeoBundle 'sjl/vitality.vim'
+let g:vitality_always_assume_iterm = 1
+au BufLeave,FocusLost * silent! update
+set timeoutlen=1000 ttimeoutlen=0
+" }}}
+
+" {{{ completion
+" neocomplete provides keyword completion system by maintaining a cache of
+" keywords in the current buffer.
+"NeoBundle 'Shougo/neocomplete.vim'
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_auto_delimiter = 1
+let g:neocomplete#max_list = 15
+let g:neocomplete#force_overwrite_completefunc = 1
+
+" tab completion
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.python = '[^. \t]\.\w*'
+" }}}
+
+" {{{ key mappings
+
+" rename file within vim
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+nnoremap <silent> <F2> :call RenameFile()<cr>
+
+" window/tab movement
+nmap <S-Down>  <C-W><Down>
+nmap <S-Up>    <C-W><Up>
+nmap <S-Left>  <C-W><Left>
+nmap <S-Right> <C-W><Right>
+
+" close with Ctrl-C
+nmap <C-c>     <C-W><C-C>
+imap <C-c>     <esc><C-W><C-C>
+
+" map Ctrl-N to write+next
+imap <C-n> <esc>:w<cr>:n<cr>
+map <C-n> :w<cr>:n<cr>
+
+" jump to next merge conflict
+map <leader>fc /^<<<<<cr>
+
+" (visual) paste without losing the register
+xnoremap P Pgvy
+
+" grep
+NeoBundle "dkprice/vim-easygrep"
+let g:EasyGrepCommand = 1
+let g:EasyGrepRecursive = 1
+let g:EasyGrepJumpToMatch = 0
+map <silent> <Leader>gw <plug>EgMapGrepCurrentWord_v
+
+" disable search hilight
+nmap <silent> <leader>n :silent :nohlsearch<cr>
+
+" cleanup whitespace terror
+nmap <silent> <leader>ws :set et<cr>:retab<cr>:%s/\s\+$//g<cr>
+
+" sort helper
+vmap <silent> <leader>so :sort<cr>
+vmap <silent> <leader>su :sort u<cr>
+
+" add ruby debugger
+nnoremap <silent> <leader>rad Orequire 'ruby-debug'; debugger<esc>
+" }}}
+
+" vim: ft=vim

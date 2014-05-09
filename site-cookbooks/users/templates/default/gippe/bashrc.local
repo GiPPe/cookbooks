@@ -1,0 +1,79 @@
+# blacklist for bash completion
+FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
+
+# project aliases
+alias pc="cd ~/chef"
+alias pm="cd ~/code/liquidm/platform"
+alias pmc="cd ~/code/liquidm/chef"
+alias pms="cd ~/code/liquidm/server"
+
+# git aliases
+alias ga="git add -A"
+alias gap="git add -p"
+alias gb="git blame"
+alias gcl="git checkout live"
+alias gcm="git checkout master"
+alias gcn="git checkout next"
+alias gcu="git checkout upstream"
+alias gdm="git diff master"
+alias gd="git diff"
+alias gdc="git diff --cached"
+alias gl="git lg"
+alias gp="git pull"
+alias gpr="git pull --rebase"
+alias gpv="git push -f origin HEAD:vagrant/bene"
+alias grh="git reset HEAD"
+alias s="git status"
+
+# ruby/rails shortcuts
+alias be="bundle exec"
+alias brs="bundle exec rails server"
+alias con="bundle exec rails console"
+
+# chef helper
+alias kcu="knife cookbook upload"
+
+# always use system ruby to start vim
+vim() {
+	rvm system exec vim "$@"
+}
+
+# host shortcuts
+remote_tmux() {
+	if [[ $# -eq 2 ]]; then
+		ssh -D $2 -t $1 /bin/bash -li -c 'T'
+	else
+		ssh -t $1 /bin/bash -li -c 'T'
+	fi
+}
+
+function C() {
+	remote_tmux chaos
+}
+
+function Z() {
+	remote_tmux bene.dev.zenops.net 9991
+}
+
+# jruby options
+COMMON_JRUBY_OPTS="-J-Xmx24g -J-XX:MaxPermSize=1g -J-XX:+UseParNewGC -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-XX:+CMSScavengeBeforeRemark -J-XX:+DisableExplicitGC -Xrewrite.java.trace=true -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify"
+
+jruby_debug() {
+	export JRUBY_OPTS="${COMMON_JRUBY_OPTS} --debug"
+}
+
+jruby_benchmark() {
+	export JRUBY_OPTS="${COMMON_JRUBY_OPTS} --server -X+C"
+}
+
+java_yourkit() {
+	export JAVA_OPTS="-agentpath:/home/bene/vendor/yjp-2014-eap-build-14014/bin/linux-x86-64/libyjpagent.so=port=3098"
+}
+
+# by default set debug options
+jruby_debug
+
+# Go settings
+export GOPATH=~/.go
+
+# vim: ft=sh
