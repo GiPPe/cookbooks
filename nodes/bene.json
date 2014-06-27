@@ -23,9 +23,7 @@
     "recipe[mac::cord]",
     "recipe[mac::dash]",
     "recipe[mac::drive]",
-    "recipe[mac::fidelia]",
     "recipe[mac::flux]",
-    "recipe[mac::hipchat]",
     "recipe[mac::istatmenus]",
     "recipe[mac::monkeyoffice]",
     "recipe[mac::mplayerx]",
@@ -33,7 +31,6 @@
     "recipe[mac::skitch]",
     "recipe[mac::skype]",
     "recipe[mac::spotify]",
-    "recipe[mac::teamviewer]",
     "recipe[mac::tunnelblick]",
     "recipe[mac::unarchiver]",
     "recipe[mac::visualvm]"
