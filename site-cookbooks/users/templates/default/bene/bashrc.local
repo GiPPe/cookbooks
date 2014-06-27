@@ -3,10 +3,8 @@ FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
 
 # project aliases
 alias pc="cd ~/projects/hollow/chef"
-alias pkk="cd ~/projects/kanbanero/kanbanero"
-alias pm="cd ~/projects/liquidm/platform"
 alias pmc="cd ~/projects/liquidm/chef"
-alias pms="cd ~/projects/liquidm/server"
+alias prc="cd ~/projects/remerge/chef"
 alias pzc="cd ~/projects/zenops/chef"
 alias pzz="cd ~/projects/zentoo/zentoo"
 
@@ -78,6 +76,12 @@ jruby_debug
 
 # Go settings
 export GOPATH=~/.go
+
+# add repo tools
+export PATH="${PATH}:~/.go/bin:~/vendor/depot_tools"
+
+# vagrant colors break with colored output from chef
+export VAGRANT_NO_COLOR=1
 
 # gentoo development
 export ECHANGELOG_USER="Benedikt Böhm <bb@xnull.de>"
