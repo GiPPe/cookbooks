@@ -1,0 +1,33 @@
+# Requirements
+  - working zk cluster
+  - per cluster
+    - 3 journal nodes
+    - 2 name nodes
+    - 2 resource manager, n node managers
+  - n data nodes
+
+# Bootstraping Zookeeper:
+  - zkCli -server zk create /hadoop2 hadoop2
+  - zkCli -server zk create /hadoop2/rmstore hadoop2
+
+# Bootstraping HDFS:
+  - on 1st namenode:
+      hdfs namenode -format
+      hdfs zkfc -formatZK
+  - on 2nd namenode:
+      hdfs namenode -bootstrapStandby
+
+Afer bootstraping all services should stay up, you might need to restart some as systemd already gave up.
+
+# Verify setup
+Check if datanodes are shown in both (per cluster) name nodes:
+  - http://nn1:50070/dfshealth.html#tab-datanode
+  - http://nn2:50070/dfshealth.html#tab-datanode
+
+Note: data nodes must be visisble in all name nodes regardless of state
+
+Check if all node managers show up in the resource managers (again per cluster):
+  - http://rm1:50030/cluster/nodes
+  - http://rm2:50030/cluster/nodes
+
+Note: node managers are only visible in an active rm (so do test handover)

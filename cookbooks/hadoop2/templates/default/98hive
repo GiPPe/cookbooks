@@ -1,0 +1,4 @@
+HIVE_HOME=/var/app/hive/dist
+HIVE_CONF_DIR=/etc/hadoop2
+PATH=/var/app/hive/dist/bin
+ROOTPATH=/var/app/hive/dist/bin

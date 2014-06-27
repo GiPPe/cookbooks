@@ -1,7 +1,5 @@
 include_recipe "java"
 
-package "dev-java/maven-bin"
-
 deploy_skeleton "druid"
 
 %w(
@@ -11,9 +9,7 @@ deploy_skeleton "druid"
   /var/app/druid/storage/info
   /var/app/druid/storage/segment_cache
   /var/app/druid/storage/realtime
-  /var/app/druid/storage/runner
   /var/app/druid/storage/task
-  /var/app/druid/storage/task_base
   /var/app/druid/storage/task_hadoop
 ).each do |dir|
   directory dir do
@@ -21,13 +17,6 @@ deploy_skeleton "druid"
     group "druid"
     mode "0755"
   end
-end
-
-template "/etc/druid/log4j.properties" do
-  source "log4j.properties"
-  owner "root"
-  group "root"
-  mode "0644"
 end
 
 deploy_application "druid" do
@@ -44,6 +33,13 @@ deploy_application "druid" do
   end
 end
 
+template "/etc/druid/log4j.properties" do
+  source "log4j.properties"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
 template "/etc/druid/runtime.properties" do
   source "runtime.properties"
   owner "root"
@@ -51,6 +47,8 @@ template "/etc/druid/runtime.properties" do
   mode "0644"
 end
 
-nagios_plugin "check_druid" do
-  source "check_druid.rb"
+if nagios_client?
+  nagios_plugin "check_druid" do
+    source "check_druid.rb"
+  end
 end

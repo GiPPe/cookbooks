@@ -1,0 +1,3 @@
+HADOOP_HOME=/var/app/hadoop2/current
+PATH=/var/app/hadoop2/current/bin
+ROOTPATH=/var/app/hadoop2/current/bin

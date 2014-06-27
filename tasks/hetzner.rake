@@ -1,31 +1,6 @@
-# remote commands for maintenance
-
-require 'ap'
-require 'irb'
-require 'ripl'
-
-class HetznerConsole
-  def initialize
-    Ripl.start(binding: binding)
-  end
-
-  def method_missing(name, *args, &block)
-    if hetzner.respond_to?(name)
-      hetzner.send(name, *args, &block)
-    else
-      super
-    end
-  end
-end
-
 namespace :hetzner do
 
-  desc "open hetzner console"
-  task :console do |t, args|
-    HetznerConsole.new
-  end
-
-  desc "reset machine via Hetzner Robot"
+  desc "reset machine"
   task :reset, :fqdn do |t, args|
     search("fqdn:#{args.fqdn}") do |node|
       hetzner.reset!(node[:ipaddress], :hw)
@@ -33,20 +8,47 @@ namespace :hetzner do
     end
   end
 
-  desc "enable rescue and login"
+  desc "enable rescue mode, reset machine and login"
   task :rescue, :fqdn do |t, args|
     search("fqdn:#{args.fqdn}") do |node|
       password = hetzner_enable_rescue_wait(node[:ipaddress])
-      system(%{sshpass -p #{password} ssh -l root -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" -o "GlobalKnownHostsFile /dev/null" #{args.fqdn}})
+      sshlive(args.fqdn, password)
     end
   end
 
-  desc "enable rescue and rebootstrap"
+  desc "enable rescue mode and reinstall"
   task :reinstall, :fqdn, :ipaddress, :profile do |t, args|
     args.with_defaults(:profile => 'generic-two-disk-md')
     password = hetzner_enable_rescue_wait(args.ipaddress)
-    Rake::Task['node:quickstart'].reenable
-    Rake::Task['node:quickstart'].invoke(args.fqdn, args.ipaddress, password, args.profile)
+    run_task('hetzner:quickstart', args.fqdn, args.ipaddress, password, args.profile)
+  end
+
+  desc "quickstart & bootstrap machine"
+  task :quickstart, :fqdn, :ipaddress, :password, :profile do |t, args|
+    args.with_defaults(:profile => 'generic-two-disk-md')
+    raise "missing parameters!" unless args.fqdn && args.ipaddress && args.password
+
+    # create DNS/rDNS records
+    hetzner_server_name_rdns(args.ipaddress, args.fqdn)
+    zendns_add_record(args.fqdn, args.ipaddress)
+    run_task('node:checkdns', args.fqdn, args.ipaddress)
+
+    # quick start
+    b = binding()
+    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'quickstart.sh')))
+    tmpfile = Tempfile.new('quickstart')
+    tmpfile.write(erb.result(b))
+    tmpfile.rewind
+    sshlive(args.ipaddress, args.password, tmpfile.path)
+    tmpfile.unlink
+
+    # wait until machine is up again
+    wait_with_ping(args.ipaddress, false)
+    wait_with_ping(args.ipaddress, true)
+
+    # run normal bootstrap
+    ENV['REBOOT'] = "1"
+    run_task('node:bootstrap', args.fqdn, args.ipaddress)
   end
 
   desc "Set server names and reverse DNS"

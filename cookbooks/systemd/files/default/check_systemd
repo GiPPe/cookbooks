@@ -10,7 +10,7 @@ for unit in $UNITS; do
 	if [ "$unit" == "chef-client.service" ]; then
 		continue
 	fi
-	if ! systemctl -q is-active -- "$unit"; then
+	if ! systemctl -q is-active -- "$unit" && ! systemctl status -- "$unit" | grep -q "(auto-restart)"; then
 		dead_service+=( "$unit" )
 	fi
 done

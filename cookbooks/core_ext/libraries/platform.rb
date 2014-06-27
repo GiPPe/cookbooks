@@ -43,24 +43,12 @@ module PlatformHelpers
     node[:platform] == "mac_os_x"
   end
 
-  def guest?
-    lxc? || node[:virtualization][:role] == "guest"
-  end
-
   def vbox?
-    node[:virtualization][:system] == "vbox"
+    root? && File.exist?("/proc/modules") && File.read("/proc/modules") =~ /^vboxguest/
   end
 
   def lxc?
     root? && File.read("/proc/1/environ").split("\0").any? { |env| env =~ /lxc/ }
-  end
-
-  def vbox_guest?
-    vbox? && guest?
-  end
-
-  def vagrant?
-    vbox_guest? && node[:cluster][:name] == "vagrant"
   end
 end
 

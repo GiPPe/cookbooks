@@ -5,11 +5,6 @@ elsif debian_based?
   package "shorewall6"
 end
 
-execute "shorewall6-restart" do
-  command "/sbin/shorewall6 -q restart"
-  action :nothing
-end
-
 directory "/etc/shorewall6" do
   owner "root"
   group "root"
@@ -21,7 +16,7 @@ template "/etc/shorewall6/shorewall6.conf" do
   owner "root"
   group "root"
   mode "0600"
-  notifies :run, "execute[shorewall6-restart]"
+  notifies :restart, "service[shorewall6]"
 end
 
 %w(
@@ -37,7 +32,7 @@ end
     owner "root"
     group "root"
     mode "0600"
-    notifies :run, "execute[shorewall6-restart]"
+    notifies :restart, "service[shorewall6]"
   end
 end
 

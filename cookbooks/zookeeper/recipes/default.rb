@@ -19,8 +19,6 @@ if root? or mac_os_x?
     notifies :restart, "service[zookeeper]"
   end
 
-  include_recipe "base"
-
   template "#{node[:zookeeper][:confdir]}/zoo.cfg" do
     source "zoo.cfg"
     mode "0644"
@@ -45,13 +43,9 @@ if root? or mac_os_x?
     only_if { root? }
   end
 
-  cron "zk-log-clean" do
-    action :delete
-  end
-
   systemd_timer "zookeeper-cleanup" do
     schedule %w(OnCalendar=3:00)
-    unit(command: "/opt/zookeeper/bin/zkCleanup.sh /var/lib/zookeeper/ -n 5")
+    unit(command: "#{node[:zookeeper][:bindir]}/zkCleanup.sh #{node[:zookeeper][:datadir]} -n 5")
   end
 end
 

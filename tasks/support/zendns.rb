@@ -19,11 +19,11 @@ class ZenDNS
   end
 
   def self.domains
-    JSON.parse(get("/domains"))
+    JSON.parse(get("/domains").body)
   end
 
   def self.records(domain_id)
-    JSON.parse(get("/domains/#{domain_id}/records"))
+    JSON.parse(get("/domains/#{domain_id}/records").body)
   end
 
   def self.create_record(domain_id, record)

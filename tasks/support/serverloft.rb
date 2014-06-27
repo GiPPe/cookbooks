@@ -90,7 +90,7 @@ def recovery_start(email, pass, sl_name)
   if !success.body.include?("server will be restarted in recovery mode")
     $stderr.puts "Unable to restart in recovery mode"
     exit 1
- end
+  end
 end
 
 def recovery_stop(sl_name)

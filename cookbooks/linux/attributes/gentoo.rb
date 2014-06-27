@@ -9,7 +9,6 @@ if gentoo?
     app-arch/xz-utils
     app-misc/colordiff
     app-misc/mc
-    app-shells/bash-completion
     app-text/dos2unix
     app-text/tree
     dev-libs/icu

@@ -34,6 +34,8 @@ directory "/var/log/chef" do
   owner "root"
   group "root"
   mode "0755"
+  action :delete
+  recursive true
 end
 
 directory "/var/lib/chef" do
@@ -60,9 +62,9 @@ end
 
 timer_envs = %w(production staging)
 
-nodes = chef_client_nodes.map do |n|
+nodes = node.run_state[:cluster_nodes].map do |n|
   n[:fqdn]
-end
+end.compact
 
 minutes = nodes.each_with_index.map do |_, idx|
   (idx * (60.0 / nodes.length)).to_i

@@ -9,7 +9,7 @@ end
 
 include MongodbRunStateHelpers
 
-class Mongodb
+class Chef
   class Recipe
     include MongodbRunStateHelpers
   end

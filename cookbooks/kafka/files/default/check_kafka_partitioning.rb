@@ -24,26 +24,33 @@ class KafkaPartioning < Nagios::Plugin
   end
 
   def warning(m)
+    m.select{|info| info[:replicas][0] == @kafka_id}.any? do |info|
+      info[:leader] != @kafka_id
+    end
+  end
+
+  def critical(m)
     !m.all? do |info|
       info[:isr].include? @kafka_id
     end
   end
 
-  def critical(m)
-   m.select{|info| info[:replicas][0] == @kafka_id}.any? do |info|
-      info[:leader] != @kafka_id
-    end
-  end
-
   def to_s(m)
+    is_critical = false
     msg = "Kafka #{@kafka_id}"
     if (critical(m))
-      msg = "\nshould be leader on\n"
-      msg += m.select{|info| info[:replicas][0] == @kafka_id && info[:leader] != @kafka_id}.join(",\n")
+      is_critical = true
+      msg = "should be isr, but is not\n"
+      msg += m.select{|info| info[:replicas].include?(@kafka_id) && !info[:isr].include?(@kafka_id) }.join(",\n")
+      msg += "\n"
     end
     if (warning(m))
-      msg += "\nshould be isr on\n"
-      msg += m.select{|info| info[:replicas].include?(@kafka_id) && !info[:isr].include?(@kafka_id) }.join(",\n")
+      msg += "should be leader, but is not\n"
+      msg += m.select{|info| info[:replicas][0] == @kafka_id && info[:leader] != @kafka_id}.join(",\n")
+
+      unless is_critical
+        msg += %x{#{@kafka_bindir}/kafka-preferred-replica-election.sh --zookeeper #{@zk_uri}}
+      end
     end
     msg
   end

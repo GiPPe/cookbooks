@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<%
+  @cluster = hadoop2_clusters[node[:hadoop2][:cluster]]
+
+  @hive_metastore = @cluster[:hm][0]
+%>
+<configuration>
+<% if @hive_metastore[:ipaddress] == node[:ipaddress] %>
+  <property>
+    <name>datanucleus.autoStartMechanism</name>
+    <value>SchemaTable</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:mysql://<%= node[:hadoop2][:hive][:db][:host] %>/<%= node[:hadoop2][:hive][:db][:name] %>?createDatabaseIfNotExist=true</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value><%= node[:hadoop2][:hive][:db][:driver] %></value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value><%= node[:hadoop2][:hive][:db][:user] %></value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value><%= node[:hadoop2][:hive][:db][:password] %></value>
+  </property>
+<% else %>
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://<%= @hive_metastore[:fqdn] %>:9083</value>
+  </property>
+<% end %>
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value><%= node[:hadoop2][:hive][:warehouse] %></value>
+  </property>
+</configuration>

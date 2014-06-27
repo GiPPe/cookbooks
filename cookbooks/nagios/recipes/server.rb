@@ -79,7 +79,7 @@ hostgroups = {}
 
 hosts.each do |h|
   # group per cluster
-  cluster = h[:cluster][:name] rescue "default"
+  cluster = h.cluster_name
 
   hostgroups[cluster] ||= []
   hostgroups[cluster] << h[:fqdn]
@@ -152,6 +152,23 @@ hosts.each do |host|
     template "host.cfg.erb"
     variables :host => host
   end
+end
+
+ruby_block "cleanup-nagios" do
+  block do
+    Dir["/etc/nagios/objects/host-*.cfg"].each do |f|
+      fqdn = File.basename(f, ".cfg").sub(/host-/, '')
+      next if hosts.any? { |h| h[:fqdn] == fqdn }
+      File.unlink(f)
+    end
+  end
+  only_if do
+    Dir["/etc/nagios/objects/host-*.cfg"].select do |f|
+      fqdn = File.basename(f, ".cfg").sub(/host-/, '')
+      !hosts.any? { |h| h[:fqdn] == fqdn }
+    end
+  end
+  notifies :restart, "service[nagios]"
 end
 
 include_recipe "nagios::extras"

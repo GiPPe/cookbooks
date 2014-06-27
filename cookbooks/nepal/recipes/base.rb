@@ -23,7 +23,7 @@ mysql_database "nepal" do
   owner "nepal"
 end
 
-package "www-apps/nepal"
+#package "www-apps/nepal"
 
 # system directories
 directory "/srv" do

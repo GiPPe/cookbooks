@@ -7,6 +7,9 @@ User=kafka
 Group=kafka
 Environment="JMX_PORT=17006"
 ExecStart=/var/app/kafka/current/bin/kafka-run-class.sh kafka.Kafka /etc/kafka/server.config
+OOMScoreAdjust=-2
+Nice=-10
+IOSchedulingPriority=1
 Restart=always
 SyslogIdentifier=%p
 

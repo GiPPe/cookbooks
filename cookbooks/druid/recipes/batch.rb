@@ -6,7 +6,7 @@ deploy_skeleton "dumbo"
 deploy_ruby_application "dumbo" do
   repository node[:dumbo][:git][:repository]
   revision node[:dumbo][:git][:revision]
-  ruby_version "ruby-1.9.3-p448"
+  ruby_version "jruby-1.7.10"
 end
 
 template "/var/app/dumbo/bin/dumbo-runner.sh" do

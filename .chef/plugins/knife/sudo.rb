@@ -11,6 +11,13 @@ module KnifeSudo
 
     banner "knife sudo QUERY COMMAND (options)"
 
+    option :concurrency,
+      :short => "-C NUM",
+      :long => "--concurrency NUM",
+      :description => "The number of concurrent connections",
+      :default => 10,
+      :proc => lambda { |o| o.to_i }
+
     option :query,
       :short => "-Q VALUE",
       :long => "--query VALUE",
@@ -28,6 +35,7 @@ module KnifeSudo
       knife_ssh = Chef::Knife::Ssh.new
       knife_ssh.name_args = [config[:query], command]
       knife_ssh.config[:manual] = false
+      knife_ssh.config[:concurrency] = config[:concurrency] unless config[:concurrency] == 0
       knife_ssh.run
     end
   end

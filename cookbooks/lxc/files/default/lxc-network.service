@@ -1,0 +1,19 @@
+[Unit]
+Description=LXC Virtual Network
+ConditionPathExists=!/sys/class/net/lxcbr0
+Before=dhcpcd.service
+Before=lxc@.service
+Before=shorewall.service
+Before=shorewall6.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/brctl addbr lxcbr0
+ExecStart=/sbin/brctl addif lxcbr0 eth0
+ExecStart=/sbin/ip link set lxcbr0 up
+ExecStop=/sbin/ip link set lxcbr0 down
+ExecStop=/sbin/brctl delbr lxcbr0
+
+[Install]
+WantedBy=multi-user.target

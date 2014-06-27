@@ -13,6 +13,7 @@ fi
 
 # load configuration & run list
 node_name=$1
+shift
 
 if [[ -z ${node_name} ]]; then
 	if [[ $USER == "root" ]]; then
@@ -60,6 +61,10 @@ if [[ -d /Applications ]]; then
 
 elif [[ -e /etc/debian_version ]]; then
 	$SUDO apt-get install -y curl whois || exit 1
+elif [[ -e /etc/gentoo-release ]]; then
+	if [[ ! -L /bin/ip ]]; then
+		$SUDO ln -nfs /bin/ip /sbin/ip
+	fi
 fi
 
 # install chef if it is missing
@@ -78,7 +83,7 @@ if [[ -e ~/.rvm/scripts/rvm ]]; then
 fi
 
 echo ">>> Running Chef ..."
-$bundle_exec chef-client -z -c .chef/config.rb -N ${node_name} ${chef_args} || exit 1
+$bundle_exec chef-client -z -c ${PWD}/.chef/config.rb -N ${node_name} ${chef_args} "$@" || exit 1
 
 # re-enable sudo password on mac
 if [[ $USER != "root" ]]; then

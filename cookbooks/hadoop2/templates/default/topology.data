@@ -1,0 +1,3 @@
+<% hadoop2_topology.each do |n, rack| %>
+<%= n[:ipaddress] %> <%= rack %>
+<% end %>

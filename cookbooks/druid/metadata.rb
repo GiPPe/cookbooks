@@ -8,7 +8,8 @@ license "Apache v2.0"
 
 supports "gentoo"
 
-depends "java"
-depends "zookeeper"
-depends "kafka"
 depends "deploy"
+depends "java"
+depends "kafka"
+depends "mysql"
+depends "zookeeper"

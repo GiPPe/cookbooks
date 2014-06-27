@@ -17,6 +17,6 @@ task :zero do
     puts "Uploading changes ..."
     knife :upload, ['/', '-s', 'http://localhost:3099']
     puts "... took #{(Time.now.to_f - start).round(2)}s"
-  end
-  Process.waitall
+  end.start
+  sleep
 end

@@ -3,7 +3,7 @@ include_recipe "druid"
 systemd_unit "druid-overlord.service" do
   template "druid-service"
   variables({
-    druid_service: "overlord",
+    druid_service: "druid-overlord",
   })
 
   notifies :restart, "service[druid-overlord]", :immediately

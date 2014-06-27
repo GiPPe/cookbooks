@@ -3,6 +3,7 @@ module ChefUtils
     module Connection
 
       def connection
+        Gem.clear_paths
         require 'pg'
         pg_pass = get_password("postgresql/postgres")
         @connection ||= ::PGconn.connect('127.0.0.1', 5432, nil, nil, nil, 'postgres', pg_pass)

@@ -68,7 +68,7 @@ begin
       range = row_range unless range == 'critical'
     else
       oks += row_info
-      range = row_range
+      range ||= row_range
     end
   end
 

@@ -143,6 +143,8 @@ module ChefUtils
 
     def mysql_dbh
       return @@dbh if @@dbh
+      # reload gem paths after installing mysql gem
+      Gem.clear_paths
       require "mysql"
       host = "localhost"
       password = nil

@@ -28,7 +28,7 @@ if nagios_client?
   end
 
   nrpe_command "check_total_procs" do
-    command "/usr/lib/nagios/plugins/check_procs -w 300 -c 1000"
+    command "/usr/lib/nagios/plugins/check_procs -w 512 -c 1024"
   end
 
   nagios_service "PROCS" do
@@ -40,7 +40,7 @@ if nagios_client?
   nagios_plugin "check_mem"
 
   nrpe_command "check_mem" do
-    if node[:memory][:total].to_i > 32*1024*1024
+    if node[:memory][:total].to_i > 16*1024*1024
       command "/usr/lib/nagios/plugins/check_mem -C -u -w 95 -c 99"
     else
       command "/usr/lib/nagios/plugins/check_mem -C -u -w 80 -c 95"
@@ -66,13 +66,16 @@ if nagios_client?
   end
 
   mounts = node[:filesystem].values.map do |fs|
-    fs[:mount] if fs[:fs_type] && fs[:mount] && File.directory?(fs[:mount])
-  end.compact.map do |mount|
-    "-p #{mount}"
-  end.join(' ')
+    next if fs[:mount] =~ %r{/run/user/}
+    fs if fs[:fs_type] && fs[:mount] && File.directory?(fs[:mount])
+  end.compact.map do |fs|
+    warn = [fs[:kb_size].to_i * 0.10, 1.0 * 1024 * 1024].min.to_i / 1024
+    crit = [fs[:kb_size].to_i * 0.05, 0.5 * 1024 * 1024].min.to_i / 1024
+    warn > 0 && crit > 0 ? "-w #{warn} -c #{crit} -p #{fs[:mount]}" : nil
+  end.compact.join(' -C ')
 
   nrpe_command "check_disks" do
-    command "/usr/lib/nagios/plugins/check_disk -w 10% -c 5% #{mounts}"
+    command "/usr/lib/nagios/plugins/check_disk #{mounts}"
   end
 
   nagios_service "DISKS" do

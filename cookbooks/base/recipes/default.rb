@@ -9,11 +9,14 @@ else
   node.run_state[:nodes] = search(:node, "ipaddress:[* TO *] AND fqdn:[* TO *]").sort_by do |n|
     n[:fqdn]
   end
+  if node.run_state[:nodes].none? { |n| n[:fqdn] == node[:fqdn] }
+    node.run_state[:nodes] << node
+  end
 end
 
 # filter nodes that belong to the same cluster as the current node
 node.run_state[:cluster_nodes] = node.run_state[:nodes].select do |n|
-  n[:cluster][:name] == node[:cluster][:name] rescue false
+  n.cluster_name == node.cluster_name rescue false
 end
 
 # create script path

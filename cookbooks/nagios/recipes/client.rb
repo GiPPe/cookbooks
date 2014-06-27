@@ -27,7 +27,7 @@ directory "/usr/lib/ruby/site_ruby/nagios/plugin" do
 end
 
 cookbook_file "/usr/lib/ruby/site_ruby/nagios/plugin.rb" do
-  source "plugin.rb"
+  source "nagios/plugin.rb"
   owner "root"
   group "root"
   mode "0755"

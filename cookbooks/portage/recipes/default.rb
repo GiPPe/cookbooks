@@ -5,7 +5,14 @@ if root?
 
   package "sys-apps/portage"
 
-  %w(eix elogv gentoolkit gentoolkit-dev portage-utils).each do |pkg|
+  template "/usr/share/portage/config/repos.conf" do
+    source "repos.conf"
+    owner "root"
+    group "root"
+    mode "0644"
+  end
+
+  %w(eix elogv gentoolkit portage-utils).each do |pkg|
     package "app-portage/#{pkg}"
   end
 
@@ -108,13 +115,6 @@ if root?
     action :delete
     recursive true
     only_if { File.directory?("#{node[:portage][:confdir]}/repos.conf") }
-  end
-
-  template "/usr/share/portage/config/repos.conf" do
-    source "repos.conf"
-    owner "root"
-    group "root"
-    mode "0644"
   end
 
   %w(

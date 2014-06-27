@@ -8,11 +8,34 @@ action :create do
   path = nr.path || nr.homedir || user[:dir]
   port = nr.port.to_i
 
-  nginx_server "unicorn-#{nr.name}" do
-    template "unicorn.conf"
+  service "nginx" do
+    action :nothing
+  end
+
+  template "/etc/nginx/servers/unicorn-#{nr.name}.conf" do
+    source "unicorn.conf"
     cookbook "nginx"
-    user user[:name]
-    path path
-    port port
+    owner "root"
+    group "root"
+    mode "0644"
+    notifies :reload, "service[nginx]"
+    variables params: {
+      user: user[:name],
+      path: path,
+      port: port,
+    }
+  end
+end
+
+action :delete do
+  nr = new_resource # rebind
+
+  service "nginx" do
+    action :nothing
+  end
+
+  file "/etc/nginx/servers/unicorn-#{nr.name}.conf" do
+    action :delete
+    notifies :reload, "service[nginx]"
   end
 end

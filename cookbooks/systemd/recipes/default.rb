@@ -74,6 +74,12 @@ if gentoo?
       provider Chef::Provider::Service::Systemd
     end
 
+    file "/etc/modules-load.d/dummy.conf" do
+      owner "root"
+      group "root"
+      mode "0644"
+    end
+
     # modules
     service "systemd-modules-load.service" do
       action :nothing # just a callback

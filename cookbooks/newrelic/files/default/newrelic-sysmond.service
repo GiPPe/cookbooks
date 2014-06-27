@@ -4,10 +4,9 @@ ConditionPathExists=/etc/newrelic/nrsysmond.cfg
 After=network.target
 
 [Service]
-Type=forking
-PIDFile=/run/newrelic/nrsysmond.pid
-ExecStart=/usr/sbin/nrsysmond -c /etc/newrelic/nrsysmond.cfg -p /run/newrelic/nrsysmond.pid
+ExecStart=/usr/sbin/nrsysmond -f -c /etc/newrelic/nrsysmond.cfg -l /dev/stdout
 User=newrelic
+Group=newrelic
 Restart=always
 OOMScoreAdjust=-800
 

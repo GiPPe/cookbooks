@@ -14,7 +14,7 @@ end
 
 include PostfixRunStateHelpers
 
-class Postfix
+class Chef
   class Recipe
     include PostfixRunStateHelpers
   end

@@ -1,29 +1,22 @@
-require 'set'
-
 include_recipe "druid"
 
-systemd_unit "druid-coordinator.service" do
-  template "druid-service"
-  variables({
-    druid_service: "coordinator",
-  })
+if vbox?
+  include_recipe "mysql::server"
+  mysql_database "druid"
+end
 
+systemd_unit "druid-coordinator.service" do
+  template "druid.service"
   notifies :restart, "service[druid-coordinator]", :immediately
 end
 
-template "/usr/libexec/druid-coordinator" do
-  source "druid-runner.sh"
+template "/var/app/druid/bin/druid-coordinator" do
+  source "runner.sh"
   owner "root"
   group "root"
   mode "0755"
-  variables({
-    druid_service:  "coordinator",
-    druid_port:     node[:druid][:coordinator][:port],
-    druid_mx:       node[:druid][:coordinator][:mx],
-    druid_dm:       node[:druid][:coordinator][:dm],
-  })
-  
   notifies :restart, "service[druid-coordinator]", :immediately
+  variables service: "coordinator"
 end
 
 service "druid-coordinator" do
@@ -34,14 +27,13 @@ end
 
 if nagios_client?
   nrpe_command "check_druid_usage" do
-    command "/usr/lib/nagios/plugins/check_druid -m Usage -u http://localhost:#{node[:druid][:coordinator][:port]}/info/servers?full -w 75 -c 90"
+    command "/usr/lib/nagios/plugins/check_druid -m Usage -u http://localhost:#{node[:druid][:coordinator][:port]}/info/servers?full -w 90 -c 95"
   end
 
   nagios_service "DRUID-USAGE" do
     check_command "check_nrpe!check_druid_usage"
     servicegroups "druid"
   end
-
 
   druid_databases = node[:druid][:nagios][:topics]
 

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<%
+  @clusters = hadoop2_clusters.select{|cluster_name, cluster| cluster[:nn].size > 0}
+  if @clusters.keys.include? node[:hadoop2][:cluster]
+    @default_cluster = node[:hadoop2][:cluster]
+  else
+    @default_cluster = node[:hadoop2][:hdfs][:cluster] || @clusters.keys.first
+  end
+%>
+<configuration>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value><%= node[:hadoop2][:tmp_dir] %>/${user.name}</value>
+  </property>
+  <property>
+    <name>net.topology.node.switch.mapping.impl</name>
+    <value>org.apache.hadoop.net.TableMapping</value>
+  </property>
+  <property>
+    <name>net.topology.table.file.name</name>
+    <value>/etc/hadoop2/topology.data</value>
+  </property>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://<%= @default_cluster %></value>
+  </property>
+<% if node[:hadoop2][:fs][:s3][:access_key] %>
+  <property>
+    <name>fs.s3.awsAccessKeyId</name>
+    <value><%= node[:hadoop2][:fs][:s3][:access_key] %></value>
+  </property>
+  <property>
+    <name>fs.s3.awsSecretAccessKey</name>
+    <value><%= node[:hadoop2][:fs][:s3][:secret_key] %></value>
+  </property>
+  <property>
+    <name>fs.s3n.awsAccessKeyId</name>
+    <value><%= node[:hadoop2][:fs][:s3][:access_key] %></value>
+  </property>
+  <property>
+    <name>fs.s3n.awsSecretAccessKey</name>
+    <value><%= node[:hadoop2][:fs][:s3][:secret_key] %></value>
+  </property>
+<% end %>
+</configuration>

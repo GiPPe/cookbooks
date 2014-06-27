@@ -20,7 +20,7 @@ end
 
 include NagiosRunStateHelpers
 
-class Nagios
+class Chef
   class Recipe
     include NagiosRunStateHelpers
   end

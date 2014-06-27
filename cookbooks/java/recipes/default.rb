@@ -1,17 +1,14 @@
 if gentoo?
-  case node[:java][:vm]
-  when /^oracle-jdk-bin-/
-    package "dev-java/oracle-jdk-bin"
-  else
-    raise "unsupported JVM: #{node[:java][:vm]}"
-  end
-
+  package "dev-java/oracle-jdk-bin"
   package "dev-java/maven-bin"
 
+  # super ugly
+  latest = "eselect --brief --color=no java-vm list| head -n-1 | tail -n1 | awk '{print $1}'"
+
   if root?
-    execute "ensure #{node[:java][:vm]} is the system vm" do
-      command "eselect java-vm set system #{node[:java][:vm]}"
-      not_if { %x(eselect --brief java-vm show system).strip == node[:java][:vm] }
+    execute "eselect-java-vm" do
+      command "eselect java-vm set system $(#{latest})"
+      not_if { %x(eselect --brief java-vm show system).strip == %x(#{latest}) }
     end
 
     cookbook_file "/etc/jstatd.policy" do
@@ -28,9 +25,9 @@ if gentoo?
       action [:enable, :start]
     end
   else
-    execute "ensure #{node[:java][:vm]} is the user vm" do
-      command "eselect java-vm set user #{node[:java][:vm]}"
-      not_if { %x(eselect --brief java-vm show user).strip == node[:java][:vm] }
+    execute "eselect-java-vm" do
+      command "eselect java-vm set user $(#{latest})"
+      not_if { %x(eselect --brief java-vm show user).strip == %x(#{latest}) }
     end
   end
 elsif mac_os_x?

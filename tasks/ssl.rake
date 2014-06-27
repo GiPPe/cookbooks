@@ -44,10 +44,8 @@ namespace :ssl do
     ENV['BATCH'] = "1"
     args = Rake::TaskArguments.new([:cn], ["*.#{args.domain}"])
     Rake::Task["ssl:do_cert"].execute(args)
-    knife :upload, ["cookbooks/certificates"]
   end
 
-  task :do_cert => [ :init ]
   task :do_cert, :cn do |t, args|
     cn = args.cn
     keyfile = cn.gsub("*", "wildcard")
@@ -116,7 +114,7 @@ namespace :ssl do
       sh("openssl ca -config #{SSL_CONFIG_FILE} -gencrl -out #{SSL_CERT_DIR}/ca.crl")
       cn = args.cn.gsub("*", "wildcard")
       sh("rm #{SSL_CERT_DIR}/#{cn}.{csr,crt,key}")
-      knife :upload, ["cookbooks/certificates"]
+      knife :upload, ["cookbooks/certificates"] unless ENV["BATCH"]
     end
   end
 

@@ -37,7 +37,7 @@ if node[:smart][:devices].any?
       devname = d.sub("/dev/", "")
 
       nrpe_command "check_smart_#{devname}" do
-        command "/usr/lib/nagios/plugins/check_smart -d #{d} -i ata"
+        command "/usr/lib/nagios/plugins/check_smart -d #{d}"
       end
 
       nagios_service "SMART_#{devname.upcase}" do

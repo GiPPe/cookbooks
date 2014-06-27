@@ -5,6 +5,7 @@ require 'time'
 require 'open-uri'
 require 'yajl'
 require 'set'
+require 'resolv'
 
 module Usage
   def usage(m)
@@ -24,7 +25,13 @@ module Usage
   end
 
   def to_s(m)
-    usage(m).map { |k, v| "#{k}: #{v.round}%" }.sort.join(', ')
+    usage(m).select do |ip, value|
+      value > threshold(:warning)
+    end.map do |ip, value|
+      address = ip.split(':').first
+      name = Resolv.getname(address) rescue address
+      "#{name}: #{value.round}%"
+    end.sort.join(', ')
   end
 end
 

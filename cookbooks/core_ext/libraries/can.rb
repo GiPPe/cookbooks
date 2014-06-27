@@ -2,12 +2,12 @@ module CanHelpers
 
   def can_load_kernel_modules?
     return false if lxc?
-    return true
+    File.exist?("/proc/modules")
   end
 
   def can_run_ntpd?
     return false if lxc?
-    return false if vbox_guest?
+    return false if vbox?
     return true
   end
 

@@ -9,4 +9,4 @@ license "Apache v2.0"
 supports "gentoo"
 
 depends "nagios"
-depends "splunk"
+depends "splunk6"

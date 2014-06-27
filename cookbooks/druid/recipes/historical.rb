@@ -1,27 +1,17 @@
 include_recipe "druid"
 
 systemd_unit "druid-historical.service" do
-  template "druid-service"
-  variables({
-    druid_service: "historical",
-  })
-
+  template "druid.service"
   notifies :restart, "service[druid-historical]", :immediately
 end
 
-template "/usr/libexec/druid-historical" do
-  source "druid-runner.sh"
+template "/var/app/druid/bin/druid-historical" do
+  source "runner.sh"
   owner "root"
   group "root"
   mode "0755"
-  variables({
-    druid_service:  "historical",
-    druid_port:     node[:druid][:historical][:port],
-    druid_mx:       node[:druid][:historical][:mx],
-    druid_dm:       node[:druid][:historical][:dm],
-  })
-  
   notifies :restart, "service[druid-historical]", :immediately
+  variables service: "historical"
 end
 
 service "druid-historical" do

@@ -52,29 +52,13 @@ if gentoo?
       end
     end
 
-    mysql_root_pass = vagrant? ? "root" : get_password("mysql/root")
-
-    template "/usr/sbin/mysql_pkg_config" do
-      source "mysql_pkg_config"
-      owner "root"
-      group "root"
-      mode "0755"
-      not_if { File.directory?("/var/lib/mysql/mysql") }
-      backup 0
-      variables(:root_pass => mysql_root_pass)
-    end
-
     execute "mysql_pkg_config" do
+      command "emerge --config dev-db/mysql"
       creates "/var/lib/mysql/mysql"
     end
 
-    file "/usr/sbin/mysql_pkg_config" do
-      action :delete
-      backup 0
-    end
-
     file "/root/.my.cnf" do
-      content "[client]\nuser = root\npass = #{mysql_root_pass}\n"
+      content "[client]\nuser = root\n"
       owner "root"
       group "root"
       mode "0600"
@@ -96,15 +80,15 @@ if gentoo?
     end
 
     mysql_user "root" do
-      password mysql_root_pass
+      host "%"
+      password ""
       force_password true
-      host "%" if vagrant?
     end
 
     mysql_grant "root" do
       database "*"
       user "root"
-      user_host "%" if vagrant?
+      user_host "%"
       grant_option true
     end
 
@@ -143,11 +127,8 @@ if nagios_client?
     mode "0644"
   end
 
-  # MySQL user for check_mysql_health and others
-  mysql_nagios_password = get_password("mysql/nagios")
-
   file "/var/nagios/home/.my.cnf" do
-    content "[client]\nuser = nagios\npass = #{mysql_nagios_password}\n"
+    content "[client]\nuser = root\n"
     owner "nagios"
     group "nagios"
     mode "0600"
@@ -155,22 +136,6 @@ if nagios_client?
   end
 
   mysql_user "nagios" do
-    force_password true
-    password mysql_nagios_password
-  end
-
-  mysql_grant "nagios" do
-    user "nagios"
-    privileges ["PROCESS", "REPLICATION CLIENT"]
-    database "*"
-  end
-
-  # do not use upstream version with wrapper hack
-  package "net-analyzer/nagios-check_mysql_health" do
-    action :remove
-  end
-
-  nagios_plugin "check_mysql_health_wrapper" do
     action :delete
   end
 

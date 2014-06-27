@@ -15,19 +15,6 @@ portage_package_use "www-servers/nginx" do
   use(nginx_default_use_flags + node[:nginx][:use_flags])
 end
 
-group "nginx" do
-  gid 82
-  append true
-end
-
-user "nginx" do
-  uid 82
-  gid 82
-  home "/dev/null"
-  shell "/sbin/nologin"
-  comment "added by portage for nginx"
-end
-
 package "www-servers/nginx"
 
 %w(
@@ -70,6 +57,16 @@ end
 ).each do |f|
   file f do
     action :delete
+  end
+end
+
+ssl_certificate "/etc/ssl/nginx/wildcard.#{node[:chef_domain]}" do
+  cn "wildcard.#{node[:chef_domain]}"
+end
+
+if node.clustered?
+  ssl_certificate "/etc/ssl/nginx/wildcard.#{node.cluster_name}.#{node[:chef_domain]}" do
+    cn "wildcard.#{node.cluster_name}.#{node[:chef_domain]}"
   end
 end
 

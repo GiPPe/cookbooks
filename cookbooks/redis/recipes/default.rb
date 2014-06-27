@@ -17,4 +17,8 @@ if root?
   service "redis" do
     action [:enable, :start]
   end
+
+  duply_backup "redis" do
+    source "/var/lib/redis"
+  end
 end

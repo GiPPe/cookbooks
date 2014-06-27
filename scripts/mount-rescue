@@ -8,9 +8,8 @@ mount_dir=$(mktemp -d)
 mkdir -p ${mount_dir}
 
 mount ${root_device} ${mount_dir}
-mount /dev/vg/usr ${mount_dir}/usr
-mount /dev/vg/var ${mount_dir}/var
-
+[[ -e /dev/vg/usr ]] && mount /dev/vg/usr ${mount_dir}/usr
+[[ -e /dev/vg/var ]] && mount /dev/vg/var ${mount_dir}/var
 [[ -e /dev/vg/log ]] && mount /dev/vg/log ${mount_dir}/var/log
 [[ -e /dev/vg/opt ]] && mount /dev/vg/opt ${mount_dir}/opt
 [[ -e /dev/vg/home ]] && mount /dev/vg/home ${mount_dir}/home
@@ -27,6 +26,6 @@ umount ${mount_dir}/dev
 [[ -e /dev/vg/home ]] && umount ${mount_dir}/home
 [[ -e /dev/vg/opt ]] && umount ${mount_dir}/opt
 [[ -e /dev/vg/log ]] && umount ${mount_dir}/var/log
-umount ${mount_dir}/var
-umount ${mount_dir}/usr
+[[ -e /dev/vg/var ]] && umount ${mount_dir}/var
+[[ -e /dev/vg/usr ]] && umount ${mount_dir}/usr
 umount ${mount_dir}

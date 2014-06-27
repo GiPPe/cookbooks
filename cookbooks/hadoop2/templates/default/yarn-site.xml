@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<%
+  @cluster = hadoop2_clusters[node[:hadoop2][:cluster]]
+%>
+<configuration>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>12288</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
+  </property>
+<% if node.role?("hadoop2-resourcemanager") %>
+  <property>
+    <name>yarn.resourcemanager.ha.id</name>
+    <value><%= "rm#{node[:cluster][:host][:id]}" %></value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value><%= node[:fqdn] %></value>
+  </property>
+  <property>
+    <name>yarn.web-proxy.address</name>
+    <value><%= node[:fqdn] %>:8088</value>
+  </property>
+<% end %>
+<% if node.role?("hadoop2-nodemanager") %>
+  <property>
+    <name>yarn.nodemanager.hostname</name>
+    <value><%= node[:fqdn] %></value>
+  </property>
+<% end %>
+  <property>
+    <name>yarn.resourcemanager.cluster-id</name>
+    <value><%= node[:hadoop2][:cluster] %></value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.ha.rm-ids</name>
+    <value><%= @cluster[:rm].map{|rm| "rm#{rm[:cluster][:host][:id]}" }.join(',') %></value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.local-dirs</name>
+    <value>/var/app/hadoop2/storage/nodemanager</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.log-dirs</name>
+    <value>/var/log/hadoop2</value>
+  </property>
+<% @cluster[:rm].each do |resourcemanager| %>
+  <property>
+    <name>yarn.resourcemanager.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:23140</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:23130</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.webapp.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:8088</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.resource-tracker.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:23125</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.admin.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:23141</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.ha.admin.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:23142</value>
+  </property>
+  <property>
+    <name>yarn.web-proxy.address.rm<%= resourcemanager[:cluster][:host][:id] %></name>
+    <value><%= resourcemanager[:fqdn] %>:8088</value>
+  </property>
+<% end %>
+  <property>
+    <name>yarn.resourcemanager.ha.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.ha.automatic-failover.embedded</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.recovery.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.store.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.zk-state-store.parent-path</name>
+    <value>/rmstore/<%= node[:hadoop2][:cluster] %></value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.zk-address</name>
+    <value><%= zookeeper_connect('/hadoop2', node[:hadoop2][:zk][:cluster]) %></value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value><%= node[:hadoop2][:nodemanager][:memory_mb] %></value>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>2048</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.pmem-check-enabled</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.vmem-check-enabled</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+</configuration>

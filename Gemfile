@@ -7,6 +7,7 @@ group :solo do
 end
 
 group :support do
+  gem 'activesupport'
   gem 'foodcritic', '~> 3.0'
   gem 'hetzner-api'
   gem 'highline'
@@ -14,13 +15,15 @@ group :support do
   gem 'knife-dsl', github: 'zenops/knife-dsl'
   gem 'liquid-development'
   gem 'listen'
+  gem 'mechanize'
   gem 'mixlib-shellout', github: 'zenops/mixlib-shellout'
+  gem 'ovh-rest', github: 'zenops/ovh-rest'
   gem 'rake'
-  gem 'rb-inotify', '~> 0.8.8'
+  gem 'rb-inotify'
   gem 'tailor', github: 'hollow/tailor'
 end
 
-group :testing do
+group :test do
   gem 'kitchen-vagrant'
   gem 'test-kitchen'
 end

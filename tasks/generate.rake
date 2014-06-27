@@ -16,34 +16,28 @@ namespace :generate do
     maintainer_email = %x(git config user.email).chomp
 
     b = binding()
-    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'metadata.rb')))
 
     cb_path = File.join(COOKBOOKS_DIR, name)
-    FileUtils.mkdir_p(cb_path)
+    FileUtils.mkdir_p(File.join(cb_path, "attributes"))
+    FileUtils.mkdir_p(File.join(cb_path, "files/default"))
+    FileUtils.mkdir_p(File.join(cb_path, "libraries"))
+    FileUtils.mkdir_p(File.join(cb_path, "providers"))
+    FileUtils.mkdir_p(File.join(cb_path, "recipes"))
+    FileUtils.mkdir_p(File.join(cb_path, "resources"))
+    FileUtils.mkdir_p(File.join(cb_path, "templates/default"))
 
+    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'metadata.rb')))
     File.open(File.join(cb_path, "metadata.rb"), "w") do |f|
       f.puts(erb.result(b))
     end
 
-    FileUtils.mkdir_p(File.join(cb_path, "recipes"))
-
-    %w(files templates).each do |d|
-      FileUtils.mkdir_p(File.join(cb_path, d, "default"))
+    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'run_state.rb')))
+    File.open(File.join(cb_path, "libraries/run_state.rb"), "w") do |f|
+      f.puts(erb.result(b))
     end
 
     File.open(File.join(cb_path, "recipes", "default.rb"), "w") do |f|
       f.write "# add some resources here\n"
-    end
-  end
-
-  desc "Generate the production environment"
-  task :env do
-    %w(production staging).each do |env|
-      b = binding()
-      erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'environment.json')))
-      File.open(File.join(ENVIRONMENTS_DIR, "#{env}.json"), "w") do |f|
-        f.puts(erb.result(b))
-      end
     end
   end
 
