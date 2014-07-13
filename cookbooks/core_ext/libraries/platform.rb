@@ -48,11 +48,11 @@ module PlatformHelpers
   end
 
   def vbox?
-    node[:virtualization][:system] == "vbox" && node[:virtualization][:role] == "guest"
+    node[:virtualization] && node[:virtualization][:system] == "vbox" && node[:virtualization][:role] == "guest"
   end
 
   def lxc?
-    node[:virtualization][:system] == "lxc" && node[:virtualization][:role] == "guest"
+    node[:virtualization] && node[:virtualization][:system] == "lxc" && node[:virtualization][:role] == "guest"
   end
 end
 
