@@ -1,14 +1,14 @@
 if gentoo?
-  package "dev-java/oracle-jdk-bin"
-  package "dev-java/maven-bin"
+  package "dev-java/oracle-jdk-bin" do
+    version "1.7*"
+  end
 
-  # super ugly
-  latest = "eselect --brief --color=no java-vm list| head -n-1 | tail -n1 | awk '{print $1}'"
+  package "dev-java/maven-bin"
 
   if root?
     execute "eselect-java-vm" do
-      command "eselect java-vm set system $(#{latest})"
-      not_if { %x(eselect --brief java-vm show system).strip == %x(#{latest}) }
+      command "eselect java-vm set system oracle-jdk-bin-1.7"
+      not_if { %x(eselect --brief java-vm show system).strip == "oracle-jdk-bin-1.7" }
     end
 
     cookbook_file "/etc/jstatd.policy" do
@@ -23,11 +23,6 @@ if gentoo?
 
     service "jstatd" do
       action [:enable, :start]
-    end
-  else
-    execute "eselect-java-vm" do
-      command "eselect java-vm set user $(#{latest})"
-      not_if { %x(eselect --brief java-vm show user).strip == %x(#{latest}) }
     end
   end
 elsif mac_os_x?

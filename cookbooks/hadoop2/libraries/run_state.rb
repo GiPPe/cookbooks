@@ -11,7 +11,7 @@ module Hadoop2RunStateHelpers
       }
     end
 
-    node.run_state[:nodes].each do |n|
+    node.nodes.each do |n|
       if n[:hadoop2] && n[:hadoop2][:cluster]
         result[n[:hadoop2][:cluster]][:nn] << n if n.role?("hadoop2-namenode")
         result[n[:hadoop2][:cluster]][:jn] << n if n.role?("hadoop2-journalnode")
@@ -26,13 +26,11 @@ module Hadoop2RunStateHelpers
   end
 
   def hadoop2_datanodes
-    node.run_state[:nodes].select do |n|
-      n.role?("hadoop2-datanode")
-    end
+    node.nodes.role("hadoop2-datanode")
   end
 
   def hadoop2_topology
-    Hash[node.run_state[:nodes].map do |n|
+    Hash[node.nodes.map do |n|
       rack_id_v2 = n[:hadoop2] && n[:hadoop2][:rack_id]
 
       rack_id = rack_id_v2 || "/default-rack/#{node.cluster_name}"

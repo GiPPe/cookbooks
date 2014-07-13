@@ -2,42 +2,34 @@ include_recipe "java"
 
 deploy_skeleton "kafka"
 
-%w(
-  /etc/kafka
-).each do |dir|
-  directory dir do
-    owner "kafka"
-    group "kafka"
-    mode "0755"
-  end
-end
-
 deploy_application "kafka" do
   repository node[:kafka][:git][:repository]
   revision node[:kafka][:git][:revision]
 
   before_symlink do
-    execute "sbt-update" do
-      command "#{release_path}/sbt update"
-      cwd release_path
-      user "kafka"
-      group "kafka"
-    end
-
-    execute "sbt-package" do
-      command "#{release_path}/sbt package"
-      cwd release_path
-      user "kafka"
-      group "kafka"
-    end
-
-    execute "sbt-assembly-package-dependency" do
-      command "#{release_path}/sbt assembly-package-dependency"
+    execute "kafka-build" do
+      command "#{release_path}/gradlew jar"
       cwd release_path
       user "kafka"
       group "kafka"
     end
   end
+end
+
+template "/var/app/kafka/current/config/log4j.properties" do
+  source "log4j.properties"
+  owner "root"
+  group "kafka"
+  mode "0640"
+  notifies :restart, "service[kafka]"
+end
+
+template "/var/app/kafka/current/config/tools-log4j.properties" do
+  source "log4j.properties"
+  owner "root"
+  group "kafka"
+  mode "0640"
+  notifies :restart, "service[kafka]"
 end
 
 if nagios_client?

@@ -1,0 +1,7 @@
+{
+  "name": "kafka",
+  "description": "Kafka Broker",
+  "run_list": [
+    "recipe[kafka::broker]"
+  ]
+}

@@ -1,14 +1,12 @@
 module PostfixRunStateHelpers
   def postfix_networks
-    node.run_state[:nodes].map do |n|
+    node.nodes.map do |n|
       n[:ipaddress]
     end + node[:postfix][:mynetworks]
   end
 
   def postfix_relayhost
-    node.run_state[:nodes].select do |n|
-      n.role?("mx")
-    end.first
+    node.nodes.role("mx").first
   end
 end
 

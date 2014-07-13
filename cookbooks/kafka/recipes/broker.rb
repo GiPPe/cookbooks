@@ -1,8 +1,6 @@
 include_recipe "kafka"
 
-folders = ['/var/log/kafka'] + node[:kafka][:storage].split(',')
-
-folders.each do |dir|
+node[:kafka][:storage].split(',').each do |dir|
   directory dir do
     owner "kafka"
     group "kafka"
@@ -12,8 +10,8 @@ end
 
 node.default[:kafka][:zookeeper][:cluster] = node.cluster_name
 
-template "/etc/kafka/server.config" do
-  source "server.config"
+template "/var/app/kafka/current/config/server.properties" do
+  source "server.properties"
   owner "root"
   group "kafka"
   mode "0640"
@@ -24,10 +22,4 @@ systemd_unit "kafka.service"
 
 service "kafka" do
   action [:enable, :start]
-end
-
-if nagios_client?
-
-  # Nothing generic, add a site-specific cookbook
-
 end

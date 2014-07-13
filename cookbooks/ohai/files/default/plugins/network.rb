@@ -134,8 +134,6 @@ Ohai.plugin(:NetworkAddresses) do
 
     network Mash.new unless network
     network[:interfaces] = Mash.new unless network[:interfaces]
-    counters Mash.new unless counters
-    counters[:network] = Mash.new unless counters[:network]
 
     # inet family is treated before inet6
     Ohai::Mixin::NetworkConstants::FAMILIES.keys.sort.each do |family|

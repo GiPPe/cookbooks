@@ -6,7 +6,7 @@ After=network.target zookeeper.service
 User=kafka
 Group=kafka
 Environment="JMX_PORT=17006"
-ExecStart=/var/app/kafka/current/bin/kafka-run-class.sh kafka.Kafka /etc/kafka/server.config
+ExecStart=/var/app/kafka/current/bin/kafka-run-class.sh kafka.Kafka /var/app/kafka/current/config/server.properties
 OOMScoreAdjust=-2
 Nice=-10
 IOSchedulingPriority=1

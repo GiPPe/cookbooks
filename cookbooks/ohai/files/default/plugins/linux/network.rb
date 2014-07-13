@@ -18,8 +18,9 @@
 
 Ohai.plugin(:Network) do
   provides "network", "network/interfaces"
-  provides "counters/network", "counters/network/interfaces"
   provides "ipaddress", "ip6address", "macaddress"
+
+  depends "virtualization"
 
   def linux_encaps_lookup(encap)
     return "Loopback" if encap.eql?("Local Loopback") || encap.eql?("loopback")
@@ -36,17 +37,14 @@ Ohai.plugin(:Network) do
     require 'ipaddr'
 
     iface = Mash.new
-    net_counters = Mash.new
 
     network Mash.new unless network
     network[:interfaces] = Mash.new unless network[:interfaces]
-    counters Mash.new unless counters
-    counters[:network] = Mash.new unless counters[:network]
 
     # Match the lead line for an interface from iproute2
     # 3: eth0.11@eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP
     # The '@eth0:' portion doesn't exist on primary interfaces and thus is optional in the regex
-    IPROUTE_INT_REGEX = /^(\d+): ([0-9a-zA-Z@:\.\-_]*?)(@[0-9a-zA-Z]+|):\s/
+    IPROUTE_INT_REGEX = /^(\d+): ([0-9a-zA-Z@:\.\-_]*?)(@[0-9a-zA-Z]+|):\s/ unless defined?(IPROUTE_INT_REGEX)
 
     if File.exist?("/sbin/ip")
 
@@ -132,33 +130,9 @@ Ohai.plugin(:Network) do
 
       so = shell_out("ip -d -s link")
       tmp_int = nil
-      on_rx = true
       so.stdout.lines do |line|
         if line =~ IPROUTE_INT_REGEX
           tmp_int = $2
-          net_counters[tmp_int] = Mash.new unless net_counters[tmp_int]
-        end
-
-        if line =~ /(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/
-          int = on_rx ? :rx : :tx
-          net_counters[tmp_int][int] = Mash.new unless net_counters[tmp_int][int]
-          net_counters[tmp_int][int][:bytes] = $1
-          net_counters[tmp_int][int][:packets] = $2
-          net_counters[tmp_int][int][:errors] = $3
-          net_counters[tmp_int][int][:drop] = $4
-          if(int == :rx)
-            net_counters[tmp_int][int][:overrun] = $5
-          else
-            net_counters[tmp_int][int][:carrier] = $5
-            net_counters[tmp_int][int][:collisions] = $6
-          end
-
-          on_rx = !on_rx
-        end
-
-        if line =~ /qlen (\d+)/
-          net_counters[tmp_int][:tx] = Mash.new unless net_counters[tmp_int][:tx]
-          net_counters[tmp_int][:tx][:queuelen] = $1
         end
 
         if line =~ /vlan id (\d+)/
@@ -259,8 +233,14 @@ Ohai.plugin(:Network) do
         if default_route.nil? or default_route.empty?
           Ohai::Log.debug("Unable to determine default #{family[:name]} interface")
         else
-          network["#{default_prefix}_interface"] = default_route[:dev]
-          Ohai::Log.debug("#{default_prefix}_interface set to #{default_route[:dev]}")
+          vbox = virtualization[:system] == "vbox" && virtualization[:role] == "guest"
+
+          if vbox
+            network["#{default_prefix}_interface"] = "eth1"
+          else
+            network["#{default_prefix}_interface"] = default_route[:dev]
+          end
+          Ohai::Log.debug("#{default_prefix}_interface set to #{network["#{default_prefix}_interface"]}")
 
           # setting gateway to 0.0.0.0 or :: if the default route is a link level one
           network["#{default_prefix}_gateway"] = default_route[:via] ? default_route[:via] : family[:default_route].chomp("/0")
@@ -299,7 +279,7 @@ Ohai.plugin(:Network) do
             ]
           end.first
 
-          unless route.nil? or route.empty?
+          unless route.nil? or route.empty? or vbox
             if family[:name] == "inet"
               ipaddress route[:src]
               macaddress iface[route[:dev]][:addresses].select{|k,v| v["family"]=="lladdr"}.first.first unless iface[route[:dev]][:flags].include? "NOARP"
@@ -366,25 +346,6 @@ Ohai.plugin(:Network) do
         if line =~ /P-t-P:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/
           iface[cint][:peer] = $1
         end
-        if line =~ /RX packets:(\d+) errors:(\d+) dropped:(\d+) overruns:(\d+) frame:(\d+)/
-          net_counters[cint] = Mash.new unless net_counters[cint]
-          net_counters[cint][:rx] = { "packets" => $1, "errors" => $2, "drop" => $3, "overrun" => $4, "frame" => $5 }
-        end
-        if line =~ /TX packets:(\d+) errors:(\d+) dropped:(\d+) overruns:(\d+) carrier:(\d+)/
-          net_counters[cint][:tx] = { "packets" => $1, "errors" => $2, "drop" => $3, "overrun" => $4, "carrier" => $5 }
-        end
-        if line =~ /collisions:(\d+)/
-          net_counters[cint][:tx]["collisions"] = $1
-        end
-        if line =~ /txqueuelen:(\d+)/
-          net_counters[cint][:tx]["queuelen"] = $1
-        end
-        if line =~ /RX bytes:(\d+) \((\d+?\.\d+ .+?)\)/
-          net_counters[cint][:rx]["bytes"] = $1
-        end
-        if line =~ /TX bytes:(\d+) \((\d+?\.\d+ .+?)\)/
-          net_counters[cint][:tx]["bytes"] = $1
-        end
       end
 
       so = shell_out("arp -an")
@@ -396,7 +357,6 @@ Ohai.plugin(:Network) do
         end
       end
     end
-    counters[:network][:interfaces] = net_counters
     network["interfaces"] = iface
   end
 end

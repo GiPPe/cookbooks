@@ -32,9 +32,6 @@ Ohai.plugin(:Filesystem) do
         filesystem = $1
         fs[filesystem] = Mash.new
         fs[filesystem][:kb_size] = $2
-        fs[filesystem][:kb_used] = $3
-        fs[filesystem][:kb_available] = $4
-        fs[filesystem][:percent_used] = $5
         fs[filesystem][:mount] = $6
       end
     end

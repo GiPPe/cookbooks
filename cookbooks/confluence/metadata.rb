@@ -8,6 +8,7 @@ license "Apache v2.0"
 
 supports "gentoo"
 
+depends "duply"
 depends "java"
 depends "nginx"
 depends "tar"

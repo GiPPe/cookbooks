@@ -71,3 +71,7 @@ end
 shorewall6_rule "confluence" do
   destport "http,https"
 end
+
+duply_backup "confluence" do
+  source "/var/lib/confluence"
+end

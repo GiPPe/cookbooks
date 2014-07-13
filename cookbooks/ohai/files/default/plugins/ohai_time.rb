@@ -19,7 +19,10 @@
 Ohai.plugin(:OhaiTime) do
   provides "ohai_time"
 
+  depends "virtualization"
+
   collect_data do
-    ohai_time Time.now.to_f
+    vbox = virtualization[:system] == "vbox" && virtualization[:role] == "guest"
+    ohai_time Time.now.to_f unless vbox
   end
 end

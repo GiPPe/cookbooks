@@ -33,7 +33,7 @@ template "/usr/lib/nagios/plugins/notify" do
 end
 
 # retrieve data from the search index
-contacts = node.run_state[:users].select do |u|
+contacts = node.users.select do |u|
   u[:tags] and not (u[:tags] & ["hostmaster", "nagios"]).empty?
 end.sort_by do |u|
   u[:id]

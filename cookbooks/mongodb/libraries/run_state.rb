@@ -1,7 +1,6 @@
 module MongodbRunStateHelpers
   def mongo_configdb_nodes(name)
-    node.run_state[:nodes].select do |n|
-      n.role?("mongo-configdb") and
+    node.nodes.role("mongo-configdb").select do |n|
       n[:mongodb][:cluster] == name
     end
   end

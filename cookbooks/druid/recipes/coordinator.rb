@@ -5,24 +5,26 @@ if vbox?
   mysql_database "druid"
 end
 
-systemd_unit "druid-coordinator.service" do
-  template "druid.service"
-  notifies :restart, "service[druid-coordinator]", :immediately
-end
-
 template "/var/app/druid/bin/druid-coordinator" do
   source "runner.sh"
   owner "root"
   group "root"
   mode "0755"
-  notifies :restart, "service[druid-coordinator]", :immediately
+  notifies :restart, "service[druid-coordinator]"
   variables service: "coordinator"
+end
+
+systemd_unit "druid-coordinator.service" do
+  template "druid.service"
+  notifies :restart, "service[druid-coordinator]"
 end
 
 service "druid-coordinator" do
   action [:enable, :start]
-  subscribes :restart, "template[/etc/druid/runtime.properties]"
   subscribes :restart, "template[/etc/druid/log4j.properties]"
+  subscribes :restart, "template[/etc/druid/runtime.properties]"
+  subscribes :restart, "template[/var/app/druid/bin/druid-coordinator]"
+  subscribes :restart, "systemd_unit[druid-coordinator]"
 end
 
 if nagios_client?

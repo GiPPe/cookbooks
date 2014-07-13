@@ -10,7 +10,7 @@ if root?
   end
 
   # create accounts from databags
-  node.run_state[:users].select do |user|
+  node.users.select do |user|
     if user[:tags] && user[:tags].include?("hostmaster")
       true
     elsif user[:nodes] && user[:nodes][node[:fqdn]]

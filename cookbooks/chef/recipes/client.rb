@@ -62,7 +62,7 @@ end
 
 timer_envs = %w(production staging)
 
-nodes = node.run_state[:cluster_nodes].map do |n|
+nodes = node.nodes.cluster(node.cluster_name).map do |n|
   n[:fqdn]
 end.compact
 
@@ -73,26 +73,28 @@ end
 index = nodes.index(node[:fqdn]) || 0
 minute = minutes[index] || 0
 
-if debian_based?
-  cron "chef-client" do
-    command "/opt/chef/embedded/bin/ruby -E UTF-8 /usr/bin/chef-client -c /etc/chef/client.rb &>/dev/null"
-    minute minute
-    action :delete unless timer_envs.include?(node.chef_environment)
-    action :delete if systemd_running?
-  end
-else
-  systemd_unit "chef-client.service"
+if !vbox?
+  if debian_based?
+    cron "chef-client" do
+      command "/opt/chef/embedded/bin/ruby -E UTF-8 /usr/bin/chef-client -c /etc/chef/client.rb &>/dev/null"
+      minute minute
+      action :delete unless timer_envs.include?(node.chef_environment)
+      action :delete if systemd_running?
+    end
+  else
+    systemd_unit "chef-client.service"
 
-  systemd_timer "chef-client" do
-    schedule [
-      "OnBootSec=60",
-      "OnCalendar=*:#{minute}",
-    ]
-  end
+    systemd_timer "chef-client" do
+      schedule [
+        "OnBootSec=60",
+        "OnCalendar=*:#{minute}",
+      ]
+    end
 
-  # chef-client.service has a condition on this lock
-  # so we use it to stop chef-client on testing/staging machines
-  file "/run/lock/chef-client.lock" do
-    action :delete if timer_envs.include?(node.chef_environment)
+    # chef-client.service has a condition on this lock
+    # so we use it to stop chef-client on testing/staging machines
+    file "/run/lock/chef-client.lock" do
+      action :delete if timer_envs.include?(node.chef_environment)
+    end
   end
 end

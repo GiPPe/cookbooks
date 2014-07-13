@@ -34,9 +34,6 @@ Ohai.plugin(:Filesystem) do
         fs[filesystem] = Mash.new
         fs[filesystem][:block_size] = block_size
         fs[filesystem][:kb_size] = $2.to_i / (1024 / block_size)
-        fs[filesystem][:kb_used] = $3.to_i / (1024 / block_size)
-        fs[filesystem][:kb_available] = $4.to_i / (1024 / block_size)
-        fs[filesystem][:percent_used] = $5
         fs[filesystem][:mount] = $6
       end
     end

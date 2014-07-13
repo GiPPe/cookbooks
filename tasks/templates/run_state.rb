@@ -1,8 +1,6 @@
 module <%= name.capitalize %>Helpers
   def <%= name %>_nodes(cluster_name = node.cluster_name)
-    node.run_state[:nodes].select do |n|
-      n.role?("<%= name %>") && n.cluster?(cluster_name)
-    end
+    node.nodes.cluster(cluster_name).role("<%= name %>")
   end
 end
 

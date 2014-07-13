@@ -45,19 +45,14 @@ default[:druid][:database][:user] = "root"
 default[:druid][:database][:password] = ""
 
 # DataSegment Pusher/Puller Module
-default[:druid][:storage][:type] = "noop"
-
-# Local Deep Storage
-default[:druid][:storage][:local][:directory] = "/var/app/druid/storage"
+default[:druid][:storage][:type] = "local"
+default[:druid][:storage][:directory] = "/var/app/druid/storage"
 
 # S3 Deep Storage
 default[:druid][:storage][:s3][:access_key] = nil
 default[:druid][:storage][:s3][:secret_key] = nil
 default[:druid][:storage][:s3][:bucket] = nil
 default[:druid][:storage][:s3][:base_key] = nil
-
-# HDFS Deep Storage
-default[:druid][:storage][:hdfs] = nil
 
 # Indexing Services
 default[:druid][:indexer][:port] = 8091
@@ -96,4 +91,3 @@ default[:druid][:broker][:balancer] = "connectionCount"
 default[:druid][:realtime][:port] = 8083
 default[:druid][:realtime][:mx] = "12g"
 default[:druid][:realtime][:dm] = "12g"
-default[:druid][:realtime][:spec_files] = %w{realtime}

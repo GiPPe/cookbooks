@@ -1,8 +1,0 @@
-{
-  "name": "splunk-master",
-  "description": "Splunk Master",
-  "run_list": [
-    "role[splunk]",
-    "recipe[splunk::syslog]"
-  ]
-}

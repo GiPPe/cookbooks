@@ -18,7 +18,6 @@
 
 Ohai.plugin(:Network) do
   provides "network", "network/interfaces"
-  provides "counters/network", "counters/network/interfaces"
 
   def parse_media(media_string)
     media = Hash.new
@@ -88,8 +87,6 @@ Ohai.plugin(:Network) do
 
     network Mash.new unless network
     network[:interfaces] = Mash.new unless network[:interfaces]
-    counters Mash.new unless counters
-    counters[:network] = Mash.new unless counters[:network]
 
     so = shell_out("route -n get default")
     so.stdout.lines do |line|
@@ -180,21 +177,5 @@ Ohai.plugin(:Network) do
 
     network[:settings] = settings
     network[:interfaces] = iface
-
-    net_counters = Mash.new
-    so = shell_out("netstat -i -d -l -b -n")
-    so.stdout.lines do |line|
-      if line =~ /^([a-zA-Z0-9\.\:\-\*]+)\s+\d+\s+\<[a-zA-Z0-9\#]+\>\s+([a-f0-9\:]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/ ||
-          line =~ /^([a-zA-Z0-9\.\:\-\*]+)\s+\d+\s+\<[a-zA-Z0-9\#]+\>(\s+)(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/
-        ifname = locate_interface(iface, $1, $2)
-        next if iface[ifname].nil? # this shouldn't happen, but just in case
-        net_counters[ifname] = Mash.new unless net_counters[ifname]
-        net_counters[ifname] = { :rx => { :bytes => $5, :packets => $3, :errors => $4, :drop => 0, :overrun => 0, :frame => 0, :compressed => 0, :multicast => 0 },
-          :tx => { :bytes => $8, :packets => $6, :errors => $7, :drop => 0, :overrun => 0, :collisions => $9, :carrier => 0, :compressed => 0 }
-        }
-      end
-    end
-
-    counters[:network][:interfaces] = net_counters
   end
 end

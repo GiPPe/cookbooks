@@ -5,7 +5,7 @@ PORT=<%= node[:druid][@service][:port] %>
 HOST=<%= node[:fqdn] %>:${PORT}
 JMXPORT=<%= node[:druid][@service][:port] + 10000 %>
 
-# JVM options
+# common JVM options
 JVM_OPTS=""
 JVM_OPTS+=" -server -d64"
 JVM_OPTS+=" -Xmx<%= node[:druid][@service][:mx] %>"
@@ -26,9 +26,15 @@ JVM_OPTS+=" -Djava.io.tmpdir=/var/app/druid/storage/tmp"
 JVM_OPTS+=" -Dcom.sun.management.jmxremote.port=$JMXPORT"
 JVM_OPTS+=" -Dcom.sun.management.jmxremote.authenticate=false"
 JVM_OPTS+=" -Dcom.sun.management.jmxremote.ssl=false"
-<% if @spec_file %>
-JVM_OPTS+=" -Ddruid.realtime.specFile=<%= @spec_file %>"
+
+# service specific properties
+<% monitors = node[:druid][:monitors] %>
+<% case @service %>
+<% when "realtime" %>
+<% monitors += ["io.druid.segment.realtime.RealtimeMetricsMonitor"] %>
+JVM_OPTS+=" -Ddruid.realtime.specFile=/etc/druid/realtime.spec"
 <% end %>
+JVM_OPTS+=' -Ddruid.monitoring.monitors=<%= monitors.to_json %>'
 
 # build the classpath - use node[:druid][:extensions] for more
 CLASSPATH="/etc/druid"

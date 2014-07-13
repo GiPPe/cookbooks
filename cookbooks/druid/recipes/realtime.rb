@@ -1,40 +1,31 @@
 include_recipe "druid"
 
-node.default[:druid][:logger] = true
+template "/etc/druid/realtime.spec" do
+  source "realtime.spec"
+  owner "root"
+  group "root"
+  mode "0644"
+end
 
-node[:druid][:realtime][:spec_files].each_with_index do |spec_name, port_offset|
-  service_name  = "druid-#{spec_name}"
+template "/var/app/druid/bin/druid-realtime" do
+  source "runner.sh"
+  owner "root"
+  group "root"
+  mode "0755"
+  notifies :restart, "service[druid-realtime]"
+  variables service: "realtime"
+end
 
-  # the spec_file is not part of this recipe, as it is too specific
-  spec_file     = "/etc/druid/#{spec_name}.spec"
+systemd_unit "druid-realtime.service" do
+  template "druid.service"
+  notifies :restart, "service[druid-realtime]"
+end
 
-  template "/usr/libexec/#{service_name}" do
-    source "druid-runner.sh"
-    owner "root"
-    group "root"
-    mode "0755"
-    variables({
-      druid_service:    "realtime",
-      druid_port:       node[:druid][:realtime][:port] + port_offset,
-      druid_mx:         node[:druid][:realtime][:mx],
-      druid_dm:         node[:druid][:realtime][:dm],
-      druid_spec_file:  spec_file,
-    })
-  end
-
-  systemd_unit "#{service_name}.service" do
-    template "druid-service"
-    variables({
-      druid_service: service_name,
-    })
-  end
-
-  service service_name do
-    action [:enable, :start]
-    subscribes :restart, "template[/etc/druid/runtime.properties]"
-    subscribes :restart, "template[#{spec_file}]"
-    subscribes :restart, "template[/usr/libexec/#{service_name}]"
-    subscribes :restart, "systemd_unit[#{service_name}]"
-    # subscribes :restart, "template[/etc/druid/log4j.properties]"
-  end
+service "druid-realtime" do
+  action [:enable, :start]
+  subscribes :restart, "template[/etc/druid/log4j.properties]"
+  subscribes :restart, "template[/etc/druid/realtime.spec]"
+  subscribes :restart, "template[/etc/druid/runtime.properties]"
+  subscribes :restart, "template[/var/app/druid/bin/druid-realtime]"
+  subscribes :restart, "systemd_unit[druid-realtime]"
 end

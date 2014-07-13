@@ -1,12 +1,15 @@
 if can_run_ntpd?
   if gentoo?
-    package "net-misc/ntp" do
-      notifies :restart, "service[ntpd]"
-    end
+    package "net-misc/ntp"
   elsif debian_based?
     package "ntp"
   else
     raise "cookbook ntp does not support platform #{node[:platform]}"
+  end
+
+  execute "set-local-utc" do
+    command "timedatectl set-local-rtc 0"
+    only_if { systemd_running? }
   end
 
   template "/etc/ntp.conf" do
