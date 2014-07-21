@@ -65,10 +65,10 @@ Ohai.plugin(:Hostname) do
   def collect_hostname
     # Hostname is everything before the first dot
     if machinename
-      machinename =~ /(.+?)\./
+      machinename =~ /([^.]+)/
       hostname $1
     elsif fqdn
-      fqdn =~ /(.+?)\./
+      fqdn =~ /([^.]+)/
       hostname $1
     end
   end
