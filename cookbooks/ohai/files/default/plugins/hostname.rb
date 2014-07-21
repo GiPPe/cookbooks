@@ -46,14 +46,12 @@ Ohai.plugin(:Hostname) do
   # forward and reverse lookup to canonicalize FQDN (hostname -f equivalent)
   # this is ipv6-safe, works on ruby 1.8.7+
   def resolve_fqdn
-    begin
-      hostname = from_cmd("hostname")
-      addrinfo = Socket.getaddrinfo(hostname, nil).first
-      iaddr = IPAddr.new(addrinfo[3])
-      Socket.gethostbyaddr(iaddr.hton)[0]
-    rescue
-      nil
-    end
+    hostname = from_cmd("hostname")
+    addrinfo = Socket.getaddrinfo(hostname, nil).first
+    iaddr = IPAddr.new(addrinfo[3])
+    Socket.gethostbyaddr(iaddr.hton)[0]
+  rescue
+    hostname
   end
 
   def collect_domain
@@ -75,91 +73,17 @@ Ohai.plugin(:Hostname) do
     end
   end
 
-  def get_fqdn_from_sigar
-    require 'sigar'
-    sigar = Sigar.new
-    sigar.fqdn
-  end
-
-  def sigar_is_available?
-    begin
-      require 'sigar'
-      true
-    rescue LoadError
-      false
-    end
-  end
-
-  collect_data(:aix, :hpux, :default) do
+  collect_data(:darwin, :default) do
     machinename from_cmd("hostname")
-    fqdn sigar_is_available? ? get_fqdn_from_sigar : resolve_fqdn
+    fqdn resolve_fqdn
     collect_hostname
     collect_domain
   end
 
-  collect_data(:darwin, :netbsd, :openbsd) do
-    hostname from_cmd("hostname -s")
-    fqdn resolve_fqdn
-    machinename from_cmd("hostname")
-    collect_domain
-  end
-
-  collect_data(:freebsd) do
-    hostname from_cmd("hostname -s")
+  collect_data(:linux) do
     machinename from_cmd("hostname")
     fqdn from_cmd("hostname -f")
+    collect_hostname
     collect_domain
-  end
-
-  collect_data(:linux) do
-    hostname from_cmd("hostname -s")
-    machinename from_cmd("hostname")
-    begin
-      ourfqdn = from_cmd("hostname --fqdn")
-      # Sometimes... very rarely, but sometimes, 'hostname --fqdn' falsely
-      # returns a blank string. WTF.
-      if ourfqdn.nil? || ourfqdn.empty?
-        Ohai::Log.debug("hostname --fqdn returned an empty string, retrying " +
-                        "once.")
-        ourfqdn = from_cmd("hostname --fqdn")
-      end
-
-      if ourfqdn.nil? || ourfqdn.empty?
-        Ohai::Log.debug("hostname --fqdn returned an empty string twice and " +
-                        "will not be set.")
-      else
-        fqdn ourfqdn
-      end
-    rescue
-      Ohai::Log.debug(
-        "hostname --fqdn returned an error, probably no domain set")
-    end
-    domain collect_domain
-  end
-
-  collect_data(:solaris2) do
-    machinename from_cmd("hostname")
-    hostname from_cmd("hostname")
-    fqdn resolve_fqdn
-    domain collect_domain
-  end
-
-  collect_data(:windows) do
-    require 'ruby-wmi'
-    require 'socket'
-
-    host = WMI::Win32_ComputerSystem.find(:first)
-    hostname "#{host.Name}"
-    machinename "#{host.Name}"
-
-    info = Socket.gethostbyname(Socket.gethostname)
-    if info.first =~ /.+?\.(.*)/
-      fqdn info.first
-    else
-      #host is not in dns. optionally use:
-      #C:\WINDOWS\system32\drivers\etc\hosts
-      fqdn Socket.gethostbyaddr(info.last).first
-    end
-    domain collect_domain
   end
 end
