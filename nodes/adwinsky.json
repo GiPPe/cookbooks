@@ -1,0 +1,2281 @@
+{
+  "name": "adwinsky",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "default": {
+    "account": {
+      "tags": [
+
+      ]
+    },
+    "chef_domain": null,
+    "cluster": {
+      "name": null,
+      "host": {
+        "group": "Adams-MacBook-Pro",
+        "id": 1
+      }
+    },
+    "contacts": {
+      "hostmaster": "hostmaster@",
+      "mysql": "root@"
+    },
+    "homedir": "/Users/adwinsky",
+    "current_email": "adwinsky@",
+    "current_name": "Adam Dratwinski",
+    "script_path": "/Users/adwinsky/bin",
+    "password": {
+      "directory": "/Users/adwinsky/.chef/passwords"
+    },
+    "java": {
+      "vm": "oracle-jdk-bin-1.7"
+    },
+    "mysql": {
+      "backup": {
+        "mode": "copy",
+        "keep": "14",
+        "full_backup": [
+          "6",
+          "11"
+        ],
+        "full_clean": [
+          "0",
+          "11"
+        ],
+        "binlog_clean": [
+          "0",
+          "15"
+        ],
+        "stream": {
+          "host": null,
+          "dir": "~"
+        },
+        "copy": {
+          "dir": "/var/backup/mysql"
+        }
+      },
+      "server": {
+        "sharedstatedir": "/usr/share/mysql",
+        "sysconfdir": "/etc/mysql",
+        "libdir": "/usr/lib/mysql",
+        "localstatedir": "/var/lib/mysql",
+        "logdir": "/var/log/mysql",
+        "rundir": "/run/mysqld",
+        "includedir": "/usr/include/mysql",
+        "datadir": "/var/lib/mysql",
+        "tmpdir": "/var/tmp",
+        "startup_timeout": 900,
+        "startup_early_timeout": 1000,
+        "stop_timeout": 120,
+        "skip_networking": false,
+        "bind_address": "0.0.0.0",
+        "skip_innodb": false,
+        "server_id": 3232235620,
+        "slave_enabled": false,
+        "active_master": false,
+        "log_bin": true,
+        "sync_binlog": "0",
+        "relay_log": true,
+        "expire_logs_days": 14,
+        "log_slave_updates": false,
+        "replicate_do_db": false,
+        "replicate_do_table": false,
+        "slave_transaction_retries": 10,
+        "auto_increment_increment": 1,
+        "auto_increment_offset": 1,
+        "binlog_format": "row",
+        "table_open_cache": "1024",
+        "table_definition_cache": 4096,
+        "open_files_limit": 3072,
+        "tmp_table_size": "64M",
+        "max_heap_table_size": "64M",
+        "group_concat_max_len": "1024",
+        "max_connections": "128",
+        "thread_cache_size": "128",
+        "max_allowed_packet": "16M",
+        "wait_timeout": "28800",
+        "connect_timeout": "10",
+        "key_buffer_size": "64M",
+        "query_cache_size": "128M",
+        "query_cache_type": 1,
+        "query_cache_limit": "4M",
+        "sort_buffer_size": "4M",
+        "read_buffer_size": "1M",
+        "read_rnd_buffer_size": "512K",
+        "myisam_sort_buffer_size": "64M",
+        "join_buffer_size": "2M",
+        "innodb_file_per_table": true,
+        "innodb_data_home_dir": "/var/lib/mysql",
+        "innodb_buffer_pool_size": "512M",
+        "innodb_log_file_size": "256M",
+        "innodb_log_buffer_size": "1M",
+        "innodb_flush_log_at_trx_commit": "1",
+        "innodb_thread_concurrency": 17,
+        "innodb_lock_wait_timeout": "50",
+        "ft_min_word_len": 4,
+        "default_storage_engine": "MyISAM",
+        "detailed_monitoring": false,
+        "nagios": {
+          "ctime": {
+            "command": "connection-time",
+            "warning": "1",
+            "critical": "5",
+            "check_interval": 1,
+            "notification_interval": 15,
+            "enabled": true
+          },
+          "conns": {
+            "command": "threads-connected",
+            "warning": 102,
+            "critical": 121,
+            "check_interval": 1,
+            "notification_interval": 15,
+            "enabled": true
+          },
+          "tchit": {
+            "command": "threadcache-hitrate",
+            "warning": "90:",
+            "critical": "80:",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "qchit": {
+            "command": "qcache-hitrate",
+            "warning": "90:",
+            "critical": "80:",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "qclow": {
+            "command": "qcache-lowmem-prunes",
+            "warning": "1",
+            "critical": "10",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "long": {
+            "command": "long-running-procs",
+            "warning": "10",
+            "critical": "20",
+            "check_interval": 5,
+            "notification_interval": 60,
+            "enabled": true
+          },
+          "tabhit": {
+            "command": "tablecache-hitrate",
+            "warning": "99:",
+            "critical": "95:",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "lock": {
+            "command": "table-lock-contention",
+            "warning": "1",
+            "critical": "2",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "index": {
+            "command": "index-usage",
+            "warning": "90:",
+            "critical": "80:",
+            "check_interval": 60,
+            "notification_interval": 60,
+            "enabled": false
+          },
+          "tmptab": {
+            "command": "tmp-disk-tables",
+            "warning": "25",
+            "critical": "50",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "kchit": {
+            "command": "keycache-hitrate",
+            "warning": "99:",
+            "critical": "95:",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "bphit": {
+            "command": "bufferpool-hitrate",
+            "warning": "99:",
+            "critical": "95:",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "bpwait": {
+            "command": "bufferpool-wait-free",
+            "warning": "1",
+            "critical": "10",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "logwait": {
+            "command": "log-waits",
+            "warning": "1",
+            "critical": "10",
+            "check_interval": 60,
+            "notification_interval": 180,
+            "enabled": false
+          },
+          "slaveio": {
+            "command": "slave-io-running",
+            "warning": "0",
+            "critical": "0",
+            "check_interval": 1,
+            "notification_interval": 15,
+            "enabled": false
+          },
+          "slavesql": {
+            "command": "slave-sql-running",
+            "warning": "0",
+            "critical": "0",
+            "check_interval": 1,
+            "notification_interval": 15,
+            "enabled": false
+          },
+          "slavelag": {
+            "command": "slave-lag",
+            "warning": "60",
+            "critical": "120",
+            "check_interval": 5,
+            "notification_interval": 60,
+            "enabled": false
+          }
+        }
+      },
+      "backupdir": "/var/backup/mysql",
+      "backups": {
+      }
+    },
+    "php": {
+      "default_use_flags": [
+        "-*",
+        "bcmath",
+        "bzip2",
+        "crypt",
+        "ctype",
+        "curl",
+        "exif",
+        "filter",
+        "ftp",
+        "gd",
+        "hash",
+        "iconv",
+        "imap",
+        "json",
+        "mysql",
+        "mysqli",
+        "mysqlnd",
+        "nls",
+        "pcre",
+        "pdo",
+        "posix",
+        "reflection",
+        "session",
+        "simplexml",
+        "soap",
+        "sockets",
+        "spl",
+        "sqlite3",
+        "ssl",
+        "tokenizer",
+        "truetype",
+        "unicode",
+        "xml",
+        "zlib",
+        "zip"
+      ],
+      "use_flags": [
+
+      ],
+      "sapi": [
+        "cli"
+      ],
+      "tmp_dir": "/var/tmp/php",
+      "short_open_tag": "On",
+      "allow_call_time_pass_reference": "Off",
+      "display_errors": "Off",
+      "expose_php": "Off",
+      "magic_quotes_gpc": "Off",
+      "max_execution_time": "30",
+      "max_input_nesting_level": "64",
+      "max_input_time": "60",
+      "max_input_vars": "1000",
+      "memory_limit": "128M",
+      "post_max_size": "8M",
+      "realpath_cache_size": "16k",
+      "register_argc_argv": "Off",
+      "register_globals": "Off",
+      "register_long_arrays": "Off",
+      "session": {
+        "auto_start": "0",
+        "lifetime": "60",
+        "save_path": "/var/tmp/php/sessions",
+        "use_only_cookies": "1"
+      },
+      "upload": {
+        "max_filesize": "2M",
+        "tmp_dir": "/var/tmp/php/uploads"
+      },
+      "fpm": {
+        "conf": "/etc/php/fpm-php/php-fpm.conf",
+        "pools": {
+          "default": {
+          }
+        }
+      },
+      "extension_dir": "",
+      "xcache": {
+        "admin_enable_auth": "Off",
+        "admin_pass": "",
+        "cacher": "On",
+        "count": "2",
+        "size": "64M",
+        "var_count": "2",
+        "var_size": "64M"
+      }
+    },
+    "nginx": {
+      "use_flags": [
+
+      ],
+      "worker_processes": 8,
+      "worker_connections": "1024",
+      "tcp_nopush": "on",
+      "tcp_nodelay": "on",
+      "client_body_timeout": 60,
+      "client_header_timeout": 60,
+      "client_max_body_size": "10M",
+      "keepalive_timeout": 75,
+      "send_timeout": 60,
+      "fastcgi_buffers": 256,
+      "php": {
+        "max_children": "4"
+      }
+    },
+    "nagios": {
+      "server_name": "nagios.",
+      "certificate": "wildcard.",
+      "from_address": "nagios@",
+      "nsca": {
+        "password": "n6JlHK3zql33QpQiiNWk1rC5XQsDk8KB"
+      },
+      "notifier": "noop",
+      "vhosts": [
+
+      ],
+      "duty": {
+        "schedules": {
+        }
+      }
+    },
+    "hadoop2": {
+      "version": "2.4.1",
+      "pig": {
+        "version": "0.12.1",
+        "default_jars": [
+          "http://search.maven.org/remotecontent?filepath=com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar",
+          "http://search.maven.org/remotecontent?filepath=com/twitter/elephantbird/elephant-bird-pig/4.4/elephant-bird-pig-4.4.jar",
+          "http://search.maven.org/remotecontent?filepath=com/twitter/elephantbird/elephant-bird-hadoop-compat/4.4/elephant-bird-hadoop-compat-4.4.jar",
+          "http://search.maven.org/remotecontent?filepath=com/twitter/parquet-pig-bundle/1.4.1/parquet-pig-bundle-1.4.1.jar",
+          "http://search.maven.org/remotecontent?filepath=org/apache/pig/piggybank/0.12.0/piggybank-0.12.0.jar",
+          "http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.29/mysql-connector-java-5.1.29.jar"
+        ]
+      },
+      "rack_id": null,
+      "tmp_dir": "/var/tmp/hadoop2",
+      "java_tmp": "/var/tmp/java",
+      "cluster": null,
+      "zk": {
+        "cluster": null
+      },
+      "hdfs": {
+        "cluster": null
+      },
+      "historyserver": null,
+      "nodemanager": {
+        "memory_mb": 8192,
+        "vcores": 8
+      },
+      "hive": {
+        "repository": "https://github.com/liquidm/hive.git",
+        "revision": "master"
+      },
+      "fs": {
+        "s3": {
+          "access_key": null,
+          "secret_key": null
+        }
+      },
+      "du": {
+        "reserved": 10737418240
+      },
+      "decommissioning": [
+
+      ]
+    },
+    "splunk": {
+      "inputs": {
+      },
+      "replication_factor": 2,
+      "search_factor": 2
+    },
+    "deploy": {
+      "deployers": [
+
+      ]
+    },
+    "zookeeper": {
+      "confdir": "/usr/local/etc/zookeeper",
+      "bindir": "/usr/local/bin",
+      "datadir": "/usr/local/var/zookeeper",
+      "myid": 1
+    },
+    "kafka": {
+      "git": {
+        "repository": "https://github.com/apache/kafka",
+        "revision": "0.8"
+      },
+      "storage": "/var/app/kafka/storage",
+      "zookeeper": {
+        "root": "/kafka"
+      },
+      "partition": {
+        "default": 4,
+        "replication": 1
+      },
+      "log": {
+        "retention_hours": 144
+      },
+      "migration": {
+        "streams": 8,
+        "producers": 16,
+        "groupid": "kafka-07-08-migration",
+        "whitelist": ".*",
+        "compression": 0
+      }
+    },
+    "systemd": {
+      "target": "multi-user"
+    },
+    "app": {
+      "homedir": "/var/app/app",
+      "port": 3000,
+      "worker_processes": 2,
+      "timeout": 600
+    },
+    "apt": {
+      "cacher-client": {
+        "restrict_environment": false
+      },
+      "cacher_port": 3142,
+      "key_proxy": ""
+    },
+    "cron": {
+      "hourly": {
+        "minute": 33
+      },
+      "daily": {
+        "minute": 23,
+        "hour": 3
+      },
+      "weekly": {
+        "minute": 29,
+        "hour": 4,
+        "wday": 6
+      },
+      "monthly": {
+        "minute": 30,
+        "hour": 5,
+        "day": 1
+      }
+    },
+    "portage": {
+      "arch": "",
+      "make_conf": "/etc/portage/make.conf",
+      "confdir": "/etc/portage",
+      "portdir": "/usr/portage",
+      "distdir": "/usr/portage/distfiles",
+      "pkgdir": "/usr/portage/packages/",
+      "CFLAGS": "-O2 -pipe",
+      "CXXFLAGS": "${CFLAGS}",
+      "USE": [
+
+      ],
+      "ACCEPT_KEYWORDS": null,
+      "FEATURES": [
+        "buildpkg"
+      ],
+      "OPTS": [
+        "--usepkg=y",
+        "--getbinpkg=y"
+      ],
+      "MAKEOPTS": "-j1",
+      "LINGUAS": [
+        "en"
+      ]
+    },
+    "timezone": "Europe/Berlin",
+    "locales": [
+      "en_US.UTF-8 UTF-8",
+      "de_DE.UTF-8 UTF-8"
+    ],
+    "resolv": {
+      "nameservers": [
+        "4.2.2.2",
+        "8.8.8.8"
+      ],
+      "search": [
+
+      ],
+      "hosts": [
+
+      ],
+      "aliases": [
+
+      ]
+    },
+    "sysctl": {
+      "kernel": {
+        "sysrq": 1,
+        "panic": 60,
+        "shmall": 4194304,
+        "shmmax": 17179869184,
+        "shmmni": 4096
+      },
+      "vm": {
+        "overcommit_ratio": 95,
+        "overcommit_memory": 0
+      },
+      "fs": {
+        "file_max": 524288,
+        "nr_open": 262144
+      },
+      "net": {
+        "core": {
+          "somaxconn": 128,
+          "netdev_max_backlog": 1000,
+          "rmem_max": 131071,
+          "wmem_max": 131071
+        },
+        "ipv4": {
+          "ip_local_port_range": "32768 61000",
+          "tcp_fin_timeout": 60,
+          "tcp_max_syn_backlog": 2048,
+          "tcp_max_tw_buckets": 262144,
+          "tcp_sack": 1,
+          "tcp_syncookies": 1,
+          "tcp_timestamps": 1,
+          "tcp_tw_recycle": 0,
+          "tcp_tw_reuse": 0,
+          "tcp_window_scaling": 1,
+          "tcp_rmem": "4096 87380 6291456",
+          "tcp_wmem": "4096 16384 4194304"
+        },
+        "netfilter": {
+          "nf_conntrack_max": 262144,
+          "nf_conntrack_tcp_timeout_time_wait": 120,
+          "nf_conntrack_tcp_timeout_established": 432000
+        }
+      }
+    },
+    "homebrew": {
+      "repo": "https://github.com/mxcl/homebrew"
+    },
+    "apple_id": "adam.dratwinski@me.com",
+    "apple_password": "Dr490N84lL",
+    "mac": {
+      "packages": [
+        "ack",
+        "atool",
+        "autoconf",
+        "automake",
+        "colordiff",
+        "dos2unix",
+        "findutils",
+        "gawk",
+        "gnu-sed",
+        "gnu-tar",
+        "icu4c",
+        "libffi",
+        "libksba",
+        "libtool",
+        "libxml2",
+        "libxslt",
+        "libyaml",
+        "ncdu",
+        "netcat",
+        "nmap",
+        "openssl",
+        "pkg-config",
+        "pwgen",
+        "readline",
+        "sqlite",
+        "tree",
+        "wget"
+      ]
+    },
+    "bash": {
+      "rcdir": "/Users/adwinsky/.bash",
+      "dircolors": "/Users/adwinsky/.dir_colors",
+      "colordiffrc": "/Users/adwinsky/.colordiffrc"
+    },
+    "git": {
+      "email": "adwinsky@",
+      "name": "Adam Dratwinski",
+      "github": {
+        "user": null
+      },
+      "rcfile": "/Users/adwinsky/.gitconfig",
+      "exfile": "/Users/adwinsky/.gitignore"
+    },
+    "lftp": {
+      "configfile": "/Users/adwinsky/.lftp/rc",
+      "bookmarks": {
+      }
+    },
+    "ohai": {
+      "plugin_path": "/Users/adwinsky/.ohai/plugins"
+    },
+    "ssh": {
+      "config": "/Users/adwinsky/.ssh/config",
+      "hostsfile": "/Users/adwinsky/.ssh/known_hosts",
+      "additional_host_keys": [
+
+      ],
+      "server": {
+        "password_auth": "no",
+        "challange_response_auth": "no",
+        "root_login": "no",
+        "x11_forwarding": "yes",
+        "use_lpk": "no",
+        "matches": {
+        }
+      }
+    },
+    "tmux": {
+      "configfile": "/Users/adwinsky/.tmux.conf"
+    },
+    "vim": {
+      "rcdir": "/Users/adwinsky/.vim",
+      "rcfile": "/Users/adwinsky/.vimrc"
+    },
+    "ssl": {
+      "country_name": "DE",
+      "state_name": "Berlin",
+      "locality_name": "Berlin",
+      "organization_name": ""
+    },
+    "shorewall": {
+      "accounting": {
+      },
+      "hosts": {
+      },
+      "interfaces": {
+      },
+      "masq": {
+      },
+      "policies": {
+      },
+      "rules": {
+        "workstation": {
+          "action": "ACCEPT",
+          "source": "net",
+          "dest": "$FW",
+          "proto": "tcp",
+          "destport": "3000:3099",
+          "sourceport": "-",
+          "name": "workstation"
+        }
+      },
+      "tunnels": {
+      },
+      "zones": {
+      }
+    },
+    "shorewall6": {
+      "accounting": {
+      },
+      "hosts": {
+      },
+      "interfaces": {
+      },
+      "masq": {
+      },
+      "policies": {
+      },
+      "rules": {
+      },
+      "tunnels": {
+      },
+      "zones": {
+      }
+    },
+    "network": {
+      "default_interface_bridged": false
+    },
+    "jenkins": {
+      "server_name": "jenkins.",
+      "certificate": "wildcard."
+    },
+    "metro": {
+      "repository": "https://github.com/zentoo/metro",
+      "path": {
+        "mirror": "/var/cache/mirror"
+      },
+      "builds": [
+        "zentoo"
+      ],
+      "archs": [
+        "amd64"
+      ]
+    },
+    "rsync": {
+      "modules": {
+      }
+    },
+    "zenops": {
+      "mirror": {
+        "server_name": "mirror."
+      }
+    }
+  },
+  "automatic": {
+    "chef_packages": {
+      "chef": {
+        "version": "11.12.4",
+        "chef_root": "/Users/adwinsky/.rvm/gems/ruby-2.1.0/gems/chef-11.12.4/lib"
+      },
+      "ohai": {
+        "version": "7.0.4",
+        "ohai_root": "/Users/adwinsky/.rvm/gems/ruby-2.1.0/gems/ohai-7.0.4/lib/ohai"
+      }
+    },
+    "command": {
+      "ps": "ps -ef"
+    },
+    "current_user": "adwinsky",
+    "cpu": {
+      "real": 4,
+      "total": 8,
+      "mhz": 2700,
+      "vendor_id": "GenuineIntel\n",
+      "model_name": "Intel(R) Core(TM) i7-3740QM CPU @ 2.70GHz\n",
+      "model": 58,
+      "family": 6,
+      "stepping": 9,
+      "flags": [
+        "fpu",
+        "vme",
+        "de",
+        "pse",
+        "tsc",
+        "msr",
+        "pae",
+        "mce",
+        "cx8",
+        "apic",
+        "sep",
+        "mtrr",
+        "pge",
+        "mca",
+        "cmov",
+        "pat",
+        "pse36",
+        "clfsh",
+        "ds",
+        "acpi",
+        "mmx",
+        "fxsr",
+        "sse",
+        "sse2",
+        "ss",
+        "htt",
+        "tm",
+        "pbe",
+        "sse3",
+        "pclmulqdq",
+        "dtes64",
+        "mon",
+        "dscpl",
+        "vmx",
+        "smx",
+        "est",
+        "tm2",
+        "ssse3",
+        "cx16",
+        "tpr",
+        "pdcm",
+        "sse4.1",
+        "sse4.2",
+        "x2apic",
+        "popcnt",
+        "aes",
+        "pcid",
+        "xsave",
+        "osxsave",
+        "tsctmr",
+        "avx1.0",
+        "rdrand",
+        "f16c"
+      ]
+    },
+    "network": {
+      "interfaces": {
+        "lo0": {
+          "addresses": {
+            "::1": {
+              "family": "inet6",
+              "prefixlen": "128",
+              "scope": "Node"
+            },
+            "127.0.0.1": {
+              "family": "inet",
+              "netmask": "255.0.0.0"
+            },
+            "fe80::1": {
+              "family": "inet6",
+              "prefixlen": "64",
+              "scope": "Link"
+            }
+          },
+          "mtu": "16384",
+          "flags": [
+            "UP",
+            "LOOPBACK",
+            "RUNNING",
+            "MULTICAST"
+          ],
+          "type": "lo",
+          "number": "0",
+          "encapsulation": "Loopback"
+        },
+        "gif0": {
+          "addresses": {
+          },
+          "mtu": "1280",
+          "flags": [
+            "POINTOPOINT",
+            "MULTICAST"
+          ],
+          "type": "gif",
+          "number": "0",
+          "encapsulation": "IPIP"
+        },
+        "stf0": {
+          "addresses": {
+          },
+          "mtu": "1280",
+          "flags": [
+
+          ],
+          "type": "stf",
+          "number": "0",
+          "encapsulation": "6to4"
+        },
+        "en0": {
+          "addresses": {
+            "28:cf:e9:15:0f:47": {
+              "family": "lladdr"
+            },
+            "fe80::2acf:e9ff:fe15:f47": {
+              "family": "inet6",
+              "prefixlen": "64",
+              "scope": "Link"
+            },
+            "192.168.0.100": {
+              "family": "inet",
+              "netmask": "255.255.255.0",
+              "broadcast": "192.168.0.255"
+            }
+          },
+          "mtu": "1500",
+          "flags": [
+            "UP",
+            "BROADCAST",
+            "SMART",
+            "RUNNING",
+            "SIMPLEX",
+            "MULTICAST"
+          ],
+          "type": "en",
+          "number": "0",
+          "encapsulation": "Ethernet",
+          "arp": {
+            "192.168.0.1": "c8:be:19:af:1e:80"
+          }
+        },
+        "en1": {
+          "addresses": {
+            "32:00:11:5e:24:00": {
+              "family": "lladdr"
+            }
+          },
+          "mtu": "1500",
+          "flags": [
+            "UP",
+            "BROADCAST",
+            "SMART",
+            "RUNNING",
+            "PROMISC",
+            "SIMPLEX",
+            "MULTICAST"
+          ],
+          "type": "en",
+          "number": "1",
+          "encapsulation": "Ethernet"
+        },
+        "en2": {
+          "addresses": {
+            "32:00:11:5e:24:01": {
+              "family": "lladdr"
+            }
+          },
+          "mtu": "1500",
+          "flags": [
+            "UP",
+            "BROADCAST",
+            "SMART",
+            "RUNNING",
+            "PROMISC",
+            "SIMPLEX",
+            "MULTICAST"
+          ],
+          "type": "en",
+          "number": "2",
+          "encapsulation": "Ethernet"
+        },
+        "bridge0": {
+          "addresses": {
+            "2a:cf:e9:51:b7:00": {
+              "family": "lladdr"
+            }
+          },
+          "mtu": "1500",
+          "flags": [
+            "UP",
+            "BROADCAST",
+            "SMART",
+            "RUNNING",
+            "SIMPLEX",
+            "MULTICAST"
+          ],
+          "type": "bridge",
+          "number": "0",
+          "encapsulation": "Ethernet"
+        },
+        "p2p0": {
+          "addresses": {
+            "0a:cf:e9:15:0f:47": {
+              "family": "lladdr"
+            }
+          },
+          "mtu": "2304",
+          "flags": [
+            "UP",
+            "BROADCAST",
+            "RUNNING",
+            "SIMPLEX",
+            "MULTICAST"
+          ],
+          "type": "p2p",
+          "number": "0",
+          "encapsulation": "Ethernet"
+        }
+      },
+      "default_gateway": "192.168.0.1",
+      "default_interface": "en0",
+      "settings": {
+        "net.local.stream.sendspace": "8192",
+        "net.local.stream.recvspace": "8192",
+        "net.local.stream.tracemdns": "0",
+        "net.local.dgram.maxdgram": "2048",
+        "net.local.dgram.recvspace": "4096",
+        "net.local.inflight": "0",
+        "net.inet.ip.portrange.lowfirst": "1023",
+        "net.inet.ip.portrange.lowlast": "600",
+        "net.inet.ip.portrange.first": "49152",
+        "net.inet.ip.portrange.last": "65535",
+        "net.inet.ip.portrange.hifirst": "49152",
+        "net.inet.ip.portrange.hilast": "65535",
+        "net.inet.ip.forwarding": "0",
+        "net.inet.ip.redirect": "1",
+        "net.inet.ip.ttl": "64",
+        "net.inet.ip.rtexpire": "27",
+        "net.inet.ip.rtminexpire": "10",
+        "net.inet.ip.rtmaxcache": "128",
+        "net.inet.ip.sourceroute": "0",
+        "net.inet.ip.accept_sourceroute": "0",
+        "net.inet.ip.gifttl": "30",
+        "net.inet.ip.subnets_are_local": "0",
+        "net.inet.ip.mcast.maxgrpsrc": "512",
+        "net.inet.ip.mcast.maxsocksrc": "128",
+        "net.inet.ip.mcast.loop": "1",
+        "net.inet.ip.dummynet.hash_size": "64",
+        "net.inet.ip.dummynet.curr_time": "0",
+        "net.inet.ip.dummynet.ready_heap": "0",
+        "net.inet.ip.dummynet.extract_heap": "0",
+        "net.inet.ip.dummynet.searches": "0",
+        "net.inet.ip.dummynet.search_steps": "0",
+        "net.inet.ip.dummynet.expire": "1",
+        "net.inet.ip.dummynet.max_chain_len": "16",
+        "net.inet.ip.dummynet.red_lookup_depth": "256",
+        "net.inet.ip.dummynet.red_avg_pkt_size": "512",
+        "net.inet.ip.dummynet.red_max_pkt_size": "1500",
+        "net.inet.ip.dummynet.debug": "0",
+        "net.inet.ip.fw.enable": "1",
+        "net.inet.ip.fw.autoinc_step": "100",
+        "net.inet.ip.fw.one_pass": "0",
+        "net.inet.ip.fw.debug": "0",
+        "net.inet.ip.fw.verbose": "0",
+        "net.inet.ip.fw.verbose_limit": "0",
+        "net.inet.ip.fw.dyn_buckets": "256",
+        "net.inet.ip.fw.curr_dyn_buckets": "256",
+        "net.inet.ip.fw.dyn_count": "0",
+        "net.inet.ip.fw.dyn_max": "4096",
+        "net.inet.ip.fw.static_count": "1",
+        "net.inet.ip.fw.dyn_ack_lifetime": "300",
+        "net.inet.ip.fw.dyn_syn_lifetime": "20",
+        "net.inet.ip.fw.dyn_fin_lifetime": "1",
+        "net.inet.ip.fw.dyn_rst_lifetime": "1",
+        "net.inet.ip.fw.dyn_udp_lifetime": "10",
+        "net.inet.ip.fw.dyn_short_lifetime": "5",
+        "net.inet.ip.fw.dyn_keepalive": "1",
+        "net.inet.ip.random_id_statistics": "0",
+        "net.inet.ip.random_id_collisions": "0",
+        "net.inet.ip.random_id_total": "0",
+        "net.inet.ip.sendsourcequench": "0",
+        "net.inet.ip.maxfragpackets": "2048",
+        "net.inet.ip.fragpackets": "0",
+        "net.inet.ip.maxfragsperpacket": "128",
+        "net.inet.ip.scopedroute": "1",
+        "net.inet.ip.adj_clear_hwcksum": "0",
+        "net.inet.ip.check_interface": "0",
+        "net.inet.ip.linklocal.in.allowbadttl": "1",
+        "net.inet.ip.random_id": "1",
+        "net.inet.ip.maxchainsent": "8",
+        "net.inet.ip.select_srcif_debug": "0",
+        "net.inet.icmp.maskrepl": "0",
+        "net.inet.icmp.icmplim": "250",
+        "net.inet.icmp.timestamp": "0",
+        "net.inet.icmp.drop_redirect": "0",
+        "net.inet.icmp.log_redirect": "0",
+        "net.inet.icmp.bmcastecho": "1",
+        "net.inet.igmp.recvifkludge": "1",
+        "net.inet.igmp.sendra": "1",
+        "net.inet.igmp.sendlocal": "1",
+        "net.inet.igmp.v1enable": "1",
+        "net.inet.igmp.v2enable": "1",
+        "net.inet.igmp.legacysupp": "0",
+        "net.inet.igmp.default_version": "3",
+        "net.inet.igmp.gsrdelay": "10",
+        "net.inet.igmp.debug": "0",
+        "net.inet.tcp.rfc1323": "1",
+        "net.inet.tcp.rfc1644": "0",
+        "net.inet.tcp.mssdflt": "512",
+        "net.inet.tcp.keepidle": "7200000",
+        "net.inet.tcp.keepintvl": "75000",
+        "net.inet.tcp.sendspace": "131072",
+        "net.inet.tcp.recvspace": "131072",
+        "net.inet.tcp.keepinit": "75000",
+        "net.inet.tcp.v6mssdflt": "1024",
+        "net.inet.tcp.log_in_vain": "0",
+        "net.inet.tcp.blackhole": "0",
+        "net.inet.tcp.delayed_ack": "3",
+        "net.inet.tcp.tcp_lq_overflow": "1",
+        "net.inet.tcp.recvbg": "0",
+        "net.inet.tcp.drop_synfin": "1",
+        "net.inet.tcp.reass.maxsegments": "4096",
+        "net.inet.tcp.reass.cursegments": "0",
+        "net.inet.tcp.reass.overflows": "0",
+        "net.inet.tcp.slowlink_wsize": "8192",
+        "net.inet.tcp.maxseg_unacked": "8",
+        "net.inet.tcp.rfc3465": "1",
+        "net.inet.tcp.rfc3465_lim2": "1",
+        "net.inet.tcp.rtt_samples_per_slot": "20",
+        "net.inet.tcp.recv_allowed_iaj": "5",
+        "net.inet.tcp.acc_iaj_high_thresh": "100",
+        "net.inet.tcp.doautorcvbuf": "1",
+        "net.inet.tcp.autorcvbufincshift": "3",
+        "net.inet.tcp.autorcvbufmax": "524288",
+        "net.inet.tcp.lro": "0",
+        "net.inet.tcp.lrodbg": "0",
+        "net.inet.tcp.lro_startcnt": "4",
+        "net.inet.tcp.limited_transmit": "1",
+        "net.inet.tcp.early_rexmt": "1",
+        "net.inet.tcp.sack_ackadv": "1",
+        "net.inet.tcp.rcvsspktcnt": "512",
+        "net.inet.tcp.rexmt_thresh": "3",
+        "net.inet.tcp.path_mtu_discovery": "1",
+        "net.inet.tcp.slowstart_flightsize": "1",
+        "net.inet.tcp.local_slowstart_flightsize": "8",
+        "net.inet.tcp.tso": "1",
+        "net.inet.tcp.ecn_initiate_out": "0",
+        "net.inet.tcp.ecn_negotiate_in": "0",
+        "net.inet.tcp.packetchain": "50",
+        "net.inet.tcp.socket_unlocked_on_output": "1",
+        "net.inet.tcp.rfc3390": "1",
+        "net.inet.tcp.min_iaj_win": "4",
+        "net.inet.tcp.acc_iaj_react_limit": "200",
+        "net.inet.tcp.doautosndbuf": "1",
+        "net.inet.tcp.autosndbufinc": "8192",
+        "net.inet.tcp.autosndbufmax": "524288",
+        "net.inet.tcp.ack_prioritize": "1",
+        "net.inet.tcp.rtt_recvbg": "1",
+        "net.inet.tcp.recv_throttle_minwin": "16384",
+        "net.inet.tcp.sack": "1",
+        "net.inet.tcp.sack_maxholes": "128",
+        "net.inet.tcp.sack_globalmaxholes": "65536",
+        "net.inet.tcp.sack_globalholes": "0",
+        "net.inet.tcp.minmss": "216",
+        "net.inet.tcp.do_tcpdrain": "0",
+        "net.inet.tcp.pcbcount": "29",
+        "net.inet.tcp.tw_pcbcount": "6",
+        "net.inet.tcp.icmp_may_rst": "1",
+        "net.inet.tcp.strict_rfc1948": "0",
+        "net.inet.tcp.isn_reseed_interval": "0",
+        "net.inet.tcp.background_io_enabled": "1",
+        "net.inet.tcp.rtt_min": "100",
+        "net.inet.tcp.rexmt_slop": "200",
+        "net.inet.tcp.randomize_ports": "0",
+        "net.inet.tcp.newreno_sockets": "25",
+        "net.inet.tcp.background_sockets": "2",
+        "net.inet.tcp.win_scale_factor": "3",
+        "net.inet.tcp.tcbhashsize": "4096",
+        "net.inet.tcp.background_io_trigger": "5",
+        "net.inet.tcp.keepcnt": "8",
+        "net.inet.tcp.msl": "15000",
+        "net.inet.tcp.max_persist_timeout": "0",
+        "net.inet.tcp.always_keepalive": "0",
+        "net.inet.tcp.timer_fastmode_idlemax": "20",
+        "net.inet.tcp.broken_peer_syn_rxmit_thres": "7",
+        "net.inet.tcp.broken_peer_syn_rexmit_thres_local": "10",
+        "net.inet.tcp.tcp_timer_advanced": "349",
+        "net.inet.tcp.tcp_resched_timerlist": "6816",
+        "net.inet.tcp.pmtud_blackhole_detection": "1",
+        "net.inet.tcp.pmtud_blackhole_mss": "1200",
+        "net.inet.tcp.timer_fastquantum": "100",
+        "net.inet.tcp.timer_slowquantum": "500",
+        "net.inet.tcp.lro_sz": "8",
+        "net.inet.tcp.lro_time": "10",
+        "net.inet.tcp.bg_target_qdelay": "100",
+        "net.inet.tcp.bg_allowed_increase": "8",
+        "net.inet.tcp.bg_tether_shift": "1",
+        "net.inet.tcp.bg_ss_fltsz": "2",
+        "net.inet.udp.checksum": "1",
+        "net.inet.udp.maxdgram": "9216",
+        "net.inet.udp.recvspace": "196724",
+        "net.inet.udp.log_in_vain": "0",
+        "net.inet.udp.blackhole": "0",
+        "net.inet.udp.pcbcount": "50",
+        "net.inet.udp.randomize_ports": "1",
+        "net.inet.ipsec.def_policy": "1",
+        "net.inet.ipsec.esp_trans_deflev": "1",
+        "net.inet.ipsec.esp_net_deflev": "1",
+        "net.inet.ipsec.ah_trans_deflev": "1",
+        "net.inet.ipsec.ah_net_deflev": "1",
+        "net.inet.ipsec.ah_cleartos": "1",
+        "net.inet.ipsec.ah_offsetmask": "0",
+        "net.inet.ipsec.dfbit": "0",
+        "net.inet.ipsec.ecn": "0",
+        "net.inet.ipsec.debug": "0",
+        "net.inet.ipsec.esp_randpad": "-1",
+        "net.inet.ipsec.bypass": "1",
+        "net.inet.ipsec.esp_port": "0",
+        "net.inet.raw.maxdgram": "8192",
+        "net.inet.raw.recvspace": "8192",
+        "net.inet.raw.pcbcount": "1",
+        "net.link.generic.system.ifcount": "9",
+        "net.link.generic.system.if_verbose": "0",
+        "net.link.generic.system.dlil_lladdr_ckreq": "0",
+        "net.link.generic.system.dlil_verbose": "0",
+        "net.link.generic.system.sndq_maxlen": "128",
+        "net.link.generic.system.rcvq_maxlen": "256",
+        "net.link.generic.system.rxpoll_decay": "2",
+        "net.link.generic.system.rxpoll_freeze_time": "1000000000",
+        "net.link.generic.system.rxpoll_sample_time": "10000000",
+        "net.link.generic.system.rxpoll_interval_time": "1000000",
+        "net.link.generic.system.rxpoll_interval_pkts": "0",
+        "net.link.generic.system.rxpoll_wakeups_lowat": "10",
+        "net.link.generic.system.rxpoll_wakeups_hiwat": "100",
+        "net.link.generic.system.rxpoll_max": "0",
+        "net.link.generic.system.rxpoll": "1",
+        "net.link.generic.system.if_bw_smoothing_val": "3",
+        "net.link.generic.system.if_bw_measure_size": "10",
+        "net.link.generic.system.dlil_input_threads": "5",
+        "net.link.generic.system.dlil_input_sanity_check": "0",
+        "net.link.generic.system.flow_advisory": "1",
+        "net.link.generic.system.hwcksum_in_invalidated": "0",
+        "net.link.generic.system.hwcksum_dbg": "0",
+        "net.link.generic.system.hwcksum_dbg_mode": "0",
+        "net.link.generic.system.hwcksum_dbg_partial_forced": "0",
+        "net.link.generic.system.hwcksum_dbg_partial_forced_bytes": "0",
+        "net.link.generic.system.hwcksum_dbg_partial_rxoff_forced": "0",
+        "net.link.generic.system.hwcksum_dbg_partial_rxoff_adj": "0",
+        "net.link.generic.system.hwcksum_dbg_verified": "0",
+        "net.link.generic.system.hwcksum_dbg_bad_cksum": "0",
+        "net.link.generic.system.hwcksum_dbg_bad_rxoff": "0",
+        "net.link.generic.system.hwcksum_dbg_adjusted": "0",
+        "net.link.generic.system.hwcksum_dbg_finalized_hdr": "0",
+        "net.link.generic.system.hwcksum_dbg_finalized_data": "0",
+        "net.link.generic.system.hwcksum_tx": "1",
+        "net.link.generic.system.hwcksum_rx": "1",
+        "net.link.ether.inet.prune_intvl": "300",
+        "net.link.ether.inet.max_age": "1200",
+        "net.link.ether.inet.host_down_time": "20",
+        "net.link.ether.inet.arp_llreach_base": "30",
+        "net.link.ether.inet.arp_unicast_lim": "5",
+        "net.link.ether.inet.maxtries": "5",
+        "net.link.ether.inet.useloopback": "1",
+        "net.link.ether.inet.proxyall": "0",
+        "net.link.ether.inet.sendllconflict": "0",
+        "net.link.ether.inet.log_arp_warnings": "0",
+        "net.link.ether.inet.keep_announcements": "1",
+        "net.link.ether.inet.send_conflicting_probes": "1",
+        "net.link.ether.inet.verbose": "0",
+        "net.link.ether.inet.apple_hwcksum_tx": "1",
+        "net.link.ether.inet.apple_hwcksum_rx": "1",
+        "net.link.bridge.inherit_mac": "0",
+        "net.link.bridge.rtable_prune_period": "300",
+        "net.link.bridge.rtable_hash_size_max": "2048",
+        "net.link.bridge.txstart": "0",
+        "net.link.bridge.debug": "0",
+        "net.link.loopback.bw_sleep_usec": "10",
+        "net.link.loopback.bw_measure": "0",
+        "net.link.loopback.max_dequeue": "256",
+        "net.link.loopback.sched_model": "0",
+        "net.link.loopback.dequeue_sc": "0",
+        "net.link.iptap.total_tap_count": "0",
+        "net.link.iptap.log": "0",
+        "net.link.pktap.total_tap_count": "0",
+        "net.link.pktap.count_unknown_if_type": "0",
+        "net.link.pktap.log": "0",
+        "net.key.debug": "0",
+        "net.key.spi_trycnt": "1000",
+        "net.key.spi_minval": "256",
+        "net.key.spi_maxval": "268435455",
+        "net.key.int_random": "60",
+        "net.key.larval_lifetime": "30",
+        "net.key.blockacq_count": "10",
+        "net.key.blockacq_lifetime": "20",
+        "net.key.esp_keymin": "256",
+        "net.key.esp_auth": "0",
+        "net.key.ah_keymin": "128",
+        "net.key.prefered_oldsa": "0",
+        "net.key.natt_keepalive_interval": "20",
+        "net.inet6.ip6.forwarding": "0",
+        "net.inet6.ip6.redirect": "1",
+        "net.inet6.ip6.hlim": "64",
+        "net.inet6.ip6.maxfragpackets": "2048",
+        "net.inet6.ip6.accept_rtadv": "1",
+        "net.inet6.ip6.keepfaith": "0",
+        "net.inet6.ip6.log_interval": "5",
+        "net.inet6.ip6.hdrnestlimit": "15",
+        "net.inet6.ip6.dad_count": "1",
+        "net.inet6.ip6.auto_flowlabel": "1",
+        "net.inet6.ip6.defmcasthlim": "1",
+        "net.inet6.ip6.gifhlim": "0",
+        "net.inet6.ip6.kame_version": "2009/apple-darwin",
+        "net.inet6.ip6.use_deprecated": "1",
+        "net.inet6.ip6.rr_prune": "5",
+        "net.inet6.ip6.v6only": "0",
+        "net.inet6.ip6.rtexpire": "3600",
+        "net.inet6.ip6.rtminexpire": "10",
+        "net.inet6.ip6.rtmaxcache": "128",
+        "net.inet6.ip6.use_tempaddr": "1",
+        "net.inet6.ip6.temppltime": "86400",
+        "net.inet6.ip6.tempvltime": "604800",
+        "net.inet6.ip6.auto_linklocal": "1",
+        "net.inet6.ip6.prefer_tempaddr": "1",
+        "net.inet6.ip6.use_defaultzone": "0",
+        "net.inet6.ip6.maxfrags": "4096",
+        "net.inet6.ip6.mcast_pmtu": "0",
+        "net.inet6.ip6.neighborgcthresh": "1024",
+        "net.inet6.ip6.maxifprefixes": "16",
+        "net.inet6.ip6.maxifdefrouters": "16",
+        "net.inet6.ip6.maxdynroutes": "1024",
+        "net.inet6.ip6.fragpackets": "0",
+        "net.inet6.ip6.fw.enable": "1",
+        "net.inet6.ip6.fw.debug": "0",
+        "net.inet6.ip6.fw.verbose": "0",
+        "net.inet6.ip6.fw.verbose_limit": "0",
+        "net.inet6.ip6.scopedroute": "1",
+        "net.inet6.ip6.adj_clear_hwcksum": "0",
+        "net.inet6.ip6.maxchainsent": "0",
+        "net.inet6.ip6.select_srcif_debug": "0",
+        "net.inet6.ip6.mcast.maxgrpsrc": "512",
+        "net.inet6.ip6.mcast.maxsocksrc": "128",
+        "net.inet6.ip6.mcast.loop": "1",
+        "net.inet6.ip6.only_allow_rfc4193_prefixes": "0",
+        "net.inet6.ipsec6.def_policy": "1",
+        "net.inet6.ipsec6.esp_trans_deflev": "1",
+        "net.inet6.ipsec6.esp_net_deflev": "1",
+        "net.inet6.ipsec6.ah_trans_deflev": "1",
+        "net.inet6.ipsec6.ah_net_deflev": "1",
+        "net.inet6.ipsec6.ecn": "0",
+        "net.inet6.ipsec6.debug": "0",
+        "net.inet6.ipsec6.esp_randpad": "-1",
+        "net.inet6.icmp6.rediraccept": "1",
+        "net.inet6.icmp6.redirtimeout": "600",
+        "net.inet6.icmp6.nd6_prune": "1",
+        "net.inet6.icmp6.nd6_delay": "5",
+        "net.inet6.icmp6.nd6_umaxtries": "3",
+        "net.inet6.icmp6.nd6_mmaxtries": "3",
+        "net.inet6.icmp6.nd6_useloopback": "1",
+        "net.inet6.icmp6.nodeinfo": "3",
+        "net.inet6.icmp6.errppslimit": "500",
+        "net.inet6.icmp6.nd6_debug": "0",
+        "net.inet6.icmp6.nd6_accept_6to4": "1",
+        "net.inet6.icmp6.nd6_optimistic_dad": "31",
+        "net.inet6.icmp6.nd6_onlink_ns_rfc4861": "0",
+        "net.inet6.icmp6.nd6_prune_lazy": "5",
+        "net.inet6.icmp6.nd6_llreach_base": "30",
+        "net.inet6.icmp6.nd6_maxsolstgt": "8",
+        "net.inet6.icmp6.nd6_maxproxiedsol": "4",
+        "net.inet6.icmp6.prproxy_cnt": "0",
+        "net.inet6.mld.gsrdelay": "10",
+        "net.inet6.mld.v1enable": "1",
+        "net.inet6.mld.v2enable": "1",
+        "net.inet6.mld.use_allow": "1",
+        "net.inet6.mld.debug": "0",
+        "net.inet6.send.opstate": "0",
+        "net.inet6.send.opmode": "0",
+        "net.ndrv_multi_max_count": "1024",
+        "net.route.verbose": "0",
+        "net.statistics": "1",
+        "net.statistics_privcheck": "0",
+        "net.classq.verbose": "0",
+        "net.classq.sfb.holdtime": "0",
+        "net.classq.sfb.pboxtime": "0",
+        "net.classq.sfb.hinterval": "0",
+        "net.classq.sfb.increment": "82",
+        "net.classq.sfb.decrement": "16",
+        "net.classq.sfb.allocation": "0",
+        "net.classq.sfb.ratelimit": "0",
+        "net.pktsched.verbose": "0",
+        "net.alf.loglevel": "55",
+        "net.alf.perm": "0",
+        "net.alf.defaultaction": "1",
+        "net.alf.mqcount": "0"
+      }
+    },
+    "counters": {
+      "network": {
+        "interfaces": {
+          "lo0": {
+            "rx": {
+              "bytes": "86778",
+              "packets": "0",
+              "errors": "43677722",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "43677722",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "gif0": {
+            "rx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "stf0": {
+            "rx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "en0": {
+            "rx": {
+              "bytes": "5902933223",
+              "packets": "5524452",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "131342380",
+              "packets": "1359796",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "en1": {
+            "rx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "en2": {
+            "rx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "bridge0": {
+            "rx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "342",
+              "packets": "1",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          },
+          "p2p0": {
+            "rx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "frame": 0,
+              "compressed": 0,
+              "multicast": 0
+            },
+            "tx": {
+              "bytes": "0",
+              "packets": "0",
+              "errors": "0",
+              "drop": 0,
+              "overrun": 0,
+              "collisions": "0",
+              "carrier": 0,
+              "compressed": 0
+            }
+          }
+        }
+      }
+    },
+    "ipaddress": "192.168.0.100",
+    "macaddress": "28:cf:e9:15:0f:47",
+    "kernel": {
+      "name": "Darwin",
+      "release": "13.3.0",
+      "version": "Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014; root:xnu-2422.110.17~1/RELEASE_X86_64",
+      "machine": "x86_64",
+      "os": "Darwin",
+      "modules": {
+        "com.apple.kec.pthread": {
+          "version": "1",
+          "size": 45056,
+          "index": "8",
+          "refcount": "0"
+        },
+        "com.apple.kec.corecrypto": {
+          "version": "1.0",
+          "size": 290816,
+          "index": "9",
+          "refcount": "2"
+        },
+        "com.apple.iokit.IOACPIFamily": {
+          "version": "1.4",
+          "size": 36864,
+          "index": "10",
+          "refcount": "21"
+        },
+        "com.apple.iokit.IOPCIFamily": {
+          "version": "2.9",
+          "size": 176128,
+          "index": "11",
+          "refcount": "33"
+        },
+        "com.apple.driver.AppleACPIPlatform": {
+          "version": "2.0",
+          "size": 364544,
+          "index": "12",
+          "refcount": "2"
+        },
+        "com.apple.driver.AppleFDEKeyStore": {
+          "version": "28.30",
+          "size": 45056,
+          "index": "13",
+          "refcount": "1"
+        },
+        "com.apple.iokit.IOReportFamily": {
+          "version": "23",
+          "size": 61440,
+          "index": "14",
+          "refcount": "1"
+        },
+        "com.apple.iokit.IOStorageFamily": {
+          "version": "1.9",
+          "size": 151552,
+          "index": "15",
+          "refcount": "8"
+        },
+        "com.apple.driver.DiskImages": {
+          "version": "371.1",
+          "size": 102400,
+          "index": "16",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleKeyStore": {
+          "version": "2",
+          "size": 81920,
+          "index": "17",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleIntelCPUPowerManagement": {
+          "version": "217.92.1",
+          "size": 176128,
+          "index": "18",
+          "refcount": "0"
+        },
+        "com.apple.security.TMSafetyNet": {
+          "version": "7",
+          "size": 12288,
+          "index": "19",
+          "refcount": "0"
+        },
+        "com.apple.security.sandbox": {
+          "version": "278.11.1",
+          "size": 81920,
+          "index": "21",
+          "refcount": "1"
+        },
+        "com.apple.security.quarantine": {
+          "version": "3",
+          "size": 28672,
+          "index": "22",
+          "refcount": "0"
+        },
+        "com.apple.nke.applicationfirewall": {
+          "version": "153",
+          "size": 32768,
+          "index": "23",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleIntelCPUPowerManagementClient": {
+          "version": "217.92.1",
+          "size": 12288,
+          "index": "24",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleAPIC": {
+          "version": "1.7",
+          "size": 12288,
+          "index": "25",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOSMBusFamily": {
+          "version": "1.1",
+          "size": 16384,
+          "index": "26",
+          "refcount": "3"
+        },
+        "com.apple.driver.AppleACPIEC": {
+          "version": "2.0",
+          "size": 28672,
+          "index": "27",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleSMBIOS": {
+          "version": "2.1",
+          "size": 16384,
+          "index": "28",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleHPET": {
+          "version": "1.8",
+          "size": 12288,
+          "index": "29",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOHIDFamily": {
+          "version": "2.0.0",
+          "size": 466944,
+          "index": "30",
+          "refcount": "11"
+        },
+        "com.apple.driver.AppleACPIButtons": {
+          "version": "2.0",
+          "size": 16384,
+          "index": "31",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleRTC": {
+          "version": "2.0",
+          "size": 28672,
+          "index": "32",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleEFIRuntime": {
+          "version": "2.0",
+          "size": 20480,
+          "index": "33",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleSmartBatteryManager": {
+          "version": "161.0.0",
+          "size": 32768,
+          "index": "34",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleEFINVRAM": {
+          "version": "2.0",
+          "size": 40960,
+          "index": "35",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOUSBFamily": {
+          "version": "683.4.0",
+          "size": 397312,
+          "index": "36",
+          "refcount": "17"
+        },
+        "com.apple.driver.AppleUSBXHCI": {
+          "version": "683.4.0",
+          "size": 118784,
+          "index": "37",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleUSBEHCI": {
+          "version": "660.4.0",
+          "size": 98304,
+          "index": "38",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOAHCIFamily": {
+          "version": "2.6.5",
+          "size": 90112,
+          "index": "39",
+          "refcount": "2"
+        },
+        "com.apple.driver.AppleAHCIPort": {
+          "version": "3.0.5",
+          "size": 106496,
+          "index": "40",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOUSBUserClient": {
+          "version": "660.4.2",
+          "size": 12288,
+          "index": "41",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleUSBHub": {
+          "version": "683.4.0",
+          "size": 98304,
+          "index": "42",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOAHCIBlockStorage": {
+          "version": "2.6.0",
+          "size": 98304,
+          "index": "43",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleSDXC": {
+          "version": "1.5.2",
+          "size": 73728,
+          "index": "44",
+          "refcount": "0"
+        },
+        "com.apple.driver.XsanFilter": {
+          "version": "404",
+          "size": 12288,
+          "index": "45",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOThunderboltFamily": {
+          "version": "3.3.1",
+          "size": 888832,
+          "index": "46",
+          "refcount": "5"
+        },
+        "com.apple.driver.AppleThunderboltNHI": {
+          "version": "2.0.1",
+          "size": 98304,
+          "index": "47",
+          "refcount": "0"
+        },
+        "com.apple.BootCache": {
+          "version": "35",
+          "size": 36864,
+          "index": "48",
+          "refcount": "0"
+        },
+        "com.apple.driver.CoreStorage": {
+          "version": "380",
+          "size": 798720,
+          "index": "53",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleUSBComposite": {
+          "version": "656.4.1",
+          "size": 28672,
+          "index": "55",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleUSBMergeNub": {
+          "version": "650.4.0",
+          "size": 28672,
+          "index": "56",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOUSBHIDDriver": {
+          "version": "660.4.0",
+          "size": 36864,
+          "index": "57",
+          "refcount": "3"
+        },
+        "com.apple.driver.AppleUSBTCKeyboard": {
+          "version": "240.2",
+          "size": 16384,
+          "index": "58",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleUSBMultitouch": {
+          "version": "240.9",
+          "size": 77824,
+          "index": "60",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleThunderboltPCIDownAdapter": {
+          "version": "1.4.5",
+          "size": 20480,
+          "index": "61",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleThunderboltDPAdapterFamily": {
+          "version": "3.1.7",
+          "size": 61440,
+          "index": "62",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleThunderboltDPInAdapter": {
+          "version": "3.1.7",
+          "size": 24576,
+          "index": "63",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleUSBTCButtons": {
+          "version": "240.2",
+          "size": 12288,
+          "index": "64",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleSMC": {
+          "version": "3.1.8",
+          "size": 73728,
+          "index": "69",
+          "refcount": "4"
+        },
+        "com.apple.driver.X86PlatformPlugin": {
+          "version": "1.0.0",
+          "size": 65536,
+          "index": "70",
+          "refcount": "1"
+        },
+        "com.apple.iokit.IOGraphicsFamily": {
+          "version": "2.4.1",
+          "size": 225280,
+          "index": "72",
+          "refcount": "17"
+        },
+        "com.apple.AppleGraphicsDeviceControl": {
+          "version": "3.6.22",
+          "size": 16384,
+          "index": "73",
+          "refcount": "3"
+        },
+        "com.apple.iokit.IOAcceleratorFamily2": {
+          "version": "98.22",
+          "size": 409600,
+          "index": "74",
+          "refcount": "2"
+        },
+        "com.apple.driver.AppleIntelFramebufferCapri": {
+          "version": "8.2.8",
+          "size": 356352,
+          "index": "75",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleGraphicsControl": {
+          "version": "3.6.22",
+          "size": 12288,
+          "index": "76",
+          "refcount": "1"
+        },
+        "com.apple.iokit.IONDRVSupport": {
+          "version": "2.4.1",
+          "size": 57344,
+          "index": "77",
+          "refcount": "5"
+        },
+        "com.apple.driver.AppleBacklightExpert": {
+          "version": "1.0.4",
+          "size": 20480,
+          "index": "78",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleMuxControl": {
+          "version": "3.6.22",
+          "size": 81920,
+          "index": "79",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleLPC": {
+          "version": "1.7.0",
+          "size": 12288,
+          "index": "81",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IONetworkingFamily": {
+          "version": "3.2",
+          "size": 180224,
+          "index": "85",
+          "refcount": "4"
+        },
+        "com.apple.iokit.IO80211Family": {
+          "version": "640.36",
+          "size": 491520,
+          "index": "86",
+          "refcount": "1"
+        },
+        "com.apple.driver.AirPort.Brcm4331": {
+          "version": "700.20.22",
+          "size": 2048000,
+          "index": "87",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleMCCSControl": {
+          "version": "1.2.5",
+          "size": 57344,
+          "index": "89",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleSMCPDRC": {
+          "version": "1.0.0",
+          "size": 12288,
+          "index": "90",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleThunderboltIP": {
+          "version": "1.1.2",
+          "size": 94208,
+          "index": "96",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleHWAccess": {
+          "version": "1",
+          "size": 12288,
+          "index": "97",
+          "refcount": "0"
+        },
+        "com.apple.kext.OSvKernDSPLib": {
+          "version": "1.14",
+          "size": 73728,
+          "index": "100",
+          "refcount": "2"
+        },
+        "com.apple.vecLib.kext": {
+          "version": "1.0.0",
+          "size": 192512,
+          "index": "102",
+          "refcount": "1"
+        },
+        "com.apple.iokit.IOSurface": {
+          "version": "91.1",
+          "size": 77824,
+          "index": "109",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleIntelHD4000Graphics": {
+          "version": "8.2.8",
+          "size": 311296,
+          "index": "110",
+          "refcount": "0"
+        },
+        "com.apple.nvidia.driver.NVDAResman": {
+          "version": "8.2.6",
+          "size": 2568192,
+          "index": "111",
+          "refcount": "2"
+        },
+        "com.apple.nvidia.driver.NVDAGK100Hal": {
+          "version": "8.2.6",
+          "size": 1757184,
+          "index": "112",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOAcceleratorFamily": {
+          "version": "98.22",
+          "size": 360448,
+          "index": "113",
+          "refcount": "1"
+        },
+        "com.apple.GeForce": {
+          "version": "8.2.6",
+          "size": 585728,
+          "index": "114",
+          "refcount": "0"
+        },
+        "com.apple.driver.X86PlatformShim": {
+          "version": "1.0.0",
+          "size": 24576,
+          "index": "117",
+          "refcount": "0"
+        },
+        "com.apple.driver.AGPM": {
+          "version": "100.14.28",
+          "size": 77824,
+          "index": "118",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleUpstreamUserClient": {
+          "version": "3.5.13",
+          "size": 20480,
+          "index": "120",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleMikeyHIDDriver": {
+          "version": "124",
+          "size": 12288,
+          "index": "122",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOSCSIArchitectureModelFamily": {
+          "version": "3.6.6",
+          "size": 176128,
+          "index": "123",
+          "refcount": "3"
+        },
+        "com.apple.kext.triggers": {
+          "version": "1.0",
+          "size": 20480,
+          "index": "124",
+          "refcount": "1"
+        },
+        "com.apple.filesystems.autofs": {
+          "version": "3.0",
+          "size": 36864,
+          "index": "125",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOSerialFamily": {
+          "version": "10.0.7",
+          "size": 57344,
+          "index": "126",
+          "refcount": "1"
+        },
+        "com.apple.driver.AudioAUUC": {
+          "version": "1.60",
+          "size": 20480,
+          "index": "128",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleIntelMCEReporter": {
+          "version": "104",
+          "size": 32768,
+          "index": "146",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleHIDKeyboard": {
+          "version": "170.15",
+          "size": 24576,
+          "index": "148",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleBluetoothHIDKeyboard": {
+          "version": "170.15",
+          "size": 20480,
+          "index": "149",
+          "refcount": "0"
+        },
+        "com.apple.driver.AppleMultitouchDriver": {
+          "version": "245.13",
+          "size": 90112,
+          "index": "150",
+          "refcount": "1"
+        },
+        "com.apple.driver.AppleBluetoothMultitouch": {
+          "version": "80.14",
+          "size": 57344,
+          "index": "151",
+          "refcount": "0"
+        },
+        "com.apple.nke.rvi": {
+          "version": "2.0.0",
+          "size": 12288,
+          "index": "152",
+          "refcount": "0"
+        },
+        "org.virtualbox.kext.VBoxDrv": {
+          "version": "4.3.2",
+          "size": 282624,
+          "index": "153",
+          "refcount": "3"
+        },
+        "org.virtualbox.kext.VBoxUSB": {
+          "version": "4.3.2",
+          "size": 32768,
+          "index": "154",
+          "refcount": "0"
+        },
+        "org.virtualbox.kext.VBoxNetFlt": {
+          "version": "4.3.2",
+          "size": 20480,
+          "index": "155",
+          "refcount": "0"
+        },
+        "org.virtualbox.kext.VBoxNetAdp": {
+          "version": "4.3.2",
+          "size": 24576,
+          "index": "156",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOUSBMassStorageClass": {
+          "version": "3.6.0",
+          "size": 69632,
+          "index": "158",
+          "refcount": "0"
+        },
+        "com.apple.iokit.IOSCSIBlockCommandsDevice": {
+          "version": "3.6.6",
+          "size": 81920,
+          "index": "159",
+          "refcount": "0"
+        },
+        "com.apple.iokit.SCSITaskUserClient": {
+          "version": "3.6.6",
+          "size": 28672,
+          "index": "160",
+          "refcount": "0"
+        },
+        "com.apple.filesystems.ntfs": {
+          "version": "3.11",
+          "size": 352256,
+          "index": "161",
+          "refcount": "1"
+        }
+      }
+    },
+    "os": "darwin",
+    "os_version": "13.3.0",
+    "platform": "mac_os_x",
+    "platform_version": "10.9.4",
+    "platform_build": "13E28",
+    "platform_family": "mac_os_x",
+    "hostname": "Adams-MacBook-Pro",
+    "fqdn": null,
+    "machinename": "Adams-MacBook-Pro.local",
+    "keys": {
+      "ssh": {
+      }
+    },
+    "ohai_time": 1407430780.282231,
+    "root_group": "wheel",
+    "recipes": [
+      "app::dependencies",
+      "base",
+      "bash",
+      "firefox",
+      "git",
+      "htop",
+      "imagemagick",
+      "java",
+      "lftp",
+      "mac::chrome",
+      "mac::cloud",
+      "mac::drive",
+      "mac::flowdock",
+      "mac::iterm",
+      "mac::mplayerx",
+      "mac::skype",
+      "mac::tunnelblick",
+      "mac::visualvm",
+      "mysql",
+      "nodejs",
+      "ohai",
+      "python",
+      "redis",
+      "rvm",
+      "ssh",
+      "tmux",
+      "vim",
+      "virtualbox",
+      "xvfb",
+      "zenops::workstation",
+      "zeromq",
+      "zookeeper",
+      "redis::default",
+      "imagemagick::default",
+      "mysql::default",
+      "nodejs::default",
+      "base::default",
+      "mac::default",
+      "homebrew::default",
+      "mac::global",
+      "mac::dock",
+      "mac::finder",
+      "bash::default",
+      "firefox::default",
+      "xvfb::default",
+      "git::default",
+      "htop::default",
+      "java::default",
+      "lftp::default",
+      "ohai::default",
+      "python::default",
+      "python::package",
+      "python::pip",
+      "python::virtualenv",
+      "rvm::default",
+      "ssh::default",
+      "tmux::default",
+      "vim::default",
+      "virtualbox::default",
+      "virtualbox::host",
+      "zeromq::default",
+      "zookeeper::default",
+      "portage::default"
+    ],
+    "roles": [
+
+    ]
+  },
+  "run_list": [
+    "recipe[base]",
+    "recipe[bash]",
+    "recipe[firefox]",
+    "recipe[git]",
+    "recipe[htop]",
+    "recipe[imagemagick]",
+    "recipe[java]",
+    "recipe[lftp]",
+    "recipe[mac::chrome]",
+    "recipe[mac::cloud]",
+    "recipe[mac::drive]",
+    "recipe[mac::flowdock]",
+    "recipe[mac::iterm]",
+    "recipe[mac::omni_disk_sweeper]",
+    "recipe[mac::mplayerx]",
+    "recipe[mac::skype]",
+    "recipe[mac::tunnelblick]",
+    "recipe[mac::visualvm]",
+    "recipe[mysql]",
+    "recipe[nodejs]",
+    "recipe[ohai]",
+    "recipe[python]",
+    "recipe[redis]",
+    "recipe[rvm]",
+    "recipe[ssh]",
+    "recipe[tmux]",
+    "recipe[vim]",
+    "recipe[virtualbox]",
+    "recipe[xvfb]",
+    "recipe[zenops::workstation]",
+    "recipe[zeromq]",
+    "recipe[zookeeper]"
+  ]
+}
