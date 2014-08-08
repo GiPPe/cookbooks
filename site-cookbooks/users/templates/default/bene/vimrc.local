@@ -81,9 +81,7 @@ autocmd FileType c,cpp set ts=4 sw=4 tw=79 expandtab et
 NeoBundle 'hollow/vim-go'
 au FileType go nmap gd <Plug>(go-def-split)
 au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gb <Plug>(go-build)
-au FileType go nmap <Leader>gr <Plug>(go-run)
-au FileType go nmap <Leader>gt <Plug>(go-test)
+let $GOPATH = getcwd() . "/.godeps:" . getcwd()
 
 " Git commit messages start at the top and in insert mode
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call feedkeys('ggi', 't')

@@ -111,4 +111,17 @@ geix() {
 	popd >/dev/null
 }
 
+function cd {
+	if [[ -n ${GVP_NAME} ]]; then
+		source gvp out
+	fi
+
+	builtin cd "$@"
+
+	if [[ -r Godeps ]]; then
+		mkdir -p .godeps
+		source gvp in
+	fi
+}
+
 # vim: ft=sh
