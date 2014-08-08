@@ -6,7 +6,7 @@ elsif debian_based?
 
 elsif mac_os_x?
   package "tmux"
-
+  package "reattach-to-user-namespace"
 end
 
 template node[:tmux][:configfile] do
