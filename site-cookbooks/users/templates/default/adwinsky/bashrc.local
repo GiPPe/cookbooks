@@ -1,1 +1,110 @@
-export JRUBY_OPTS="--dev -G -J-Xmx24g -J-XX:MaxPermSize=1g -J-noverify --profile"
+# blacklist for bash completion
+FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
+
+# project aliases
+alias pc="cd ~/projects/hollow/chef"
+alias pmc="cd ~/projects/liquidm/chef"
+alias prc="cd ~/projects/remerge/chef"
+alias pzc="cd ~/projects/zenops/chef"
+alias pzz="cd ~/projects/zentoo/zentoo"
+
+# git aliases
+alias ga="git add -A"
+alias gap="git add -p"
+alias gb="git blame"
+alias gcl="git checkout live"
+alias gcm="git checkout master"
+alias gcn="git checkout next"
+alias gcu="git checkout upstream"
+alias gdm="git diff master"
+alias gd="git diff"
+alias gdc="git diff --cached"
+alias gl="git lg"
+alias gp="git pull"
+alias gpr="git pull --rebase"
+alias gpv="git push -f origin HEAD:vagrant/bene"
+alias grh="git reset HEAD"
+alias s="git status"
+
+# ruby/rails shortcuts
+alias be="bundle exec"
+alias brs="bundle exec rails server"
+alias con="bundle exec rails console"
+
+# chef helper
+alias kcu="knife cookbook upload"
+
+# always use system ruby to start vim
+vim() {
+	rvm system exec vim "$@"
+}
+
+# host shortcuts
+remote_tmux() {
+	if [[ $# -eq 2 ]]; then
+		ssh -D $2 -t $1 /bin/bash -li -c 'T'
+	else
+		ssh -t $1 /bin/bash -li -c 'T'
+	fi
+}
+
+function L() {
+	remote_tmux dev2.lqm.io 9991
+}
+
+# jruby options
+COMMON_JRUBY_OPTS="-J-Xmx24g -J-XX:MaxPermSize=1g -J-XX:+UseParNewGC -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-XX:+CMSScavengeBeforeRemark -J-XX:+DisableExplicitGC -Xrewrite.java.trace=true -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify"
+
+jruby_debug() {
+  export JRUBY_OPTS="--dev -G -J-Xmx24g -J-XX:MaxPermSize=1g -J-noverify --profile"
+}
+
+jruby_benchmark() {
+	export JRUBY_OPTS="${COMMON_JRUBY_OPTS} --server -X+C"
+}
+
+java_yourkit() {
+	export JAVA_OPTS="-agentpath:/home/bene/vendor/yjp-2014-eap-build-14014/bin/linux-x86-64/libyjpagent.so=port=3098"
+}
+
+# by default set debug options
+jruby_debug
+
+# Go settings
+export GOPATH=~/.go
+
+# add repo tools
+export PATH="${PATH}:~/.go/bin:~/vendor/depot_tools"
+
+# vagrant colors break with colored output from chef
+export VAGRANT_NO_COLOR=1
+
+# gentoo development
+export ECHANGELOG_USER="Benedikt Böhm <bb@xnull.de>"
+
+repm() {
+	repoman manifest
+}
+
+reps() {
+	repm
+	repoman scan
+}
+
+repf() {
+	repm
+	repoman full
+}
+
+# zentoo development
+geix() {
+	local base=~/projects/zentoo/zentoo
+	pushd ${base} >/dev/null
+	env \
+		PORTDIR=${base}/cache/gentoo-portage/ \
+		PORTAGE_PROFILE=${base}/cache/gentoo-portage/profiles/default/linux/amd64/13.0 \
+		eix --cache-file ./eix.cache.gentoo "$@"
+	popd >/dev/null
+}
+
+# vim: ft=sh
