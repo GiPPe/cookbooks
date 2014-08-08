@@ -5,12 +5,14 @@ FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
 for i in $(ls -d ~/Projects/github.com/liquidm/* )
 do
   name="pl${i##*/}"
+  export $name="$i"
   alias $name="cd $i"
 done
 
 for i in $(ls -d ~/Projects/github.com/adwinsky/* )
 do
   name="pa${i##*/}"
+  export $name="$i"
   alias $name="cd $i"
 done
 
