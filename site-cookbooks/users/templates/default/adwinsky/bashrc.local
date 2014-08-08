@@ -2,11 +2,18 @@
 FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
 
 # project aliases
-alias pc="cd ~/projects/hollow/chef"
-alias pmc="cd ~/projects/liquidm/chef"
-alias prc="cd ~/projects/remerge/chef"
-alias pzc="cd ~/projects/zenops/chef"
-alias pzz="cd ~/projects/zentoo/zentoo"
+for i in $(ls -d ~/Projects/github.com/liquidm/* )
+do
+  name="pl${i##*/}"
+  alias $name="cd $i"
+done
+
+for i in $(ls -d ~/Projects/github.com/adwinsky/* )
+do
+  name="pa${i##*/}"
+  alias $name="cd $i"
+done
+
 
 # git aliases
 alias ga="git add -A"
