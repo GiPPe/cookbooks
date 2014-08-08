@@ -1,0 +1,1 @@
+export JRUBY_OPTS="--dev -G -J-Xmx24g -J-XX:MaxPermSize=1g -J-noverify --profile"
