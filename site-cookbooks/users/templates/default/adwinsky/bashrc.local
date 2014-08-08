@@ -65,7 +65,7 @@ function L() {
 COMMON_JRUBY_OPTS="-J-Xmx24g -J-XX:MaxPermSize=1g -J-XX:+UseParNewGC -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled -J-XX:+CMSScavengeBeforeRemark -J-XX:+DisableExplicitGC -Xrewrite.java.trace=true -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify"
 
 jruby_debug() {
-  export JRUBY_OPTS="--dev -J-Xmx24g -J-noverify --profile"
+  export JRUBY_OPTS="--dev -J-Xmx24g -J-noverify"
 }
 
 jruby_benchmark() {
