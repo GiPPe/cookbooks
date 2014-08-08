@@ -3,3 +3,20 @@ bind b set-option status
 
 # sync panes
 bind i setw synchronize-panes
+
+bind-key -r + resize-pane -Z
+
+bind-key -r K resize-pane -U 6
+bind-key -r J resize-pane -D 5
+bind-key -r H resize-pane -L 5
+bind-key -r L resize-pane -R 5
+
+bind-key -r k select-pane -U
+bind-key -r j select-pane -D
+bind-key -r h select-pane -L
+bind-key -r l select-pane -R
+
+bind-key s split-window
+bind-key v split-window -h
+
+set-option -g default-command "reattach-to-user-namespace -l bash"
