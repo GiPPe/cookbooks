@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
-<%
-  @clusters = hadoop2_clusters.select{|cluster_name, cluster| cluster[:nn].size > 0}
-  if @clusters.keys.include? node[:hadoop2][:cluster]
-    @default_cluster = node[:hadoop2][:cluster]
-  else
-    @default_cluster = node[:hadoop2][:hdfs][:cluster] || @clusters.keys.first
-  end
-%>
 <configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <% if hadoop2_namenodes.count > 1 %>
+    <value>hdfs://<%= node[:hadoop2][:cluster] %></value>
+    <% elsif hadoop2_namenodes.count == 1 %>
+    <value>hdfs://<%= hadoop2_namenodes.first[:fqdn] %></value>
+    <% else %>
+    <value>file://</value>
+    <% end %>
+  </property>
   <property>
     <name>hadoop.tmp.dir</name>
     <value><%= node[:hadoop2][:tmp_dir] %>/${user.name}</value>
@@ -22,10 +24,10 @@
     <value>/etc/hadoop2/topology.data</value>
   </property>
   <property>
-    <name>fs.defaultFS</name>
-    <value>hdfs://<%= @default_cluster %></value>
+    <name>ha.zookeeper.parent-znode</name>
+    <value>/ha</value>
   </property>
-<% if node[:hadoop2][:fs][:s3][:access_key] %>
+  <% if node[:hadoop2][:fs][:s3][:access_key] %>
   <property>
     <name>fs.s3.awsAccessKeyId</name>
     <value><%= node[:hadoop2][:fs][:s3][:access_key] %></value>
@@ -42,5 +44,5 @@
     <name>fs.s3n.awsSecretAccessKey</name>
     <value><%= node[:hadoop2][:fs][:s3][:secret_key] %></value>
   </property>
-<% end %>
+  <% end %>
 </configuration>

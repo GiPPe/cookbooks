@@ -1,0 +1,22 @@
+company:
+  name: Example, Inc.
+
+ssl:
+  country: DE
+  state: Berlin
+  city: Berlin
+  unit: Operations
+  email: hostmaster@example.com
+
+hetzner:
+  username:
+  password:
+
+ovh:
+  app_key:
+  app_secret:
+  consumer_key:
+
+zendns:
+  url: https://zendns.example.com
+  token:

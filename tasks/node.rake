@@ -60,8 +60,34 @@ namespace :node do
     fqdn = args.fqdn
     ENV['BATCH'] = "1"
     run_task('ssl:revoke', fqdn) rescue nil
-    File.unlink(File.join(TOPDIR, "nodes", "#{fqdn}.json")) rescue nil
+    File.unlink(File.join(ROOT, "nodes", "#{fqdn}.json")) rescue nil
     knife :delete, ['-y', "nodes/#{fqdn}.json", "clients/#{fqdn}.json"] rescue nil
+  end
+
+  desc "quickstart & bootstrap machine"
+  task :quickstart, :fqdn, :ipaddress, :profile do |t, args|
+    args.with_defaults(:profile => 'generic-two-disk-md')
+    raise "missing parameters!" unless args.fqdn && args.ipaddress
+
+    # create DNS/rDNS records
+    run_task('node:checkdns', args.fqdn, args.ipaddress)
+
+    # quick start
+    b = binding()
+    erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'quickstart.sh')))
+    tmpfile = Tempfile.new('quickstart')
+    tmpfile.write(erb.result(b))
+    tmpfile.rewind
+    sshlive(args.ipaddress, nil, tmpfile.path)
+    tmpfile.unlink
+
+    # wait until machine is up again
+    wait_with_ping(args.ipaddress, false)
+    wait_with_ping(args.ipaddress, true)
+
+    # run normal bootstrap
+    ENV['REBOOT'] = "1"
+    run_task('node:bootstrap', args.fqdn, args.ipaddress)
   end
 
   desc "Bootstrap the specified node"
@@ -69,14 +95,10 @@ namespace :node do
     args.with_defaults(password: "tux")
     ENV['BATCH'] = "1"
     ENV['DISTRO'] ||= "gentoo"
-    # TODO: consolidate DNS tasks
-    hetzner_server_name_rdns(args.ipaddress, args.fqdn)
-    ovh_server_name_rdns(args.ipaddress, args.fqdn)
-    zendns_add_record(args.fqdn, args.ipaddress)
     run_task('node:checkdns', args.fqdn, args.ipaddress)
     run_task('ssl:do_cert', args.fqdn)
     knife :upload, ["cookbooks/certificates"]
-    key = File.join(TOPDIR, "tasks/support/id_rsa")
+    key = File.join(ROOT, "tasks/support/id_rsa")
     sh("knife bootstrap #{args.fqdn} --distro #{ENV['DISTRO']} -P #{args.password} -r 'role[base]' -E production -i #{key}")
     run_task('node:updateworld', args.fqdn) unless ENV['NO_UPDATEWORLD']
   end
@@ -91,6 +113,10 @@ namespace :node do
   # private
 
   task :checkdns, :fqdn, :ipaddress do |t, args|
+    hetzner_server_name_rdns(args.ipaddress, args.fqdn)
+    ovh_server_name_rdns(args.ipaddress, args.fqdn)
+    zendns_add_record(args.fqdn, args.ipaddress)
+
     ip = Resolv.getaddress(args.fqdn)
     if ip != args.ipaddress
       raise "IP #{args.ipaddress} does not match resolved address #{ip} for FQDN #{args.fqdn}"

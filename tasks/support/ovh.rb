@@ -1,17 +1,5 @@
-begin
-  require 'ovh/rest'
-rescue LoadError
-  $stderr.puts "OVH API cannot be loaded. Skipping some rake tasks ..."
-end
-
-begin
-  require File.expand_path('config/ovh', TOPDIR)
-  [OVH_APPLICATION_KEY, OVH_APPLICATION_SECRET, OVH_CONSUMER_KEY]
-rescue LoadError, Exception
-end
-
 def ovh
-  @ovh ||= OVH::REST.new(OVH_APPLICATION_KEY, OVH_APPLICATION_SECRET, OVH_CONSUMER_KEY)
+  @ovh ||= OVH::REST.new($conf.ovh.app_key, $conf.ovh.app_secret, $conf.ovh.consumer_key)
 end
 
 def ovh_servers
@@ -37,7 +25,7 @@ def ovh_enable_rescue_wait(ipaddress)
 end
 
 def ovh_server_name_rdns(ip, fqdn)
-  return unless ::Module.const_defined?(:OVH_CONSUMER_KEY)
+  return unless $conf.ovh && $conf.ovh.consumer_key
 
   server = ovh_servers[ip]
 

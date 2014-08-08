@@ -1,5 +1,3 @@
-include_recipe "mysql::server"
-
 %w(
   mysql_full_backup
   mysql_full_clean

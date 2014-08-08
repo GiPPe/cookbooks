@@ -35,6 +35,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    atomic (1.1.14)
+    avl_tree (1.1.3)
     awesome_print (1.2.0)
     bond (0.5.1)
     brice (0.3.0)
@@ -69,8 +71,6 @@ GEM
     coderay (1.1.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.19)
-      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     ffi (1.9.3)
     foodcritic (3.0.3)
@@ -93,8 +93,7 @@ GEM
       xml-simple
     highline (1.6.21)
     hirb (0.7.2)
-    http-cookie (1.0.2)
-      domain_name (~> 0.5)
+    hitimes (1.2.1)
     httparty (0.10.2)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
@@ -120,21 +119,24 @@ GEM
       tailor
       timecop
       yard
+    liquid-ext (1.0.2)
+      activesupport
+      ffi
+      liquid-logging (>= 2.0.0)
+      metriks
+      mixlib-cli
+      terminal-table
+    liquid-logging (2.0.0)
     listen (2.7.9)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     log_switch (0.4.0)
-    mechanize (2.7.2)
-      domain_name (~> 0.5, >= 0.5.1)
-      http-cookie (~> 1.0.0)
-      mime-types (~> 1.17, >= 1.17.2)
-      net-http-digest_auth (~> 1.1, >= 1.1.1)
-      net-http-persistent (~> 2.5, >= 2.5.2)
-      nokogiri (~> 1.4)
-      ntlm-http (~> 0.1, >= 0.1.1)
-      webrobots (>= 0.0.9, < 0.2)
     method_source (0.8.2)
+    metriks (0.9.9.5)
+      atomic (~> 1.0)
+      avl_tree (~> 1.1.2)
+      hitimes (~> 1.1)
     mime-types (1.25.1)
     minitest (5.3.5)
     mixlib-authentication (1.3.0)
@@ -144,8 +146,6 @@ GEM
     mixlib-log (1.6.0)
     multi_json (1.10.1)
     multi_xml (0.5.5)
-    net-http-digest_auth (1.4)
-    net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
@@ -155,7 +155,6 @@ GEM
       net-ssh (>= 2.6.5)
       net-ssh-gateway (>= 1.2.0)
     nokogiri (1.5.11)
-    ntlm-http (0.1.1)
     nuggets (1.0.0)
     ohai (7.0.4)
       ipaddress
@@ -206,7 +205,6 @@ GEM
       sexp_processor (~> 4.0)
     ruby_parser (3.6.1)
       sexp_processor (~> 4.1)
-    rvm (1.11.3.9)
     safe_yaml (1.0.3)
     sexp_processor (4.4.3)
     simplecov (0.8.2)
@@ -218,6 +216,7 @@ GEM
     systemu (2.5.2)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
+    terminal-table (1.4.5)
     test-kitchen (1.2.1)
       mixlib-shellout (~> 1.2)
       net-scp (~> 1.1)
@@ -235,10 +234,6 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.6)
-    webrobots (0.1.1)
     xml-simple (1.1.3)
     yajl-ruby (1.1.0)
     yard (0.8.7.4)
@@ -247,7 +242,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   chef (~> 11)
   foodcritic (~> 3.0)
   hetzner-api
@@ -256,12 +250,11 @@ DEPENDENCIES
   kitchen-vagrant
   knife-dsl!
   liquid-development
+  liquid-ext
   listen
-  mechanize
   mixlib-shellout!
   ovh-rest!
   rake
   rb-inotify
-  rvm
   tailor!
   test-kitchen

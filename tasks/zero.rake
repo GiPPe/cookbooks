@@ -12,7 +12,7 @@ task :zero do
   puts "Uploading repository ..."
   knife :upload, ['/', '-s', 'http://localhost:3099']
   puts "Waiting for changes ..."
-  Listen.to(TOPDIR, ignore: CHEF_ZERO_IGNORE) do |m, a, r|
+  Listen.to(ROOT, ignore: CHEF_ZERO_IGNORE) do |m, a, r|
     start = Time.now.to_f
     puts "Uploading changes ..."
     knife :upload, ['/', '-s', 'http://localhost:3099']

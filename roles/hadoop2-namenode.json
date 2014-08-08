@@ -1,0 +1,9 @@
+{
+  "name": "hadoop2-namenode",
+  "run_list": [
+    "role[base]",
+    "role[c500k]",
+    "recipe[hadoop2::namenode]",
+    "recipe[hadoop2::zkfc]"
+  ]
+}

@@ -48,8 +48,6 @@ Ohai.plugin(:CPU) do
         cpuinfo[current_cpu]["cores"] = $1
       when /model name\s+:\s(.+)/
         cpuinfo[current_cpu]["model_name"] = $1
-      when /cpu MHz\s+:\s(.+)/
-        cpuinfo[current_cpu]["mhz"] = $1
       when /cache size\s+:\s(.+)/
         cpuinfo[current_cpu]["cache_size"] = $1
       when /flags\s+:\s(.+)/

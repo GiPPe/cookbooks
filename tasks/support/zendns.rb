@@ -1,21 +1,14 @@
 begin
   require 'httparty'
 rescue LoadError
-  $stderr.puts "HTTParty cannot be loaded. Skipping some rake tasks ..."
-end
-
-begin
-  require File.expand_path('config/zendns', TOPDIR)
-  [ZENDNS_API_URL, ZENDNS_API_TOKEN]
-rescue LoadError, Exception
 end
 
 class ZenDNS
   include HTTParty if ::Module.const_defined?(:HTTParty)
 
-  if ::Module.const_defined?(:ZENDNS_API_URL)
-    base_uri ZENDNS_API_URL
-    default_params auth_token: ZENDNS_API_TOKEN, format: :json
+  if $conf.zendns && $conf.zendns.token
+    base_uri $conf.zendns.url
+    default_params auth_token: $conf.zendns.token, format: :json
   end
 
   def self.domains
@@ -35,7 +28,7 @@ class ZenDNS
 end
 
 def zendns_add_record(fqdn, ip)
-  return unless ::Module.const_defined?(:ZENDNS_API_URL)
+  return unless $conf.zendns && $conf.zendns.token
 
   domain = ZenDNS.domains.select do |d|
     fqdn =~ /\.#{d['name']}\Z/

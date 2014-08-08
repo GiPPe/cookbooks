@@ -6,6 +6,8 @@ license "Apache v2.0"
 
 supports "gentoo"
 
+depends "deploy"
 depends "java"
 depends "nagios"
-depends "splunk6"
+depends "tar"
+depends "zookeeper"

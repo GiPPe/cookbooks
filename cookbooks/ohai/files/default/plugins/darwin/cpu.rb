@@ -26,8 +26,6 @@ Ohai.plugin(:CPU) do
     cpu[:real] = so.stdout.to_i
     so = shell_out("sysctl -n hw.logicalcpu")
     cpu[:total] = so.stdout.to_i
-    so = shell_out("sysctl -n hw.cpufrequency")
-    cpu[:mhz] = so.stdout.to_i / 1000000
     so = shell_out("sysctl -n machdep.cpu.vendor")
     cpu[:vendor_id] = so.stdout
     so = shell_out("sysctl -n machdep.cpu.brand_string")

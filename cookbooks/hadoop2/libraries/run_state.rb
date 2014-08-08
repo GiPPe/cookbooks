@@ -1,40 +1,28 @@
 module Hadoop2RunStateHelpers
-  def hadoop2_clusters
-    result = Hash.new do |hash,key|
-      hash[key] = {
-        nn: [],
-        jn: [],
-        dn: [],
-        rm: [],
-        nm: [],
-        hs: [],
-      }
-    end
-
-    node.nodes.each do |n|
-      if n[:hadoop2] && n[:hadoop2][:cluster]
-        result[n[:hadoop2][:cluster]][:nn] << n if n.role?("hadoop2-namenode")
-        result[n[:hadoop2][:cluster]][:jn] << n if n.role?("hadoop2-journalnode")
-        result[n[:hadoop2][:cluster]][:dn] << n if n.role?("hadoop2-datanode")
-        result[n[:hadoop2][:cluster]][:rm] << n if n.role?("hadoop2-resourcemanager")
-        result[n[:hadoop2][:cluster]][:nm] << n if n.role?("hadoop2-nodemanager")
-        result[n[:hadoop2][:cluster]][:hs] << n if n.role?("hadoop2-historyserver")
-      end
-    end
-
-    result
+  def hadoop2_historyservers(cluster_name = node[:hadoop2][:cluster])
+    node.nodes.cluster(cluster_name).role("hadoop2-historyserver")
   end
 
-  def hadoop2_datanodes
-    node.nodes.role("hadoop2-datanode")
+  def hadoop2_historyserver(cluster_name = node[:hadoop2][:cluster])
+    hadoop2_historyservers(cluster_name).first
+  end
+
+  def hadoop2_journalnodes(cluster_name = node[:hadoop2][:cluster])
+    node.nodes.cluster(cluster_name).role("hadoop2-journalnode")
+  end
+
+  def hadoop2_namenodes(cluster_name = node[:hadoop2][:cluster])
+    node.nodes.cluster(cluster_name).role("hadoop2-namenode")
+  end
+
+  def hadoop2_resourcemanagers(cluster_name = node[:hadoop2][:cluster])
+    node.nodes.cluster(cluster_name).role("hadoop2-resourcemanager")
   end
 
   def hadoop2_topology
     Hash[node.nodes.map do |n|
       rack_id_v2 = n[:hadoop2] && n[:hadoop2][:rack_id]
-
       rack_id = rack_id_v2 || "/default-rack/#{node.cluster_name}"
-
       [n, rack_id]
     end]
   end

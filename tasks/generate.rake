@@ -50,7 +50,7 @@ namespace :generate do
     erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'openvpn.conf')))
 
     tmpdir = Dir.mktmpdir
-    path = File.join(tmpdir, "#{COMPANY_NAME} VPN.tblk")
+    path = File.join(tmpdir, "#{$conf.company.name} VPN.tblk")
     FileUtils.mkdir_p(path)
 
     File.open(File.join(path, "config.ovpn"), "w") do |f|

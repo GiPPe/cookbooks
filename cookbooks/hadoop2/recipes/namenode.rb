@@ -1,14 +1,12 @@
 include_recipe "hadoop2"
 
-HDFS_SERVICE = "namenode"
-RESTARTS_ON = %w{
-}
-# TODO: restart on topology.data ?
+execute "hadoop-namenode-format" do
+  command "/var/app/hadoop2/current/bin/hdfs namenode -format #{node[:hadoop2][:cluster]}"
+  creates "/var/app/hadoop2/storage/namenode/current/VERSION"
+  user "hadoop2"
+  group "hadoop2"
+end
 
-service "hdfs@#{HDFS_SERVICE}" do
+service "hdfs@namenode" do
   action [:enable, :start]
-  
-  RESTARTS_ON.each do |conf_file|
-    subscribes :restart, "template[/etc/hadoop2/#{conf_file}]"
-  end
 end

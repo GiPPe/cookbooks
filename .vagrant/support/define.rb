@@ -1,4 +1,4 @@
-def define(name, ip)
+def define(name, ip, memory = 2.0, cpus = 1)
   Vagrant.configure("2") do |config|
     config.vm.define name do |base|
       _chef = nil
@@ -13,6 +13,8 @@ def define(name, ip)
       end
       base.vm.provider "virtualbox" do |vb|
         vb.gui = false
+        vb.memory = memory * 1024
+        vb.cpus = cpus
       end
       yield base.vm, _chef if block_given?
       _chef.add_recipe('virtualbox::guest')

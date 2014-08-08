@@ -19,6 +19,13 @@
 <%= node[:ip6address] %> <%= node[:fqdn] %> <%= node[:hostname] %>
 <% end %>
 
+<% if vbox? %>
+# vagrant nodes
+<% node.nodes.each do |n| %>
+<%= n[:ipaddress] %> <%= n[:fqdn] %>
+<% end %>
+<% end %>
+
 # custom nodes
 <% node[:resolv][:hosts].each do |n| %>
 <%= n %>

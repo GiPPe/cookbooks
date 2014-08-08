@@ -156,16 +156,6 @@ Ohai.plugin(:Network) do
       end
     end
 
-    so = shell_out("arp -an")
-    so.stdout.lines do |line|
-      if line =~ /^\S+ \((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\) at ([a-fA-F0-9\:]+) on ([a-zA-Z0-9\.\:\-]+).*\[(\w+)\]/
-        # MAC addr really should be normalized to include all the zeroes.
-        next if iface[$3].nil? # this should never happen
-        iface[$3][:arp] = Mash.new unless iface[$3][:arp]
-        iface[$3][:arp][$1] = $2
-      end
-    end
-
     settings = Mash.new
     so = shell_out("sysctl net")
     so.stdout.lines do |line|

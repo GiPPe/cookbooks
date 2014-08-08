@@ -1,23 +1,16 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-<%
-  @cluster = hadoop2_clusters[node[:hadoop2][:cluster]]
-  @jobhistoryserver = node[:hadoop2][:historyserver] || @cluster[:hs].first
-
-  if @jobhistoryserver
-%>
+  <% if hadoop2_historyserver %>
   <property>
     <name>mapreduce.jobhistory.address</name>
-    <value><%= @jobhistoryserver[:fqdn] %>:10020</value>
+    <value><%= hadoop2_historyserver[:fqdn] %>:10020</value>
   </property>
   <property>
     <name>mapreduce.jobhistory.webapp.address</name>
-    <value><%= @jobhistoryserver[:fqdn] %>:19888</value>
+    <value><%= hadoop2_historyserver[:fqdn] %>:19888</value>
   </property>
-<%
-  end
-%>
+  <% end %>
   <property>
     <name>mapreduce.framework.name</name>
     <value>yarn</value>
@@ -38,7 +31,6 @@
     <name>mapreduce.reduce.speculative</name>
     <value>false</value>
   </property>
-
   <property>
     <name>mapreduce.job.reduces</name>
     <value>21</value>
@@ -63,7 +55,6 @@
     <name>mapreduce.reduce.java.opts</name>
     <value>-server -XX:+UseConcMarkSweepGC -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Xmx8g -Djava.io.tmpdir=<%= node[:hadoop2][:java_tmp] %></value>
   </property>
-
   <property>
     <name>mapreduce.reduce.shuffle.parallelcopies</name>
     <value>50</value>
@@ -84,15 +75,14 @@
     <name>mapreduce.tasktracker.http.threads</name>
     <value>20</value>
   </property>
-
   <property>
     <name>mapreduce.task.timeout</name>
     <value>1800000</value>
   </property>
-
-    <!-- Compression -->
+  <!-- Compression -->
   <property>
- <!-- Off by default, because it breaks Druid indexing (at least, it does it druid-0.6.10). Jobs should turn
+    <!-- Off by default, because it breaks Druid indexing (at least, it does it
+         druid-0.6.10). Jobs should turn
          it on if they need it. -->
     <name>mapreduce.output.fileoutputformat.compress</name>
     <value>false</value>
@@ -117,8 +107,7 @@
     <name>yarn.app.mapreduce.am.command-opts</name>
     <value>-Xmx2g</value>
   </property>
-
-    <!-- Job history server persistent state -->
+  <!-- Job history server persistent state -->
   <property>
     <name>mapreduce.jobhistory.recovery.enable</name>
     <value>true</value>

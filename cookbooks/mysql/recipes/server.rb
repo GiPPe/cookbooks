@@ -95,6 +95,8 @@ if gentoo?
     mysql_database "test" do
       owner "root"
     end
+
+    include_recipe "mysql::backup"
   end
 
 elsif mac_os_x?
@@ -133,10 +135,6 @@ if nagios_client?
     group "nagios"
     mode "0600"
     backup 0
-  end
-
-  mysql_user "nagios" do
-    action :delete
   end
 
   # instead use patched version with my.cnf support

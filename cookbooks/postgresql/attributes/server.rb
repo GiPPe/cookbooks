@@ -12,7 +12,12 @@ default[:postgresql][:server][:maintenance_work_mem] = "16MB"
 
 # Write Ahead Log
 default[:postgresql][:server][:wal_level] = "hot_standby"
+default[:postgresql][:server][:wal_buffers] = -1
 default[:postgresql][:server][:checkpoint_segments] = 3
+default[:postgresql][:server][:checkpoint_completion_target] = 0.5
 default[:postgresql][:server][:max_wal_senders] = 5
 default[:postgresql][:server][:wal_keep_segments] = 16384 # 256G of segments
 default[:postgresql][:server][:hot_standby] = "off"
+
+# Planner Cost Constants
+default[:postgresql][:server][:effective_cache_size] = "128MB"

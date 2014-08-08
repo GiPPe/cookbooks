@@ -22,7 +22,7 @@ require 'ohai/mixin/network_constants'
 Ohai.plugin(:NetworkAddresses) do
   include Ohai::Mixin::NetworkConstants
 
-  provides "ipaddress", "ip6address", "macaddress"
+  provides "ipaddress", "ip6address"
 
   depends "network/interfaces"
 
@@ -67,7 +67,7 @@ Ohai.plugin(:NetworkAddresses) do
     gw_attr = Ohai::Mixin::NetworkConstants::FAMILIES[family] + "_gateway"
 
     # If we have a default interface that has addresses,
-    # populate the short-cut attributes ipaddress, ip6address and macaddress
+    # populate the short-cut attributes ipaddress and ip6address
     if network[int_attr]
 
       # working with the address(es) of the default network interface
@@ -124,11 +124,6 @@ Ohai.plugin(:NetworkAddresses) do
     end
   end
 
-  # ipaddress, ip6address and macaddress can be set by the #{os}::network plugin
-  # atm it is expected macaddress is set at the same time than ipaddress
-  # if ipaddress is set and macaddress is nil, that means the interface
-  # ipaddress is bound to has the NOARP flag
-
   collect_data do
     results = {}
 
@@ -144,12 +139,8 @@ Ohai.plugin(:NetworkAddresses) do
       if family == "inet" and ipaddress.nil?
         if r["ip"].nil?
           Ohai::Log.warn("unable to detect ipaddress")
-          # i don't issue this warning if r["ip"] exists and r["mac"].nil?
-          # as it could be a valid setup with a NOARP default_interface
-          Ohai::Log.warn("unable to detect macaddress")
         else
           ipaddress r["ip"]
-          macaddress r["mac"]
         end
       elsif family == "inet6" and ip6address.nil?
         if r["ip"].nil?
@@ -158,18 +149,9 @@ Ohai.plugin(:NetworkAddresses) do
           Ohai::Log.debug("default ip6address would be link-local. skipping ...")
         else
           ip6address r["ip"]
-          if r["mac"] and macaddress.nil? and ipaddress.nil?
-            Ohai::Log.debug("macaddress set to #{r["mac"]} from the ipv6 setup")
-            macaddress r["mac"]
-          end
         end
       end
       results[family] = r
-    end
-
-    if results["inet"]["iface"] and results["inet6"]["iface"] and
-        results["inet"]["iface"] != results["inet6"]["iface"]
-      Ohai::Log.debug("ipaddress and ip6address are set from different interfaces (#{results["inet"]["iface"]} & #{results["inet6"]["iface"]}), macaddress has been set using the ipaddress interface")
     end
   end
 end

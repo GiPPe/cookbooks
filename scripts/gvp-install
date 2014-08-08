@@ -1,0 +1,24 @@
+#!/bin/bash
+
+gpm=$(mktemp)
+curl -s -o ${gpm} https://raw.githubusercontent.com/remerge/gpm/master/bin/gpm
+chmod +x ${gpm}
+
+gvp=$(mktemp)
+curl -s -o ${gvp} https://raw.githubusercontent.com/pote/gvp/v0.1.0/bin/gvp
+chmod +x ${gvp}
+
+topdir=$(perl -e 'use Cwd "abs_path";print abs_path(shift)' $PWD)
+package_base=$(dirname $1)
+
+mkdir -p .godeps/src/${package_base}
+ln -nfs ${topdir} .godeps/src/${1}
+
+if [[ -n $GVP_NAME ]]; then
+	source ${gvp} out
+fi
+
+source ${gvp} in
+${gpm} install
+
+rm -f ${gpm} ${gvp}
