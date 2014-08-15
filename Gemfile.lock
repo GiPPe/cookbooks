@@ -205,6 +205,7 @@ GEM
       sexp_processor (~> 4.0)
     ruby_parser (3.6.1)
       sexp_processor (~> 4.1)
+    rvm (1.11.3.9)
     safe_yaml (1.0.3)
     sexp_processor (4.4.3)
     simplecov (0.8.2)
@@ -256,5 +257,6 @@ DEPENDENCIES
   ovh-rest!
   rake
   rb-inotify
+  rvm
   tailor!
   test-kitchen

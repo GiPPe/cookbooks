@@ -9,11 +9,7 @@ elsif debian_based?
 elsif mac_os_x?
   package "bash"
   package "bash-completion"
-
-  user node[:current_user] do
-    shell "/usr/local/bin/bash"
-    action :modify
-  end
+  execute "sudo dscl . -create /Users/bene UserShell '/usr/local/bin/bash'"
 end
 
 directory node[:bash][:rcdir] do

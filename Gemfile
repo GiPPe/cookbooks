@@ -18,6 +18,7 @@ gem 'liquid-ext'
 gem 'listen'
 gem 'rake'
 gem 'rb-inotify'
+gem 'rvm'
 gem 'tailor', github: 'hollow/tailor'
 
 group :test do
