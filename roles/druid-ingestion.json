@@ -1,0 +1,8 @@
+{
+  "name": "druid-ingestion",
+  "description": "Druid Ingestion Services",
+  "run_list": [
+    "role[base]",
+    "role[druid-realtime]"
+  ]
+}

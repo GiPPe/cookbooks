@@ -1,0 +1,12 @@
+{
+  "name": "druid-storage",
+  "description": "Druid Storage",
+  "default_attributes": {
+    "druid": {
+      "storage": {
+        "type": "hdfs",
+        "directory": "/druid"
+      }
+    }
+  }
+}

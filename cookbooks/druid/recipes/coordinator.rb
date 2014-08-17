@@ -1,8 +1,7 @@
 include_recipe "druid"
 
-if vbox?
-  include_recipe "mysql::server"
-  mysql_database "druid"
+mysql_database "druid" do
+  connection mysql_master_connection(node[:druid][:cluster])
 end
 
 template "/var/app/druid/bin/druid-coordinator" do
@@ -34,7 +33,6 @@ if nagios_client?
 
   nagios_service "DRUID-USAGE" do
     check_command "check_nrpe!check_druid_usage"
-    servicegroups "druid"
   end
 
   druid_databases = node[:druid][:nagios][:topics]
@@ -60,7 +58,6 @@ if nagios_client?
 
     nagios_service "DRUID-DB-#{db_name.gsub(/_/, '-').upcase}" do
       check_command "check_nrpe!check_druid_db_#{db_name}"
-      servicegroups "druid"
     end
   end
 end

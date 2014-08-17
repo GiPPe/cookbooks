@@ -147,6 +147,8 @@ Ohai.plugin(:NetworkAddresses) do
           Ohai::Log.debug("unable to detect ip6address")
         elsif r["ip"] =~ /^fe80:/
           Ohai::Log.debug("default ip6address would be link-local. skipping ...")
+        elsif r["ip"] =~ /^::1/
+          Ohai::Log.debug("default ip6address would be loopback. skipping ...")
         else
           ip6address r["ip"]
         end

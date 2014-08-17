@@ -73,7 +73,7 @@ organizationalUnitName_default  = <%= $conf.ssl.unit %>
 
 commonName                      = Common Name (eg, YOUR name)
 commonName_max                  = 64
-commonName_default              = 
+commonName_default              = <%= cn %>
 
 emailAddress                    = Email Address
 emailAddress_max                = 64

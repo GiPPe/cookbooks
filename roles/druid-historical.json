@@ -1,0 +1,10 @@
+{
+  "name": "druid-historical",
+  "run_list": [
+    "role[base]",
+    "role[c500k]",
+    "role[druid-storage]",
+    "recipe[hadoop2]",
+    "recipe[druid::historical]"
+  ]
+}

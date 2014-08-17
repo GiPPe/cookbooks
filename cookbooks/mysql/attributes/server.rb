@@ -2,6 +2,11 @@ include_attribute "base"
 
 default_unless[:contacts][:mysql] = "root@#{node[:fqdn]}"
 
+# connection info (overriden in server recipe)
+default[:mysql][:connection][:host] = 'localhost'
+default[:mysql][:connection][:username] = 'root'
+default[:mysql][:connection][:password] = ''
+
 # paths
 default[:mysql][:server][:sharedstatedir] = "/usr/share/mysql"
 default[:mysql][:server][:sysconfdir] = "/etc/mysql"

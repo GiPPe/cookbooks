@@ -84,7 +84,7 @@
   <% end %>
   <property>
     <name>yarn.resourcemanager.zk-address</name>
-    <value><%= zookeeper_connect('/hadoop2', node[:hadoop2][:cluster]) %></value>
+    <value><%= zookeeper_connect('/hadoop2', node[:hadoop2][:zookeeper][:cluster]) %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.zk-state-store.parent-path</name>

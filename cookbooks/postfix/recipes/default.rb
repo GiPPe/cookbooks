@@ -133,7 +133,6 @@ if nagios_client?
 
   nagios_service "SMTP" do
     check_command "check_nrpe!check_smtp"
-    servicegroups "postfix"
     env [:testing, :development]
   end
 end

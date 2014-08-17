@@ -10,6 +10,7 @@ namespace :ssl do
     FileUtils.mkdir_p(File.join(SSL_CA_DIR, "newcerts"))
     FileUtils.touch(File.join(SSL_CA_DIR, "index"))
 
+    cn = ""
     b = binding()
     erb = Erubis::Eruby.new(File.read(File.join(TEMPLATES_DIR, 'openssl.cnf')))
 
@@ -105,7 +106,7 @@ namespace :ssl do
 
   desc "Revoke an existing SSL certificate"
   task :revoke, :cn do |t, args|
-    serial = %x(grep ^V.*CN=#{args.cn}\$ ca/index | awk '{print $3}').chomp
+    serial = %x(fgrep 'CN=#{args.cn}' ca/index | awk '{print $3}').chomp
 
     if serial.empty?
       puts "can only revoke my own certificates. skipping #{args.cn} ..."

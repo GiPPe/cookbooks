@@ -36,7 +36,6 @@ if nagios_client?
   nagios_service "POSTFIX-TLS" do
     check_command "check_nrpe!check_postfix_tls"
     notification_interval 1440
-    servicegroups "postfix,openssl"
     env [:testing, :development]
   end
 end

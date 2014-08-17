@@ -53,6 +53,7 @@ include_recipe "zookeeper::ruby"
 ruby_block "druid-zk-chroot" do
   action :nothing
   block do
+    Gem.clear_paths
     require 'zk'
     ZK.new(zookeeper_connect(node[:druid][:zookeeper][:root], node[:druid][:cluster]))
   end

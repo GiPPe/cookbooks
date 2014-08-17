@@ -1,3 +1,8 @@
+# connection info (overriden in server recipe)
+default[:postgresql][:connection][:host] = 'localhost'
+default[:postgresql][:connection][:username] = 'postgres'
+default[:postgresql][:connection][:password] = ''
+
 # Connections and Authentication
 default[:postgresql][:server][:listen_address] = "0.0.0.0"
 default[:postgresql][:server][:port] = 5432
@@ -16,8 +21,9 @@ default[:postgresql][:server][:wal_buffers] = -1
 default[:postgresql][:server][:checkpoint_segments] = 3
 default[:postgresql][:server][:checkpoint_completion_target] = 0.5
 default[:postgresql][:server][:max_wal_senders] = 5
-default[:postgresql][:server][:wal_keep_segments] = 16384 # 256G of segments
+default[:postgresql][:server][:wal_keep_segments] = 1024 # 16G of segments
 default[:postgresql][:server][:hot_standby] = "off"
+default[:postgresql][:server][:active_master] = false
 
 # Planner Cost Constants
 default[:postgresql][:server][:effective_cache_size] = "128MB"

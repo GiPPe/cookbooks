@@ -1,5 +1,4 @@
-default[:memcached][:memory] = "64"
-default[:memcached][:user] = "memcached"
+default[:memcached][:memory] = "1024"
 default[:memcached][:maxconn] = "1024"
-default[:memcached][:listen] = "127.0.0.1"
+default[:memcached][:listen] = "0.0.0.0"
 default[:memcached][:port] = "11211"

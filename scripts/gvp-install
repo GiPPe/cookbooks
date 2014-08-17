@@ -1,10 +1,10 @@
 #!/bin/bash
 
-gpm=$(mktemp)
+gpm=$(mktemp /tmp/gvp-install.XXXXXXXXXX)
 curl -s -o ${gpm} https://raw.githubusercontent.com/remerge/gpm/master/bin/gpm
 chmod +x ${gpm}
 
-gvp=$(mktemp)
+gvp=$(mktemp /tmp/gvp-install.XXXXXXXXXX)
 curl -s -o ${gvp} https://raw.githubusercontent.com/pote/gvp/v0.1.0/bin/gvp
 chmod +x ${gvp}
 

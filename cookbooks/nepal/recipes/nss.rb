@@ -3,27 +3,22 @@ include_recipe "nepal::base"
 mysql_user_password = get_password("mysql/nepal_nss_user")
 mysql_root_password = get_password("mysql/nepal_nss_root")
 
-mysql_user "nepal_nss_user" do
+mysql_database_user "nepal_nss_user" do
+  connection node[:mysql][:connection]
+  host "%"
   password mysql_user_password
-  force_password true
-end
-
-# TODO: table level privs
-mysql_grant "nepal_nss_user" do
-  user "nepal_nss_user"
-  database "nepal"
+  database_name "nepal"
   privileges %w(SELECT)
+  action :grant
 end
 
-mysql_user "nepal_nss_root" do
+mysql_database_user "nepal_nss_root" do
+  connection node[:mysql][:connection]
+  host "%"
   password mysql_root_password
-  force_password true
-end
-
-mysql_grant "nepal_nss_root" do
-  user "nepal_nss_root"
-  database "nepal"
+  database_name "nepal"
   privileges %w(SELECT)
+  action :grant
 end
 
 package "sys-auth/libnss-mysql"

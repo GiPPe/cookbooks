@@ -21,13 +21,18 @@ class Nodes
   def initialize(node)
     @node = node
     @nodes = node.run_state[:nodes]
-    if @nodes.none? { |n| n[:fqdn] == node[:fqdn] }
-      @nodes << node
-    end
+    # make sure we use attributes from current node instead of stale data from
+    # the search index to prevent chicken-egg problems
+    @nodes.delete_if { |n| n[:fqdn] == node[:fqdn] }
+    @nodes << node
   end
 
   def each(&block)
     @nodes.each(&block)
+  end
+
+  def length
+    to_a.length
   end
 
   def filter(&block)
@@ -38,7 +43,7 @@ class Nodes
 
   def cluster(name)
     filter do |n|
-      n.cluster_name == node.cluster_name rescue false
+      n.cluster_name == name rescue false
     end
   end
 

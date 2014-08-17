@@ -6,15 +6,13 @@ node.default[:pureftpd][:options] = "-A -E -H -j -U 133:022 -Z"
 
 mysql_password = get_password("mysql/nepal_ftp")
 
-mysql_user "nepal_ftp" do
+mysql_database_user "nepal_ftp" do
+  connection node[:mysql][:connection]
+  host "%"
   password mysql_password
-  force_password true
-end
-
-mysql_grant "nepal_ftp" do
-  user "nepal_ftp"
+  database_name "nepal"
   privileges %w(SELECT)
-  database "nepal"
+  action :grant
 end
 
 template "/etc/pureftpd-mysql.conf" do

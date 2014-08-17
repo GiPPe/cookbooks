@@ -1,10 +1,12 @@
 include_recipe "postgresql"
 
 package "dev-db/postgresql-server"
-package "dev-ruby/pg"
 
 version = "9.3"
-datadir = "/var/lib/postgresql/#{version}/data"
+homedir = "/var/lib/postgresql/#{version}"
+datadir = "#{homedir}/data"
+
+node.set[:postgresql][:connection][:host] = node[:fqdn]
 
 directory datadir do
   owner "postgres"
@@ -21,12 +23,6 @@ execute "postgresql-initdb" do
 end
 
 directory "#{datadir}/pg_log_archive" do
-  owner "postgres"
-  group "postgres"
-  mode "0700"
-end
-
-directory "#{datadir}/pg_backup" do
   owner "postgres"
   group "postgres"
   mode "0700"
@@ -71,12 +67,20 @@ service "postgresql" do
   supports [:reload]
 end
 
+backupdir = "#{homedir}/backup"
+
+directory backupdir do
+  owner "postgres"
+  group "postgres"
+  mode "0700"
+end
+
 systemd_timer "postgresql-backup" do
   schedule %w(OnCalendar=daily)
   unit({
     command: [
-      "/bin/bash -c 'rm -rf #{datadir}/pg_backup/*'",
-      "/usr/bin/pg_basebackup -D #{datadir}/pg_backup -Ft -z -x",
+      "/bin/bash -c 'rm -rf #{backupdir}/*'",
+      "/usr/bin/pg_basebackup -D #{backupdir} -x",
     ],
     user: "postgres",
     group: "postgres",

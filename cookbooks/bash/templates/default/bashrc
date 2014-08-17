@@ -18,6 +18,10 @@ elif [[ -r /usr/local/bin/virtualenvwrapper.sh ]]; then
 	source /usr/local/bin/virtualenvwrapper.sh
 fi
 
+# set proper Go path
+export GOPATH="${HOME}/.go"
+export PATH="~/.go/bin:${PATH}"
+
 # everything else is for interactive shells only
 [[ $- != *i* ]] && return
 

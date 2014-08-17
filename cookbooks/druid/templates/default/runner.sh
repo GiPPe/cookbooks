@@ -8,8 +8,8 @@ JMXPORT=<%= node[:druid][@service][:port] + 10000 %>
 # common JVM options
 JVM_OPTS=""
 JVM_OPTS+=" -server -d64"
-JVM_OPTS+=" -Xmx<%= node[:druid][@service][:mx] %>"
-JVM_OPTS+=" -XX:MaxDirectMemorySize=<%= node[:druid][@service][:dm] %>"
+JVM_OPTS+=" -Xmx<%= node[:druid][@service][:mx] %>m"
+JVM_OPTS+=" -XX:MaxDirectMemorySize=<%= node[:druid][@service][:dm] %>m"
 JVM_OPTS+=" -XX:+UseCompressedOops"
 JVM_OPTS+=" -XX:+UseParNewGC"
 JVM_OPTS+=" -XX:+UseConcMarkSweepGC"

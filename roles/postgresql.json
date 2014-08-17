@@ -1,0 +1,7 @@
+{
+  "name": "postgresql",
+  "description": "PostgreSQL Database Server",
+  "run_list": [
+    "recipe[postgresql::server]"
+  ]
+}

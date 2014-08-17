@@ -1,4 +1,7 @@
-chef_server_url "https://localhost"
+role = JSON.load(File.read(File.expand_path("../../roles/base.json", __FILE__)))
+chef_domain = role['default_attributes']['chef_domain']
+
+chef_server_url "https://chef.#{chef_domain}"
 
 # do not change anything below here
 chef_repo_path File.expand_path(File.join(File.dirname(__FILE__), ".."))
@@ -20,6 +23,10 @@ cookbook_path [
   "#{chef_repo_path}/cookbooks",
   "#{chef_repo_path}/site-cookbooks",
 ]
+
+if ENV["CHEF_ZERO"]
+  node_path "#{chef_repo_path}/.vagrant/nodes"
+end
 
 script_path "#{chef_repo_path}/scripts"
 

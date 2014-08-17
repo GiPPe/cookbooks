@@ -78,7 +78,7 @@ namespace :node do
     tmpfile = Tempfile.new('quickstart')
     tmpfile.write(erb.result(b))
     tmpfile.rewind
-    sshlive(args.ipaddress, nil, tmpfile.path)
+    sshlive(args.ipaddress, ENV['PASSWORD'], tmpfile.path)
     tmpfile.unlink
 
     # wait until machine is up again

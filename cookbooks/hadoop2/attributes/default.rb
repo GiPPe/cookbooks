@@ -1,10 +1,12 @@
 default[:hadoop2][:version] = "2.4.1"
 
-default[:hadoop2][:cluster] = nil # defaulted to node.cluster_name by recipe
-default[:hadoop2][:rack_id] = nil # defaulted to "/default-rack/#{node.cluster_name}"
+default[:hadoop2][:cluster] = node.cluster_name
+default[:hadoop2][:rack_id] = "/default-rack/#{node.cluster_name}"
 
 default[:hadoop2][:tmp_dir] = "/var/tmp/hadoop2"
 default[:hadoop2][:java_tmp] = "/var/tmp/java"
+
+default[:hadoop2][:zookeeper][:cluster] = node.cluster_name
 
 default[:hadoop2][:nodemanager][:memory_mb] = 8192
 

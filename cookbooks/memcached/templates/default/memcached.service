@@ -4,13 +4,12 @@ After=network.target
 
 [Service]
 ExecStart=/usr/bin/memcached \
-	-l <%= node[:memcached][:listen] \
+	-l <%= node[:memcached][:listen] %> \
 	-p <%= node[:memcached][:port] %> \
-	-U <%= node[:memcached][:port] %> \
 	-m <%= node[:memcached][:memory] %> \
 	-c <%= node[:memcached][:maxconn] %>
 User=memcached
-Group=daemons
+Group=daemon
 Restart=always
 OOMScoreAdjust=-900
 

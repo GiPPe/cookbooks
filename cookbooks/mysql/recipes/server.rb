@@ -2,10 +2,10 @@ include_recipe "mysql"
 
 if gentoo?
   package "dev-db/innotop"
-  package "dev-db/maatkit"
   package "dev-db/mysqltuner"
   package "dev-db/mytop"
-  package "dev-db/xtrabackup-bin" if zentoo?
+  package "dev-db/percona-toolkit"
+  package "dev-db/xtrabackup-bin"
   package "dev-ruby/mysql-ruby"
 
   # configuration files
@@ -57,14 +57,6 @@ if gentoo?
       creates "/var/lib/mysql/mysql"
     end
 
-    file "/root/.my.cnf" do
-      content "[client]\nuser = root\n"
-      owner "root"
-      group "root"
-      mode "0600"
-      backup 0
-    end
-
     cookbook_file "/usr/libexec/mysqld-wait-ready" do
       source "mysqld-wait-ready"
       owner "root"
@@ -79,21 +71,39 @@ if gentoo?
       action [:enable, :start]
     end
 
-    mysql_user "root" do
+    mysql_root_password = get_password("mysql/root")
+
+    mysql_database_user "root" do
+      connection node[:mysql][:connection]
       host "%"
-      password ""
-      force_password true
+      password mysql_root_password
+      grant_option true
+      action :grant
     end
 
-    mysql_grant "root" do
-      database "*"
-      user "root"
-      user_host "%"
-      grant_option true
+    node.set[:mysql][:connection][:host] = node[:fqdn]
+    node.set[:mysql][:connection][:password] = mysql_root_password
+
+    %W(@localhost @#{node[:hostname]} root@127.0.0.1 root@::1 root@localhost root@#{node[:hostname]}).each do |user_host|
+      user, host = user_host.split('@')
+      mysql_database_user user_host do
+        connection node[:mysql][:connection]
+        host host
+        username user
+        action :drop
+      end
     end
 
     mysql_database "test" do
+      connection node[:mysql][:connection]
+    end
+
+    template "/root/.my.cnf" do
+      source "dotmy.cnf"
       owner "root"
+      group "root"
+      mode "0600"
+      backup 0
     end
 
     include_recipe "mysql::backup"
@@ -129,8 +139,8 @@ if nagios_client?
     mode "0644"
   end
 
-  file "/var/nagios/home/.my.cnf" do
-    content "[client]\nuser = root\n"
+  template "/var/nagios/home/.my.cnf" do
+    source "dotmy.cnf"
     owner "nagios"
     group "nagios"
     mode "0600"
@@ -152,7 +162,6 @@ if nagios_client?
       check_command "check_nrpe!check_mysql_#{name}"
       check_interval params[:check_interval]
       notification_interval params[:notification_interval]
-      servicegroups "mysql"
       enabled params[:enabled]
     end
   end

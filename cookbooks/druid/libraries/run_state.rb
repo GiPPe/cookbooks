@@ -14,7 +14,7 @@ module DruidHelpers
           indexGranularity: config[:granularity],
           shardSpec: {
             type: "linear",
-            partitionNum: node[:cluster][:host][:id],
+            partitionNum: node[:druid][:realtime][:partition],
           },
         },
         config: {

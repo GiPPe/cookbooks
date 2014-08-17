@@ -21,8 +21,12 @@ if node[:mysql][:backup][:mode] == "copy"
   end
 end
 
-if node[:mysql][:server][:active_master]
-  action = :delete
+if mysql_nodes.length > 1
+  if node[:mysql][:server][:active_master]
+    action = :delete
+  else
+    action = :create
+  end
 else
   action = :create
 end

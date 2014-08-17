@@ -70,7 +70,7 @@ end.flatten.compact.map do |v|
   end
 end
 
-hosts = (vhosts + hosts).sort_by do |n|
+hosts = (vhosts + hosts.to_a).sort_by do |n|
   n[:fqdn]
 end
 
@@ -93,20 +93,8 @@ hosts.each do |h|
   end
 end
 
-# build service groups
-servicegroups = []
-hosts.each do |h|
-  next unless h[:nagios]
-  next unless h[:nagios][:services]
-  h[:nagios][:services].each do |name, params|
-    if params[:servicegroups]
-      servicegroups |= params[:servicegroups].split(",")
-    end
-  end
-end
-
 # remove sample objects
-%w(hosts localhost printer services switch windows).each do |f|
+%w(hosts localhost printer services switch windows servicegroups).each do |f|
   file "/etc/nagios/objects/#{f}.cfg" do
     action :delete
   end
@@ -141,10 +129,6 @@ end
 
 nagios_conf "hostgroups" do
   variables :hostgroups => hostgroups
-end
-
-nagios_conf "servicegroups" do
-  variables :servicegroups => servicegroups
 end
 
 hosts.each do |host|

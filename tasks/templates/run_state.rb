@@ -6,7 +6,7 @@ end
 
 include <%= name.capitalize %>Helpers
 
-class <%= name.capitalize %>
+class Chef
   class Recipe
     include <%= name.capitalize %>Helpers
   end

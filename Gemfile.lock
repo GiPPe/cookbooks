@@ -29,14 +29,12 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.1.1)
+    activesupport (4.1.4)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
-    atomic (1.1.14)
-    avl_tree (1.1.3)
     awesome_print (1.2.0)
     bond (0.5.1)
     brice (0.3.0)
@@ -93,12 +91,12 @@ GEM
       xml-simple
     highline (1.6.21)
     hirb (0.7.2)
-    hitimes (1.2.1)
     httparty (0.10.2)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
-    i18n (0.6.9)
+    i18n (0.6.11)
     ipaddress (0.8.0)
+    jmx4r (0.1.4)
     json (1.8.1)
     kitchen-vagrant (0.15.0)
       test-kitchen (~> 1.0)
@@ -119,26 +117,21 @@ GEM
       tailor
       timecop
       yard
-    liquid-ext (1.0.2)
+    liquid-ext (3.5.0)
       activesupport
-      ffi
-      liquid-logging (>= 2.0.0)
-      metriks
+      erubis
+      jmx4r
       mixlib-cli
+      multi_json
       terminal-table
-    liquid-logging (2.0.0)
     listen (2.7.9)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     log_switch (0.4.0)
     method_source (0.8.2)
-    metriks (0.9.9.5)
-      atomic (~> 1.0)
-      avl_tree (~> 1.1.2)
-      hitimes (~> 1.1)
     mime-types (1.25.1)
-    minitest (5.3.5)
+    minitest (5.4.0)
     mixlib-authentication (1.3.0)
       mixlib-log
     mixlib-cli (1.5.0)
@@ -165,7 +158,7 @@ GEM
       mixlib-shellout (~> 1.2)
       systemu (~> 2.5.2)
       yajl-ruby
-    parallel (1.0.0)
+    parallel (1.1.2)
     polyglot (0.3.5)
     pry (0.10.0)
       coderay (~> 1.1.0)
@@ -177,13 +170,16 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    reek (1.3.7)
-      rainbow
-      ruby2ruby (~> 2.0.8)
+    rdoc (4.1.1)
+      json (~> 1.4)
+    reek (1.3.8)
+      rainbow (>= 1.99, < 3.0)
+      ruby2ruby (>= 2.0.8, < 3.0)
       ruby_parser (~> 3.3)
       sexp_processor
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
+    rest-client (1.6.8)
+      mime-types (~> 1.16)
+      rdoc (>= 2.4.2)
     rib (1.2.5)
     ripl (0.7.1)
       bond (~> 0.5.1)
@@ -198,22 +194,22 @@ GEM
       rspec-support (~> 3.0.0)
     rspec-mocks (3.0.2)
       rspec-support (~> 3.0.0)
-    rspec-support (3.0.1)
+    rspec-support (3.0.2)
     ruby-progressbar (1.5.1)
-    ruby2ruby (2.0.8)
+    ruby2ruby (2.1.1)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
-    ruby_parser (3.6.1)
+    ruby_parser (3.6.2)
       sexp_processor (~> 4.1)
     rvm (1.11.3.9)
     safe_yaml (1.0.3)
     sexp_processor (4.4.3)
-    simplecov (0.8.2)
+    simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    slop (3.5.0)
+    slop (3.6.0)
     systemu (2.5.2)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
@@ -235,7 +231,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
-    xml-simple (1.1.3)
+    xml-simple (1.1.4)
     yajl-ruby (1.1.0)
     yard (0.8.7.4)
 

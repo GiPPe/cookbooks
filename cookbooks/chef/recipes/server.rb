@@ -1,4 +1,4 @@
-source_url = "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chef-server_11.1.1-1_amd64.deb"
+source_url = "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chef-server_11.1.3-1_amd64.deb"
 source_filename = File.basename(source_url)
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{source_filename}" do

@@ -4,8 +4,6 @@ package "app-arch/snappy"
 package "dev-libs/protobuf"
 package "dev-java/ant-core"
 
-node.default[:hadoop2][:cluster] = node.cluster_name
-
 deploy_skeleton "hadoop2"
 
 %w(
@@ -115,8 +113,9 @@ include_recipe "zookeeper::ruby"
 ruby_block "hadoop-zk-chroot" do
   action :nothing
   block do
+    Gem.clear_paths
     require 'zk'
-    zk = ZK.new(zookeeper_connect('/hadoop2', node[:hadoop2][:cluster]))
+    zk = ZK.new(zookeeper_connect('/hadoop2', node[:hadoop2][:zookeeper][:cluster]))
     [
       "/ha",
       "/ha/#{node[:hadoop2][:cluster]}",

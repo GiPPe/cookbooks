@@ -1,0 +1,7 @@
+{
+  "name": "mysql",
+  "description": "MySQL Database Server",
+  "run_list": [
+    "recipe[mysql::server]"
+  ]
+}

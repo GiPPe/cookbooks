@@ -1,0 +1,9 @@
+{
+  "name": "druid-broker",
+  "run_list": [
+    "role[base]",
+    "role[c500k]",
+    "role[druid-storage]",
+    "recipe[druid::broker]"
+  ]
+}
