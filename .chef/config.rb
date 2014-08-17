@@ -1,5 +1,5 @@
 role = JSON.load(File.read(File.expand_path("../../roles/base.json", __FILE__)))
-chef_domain = role['default_attributes']['chef_domain']
+chef_domain = role['default_attributes']['chef_domain'] rescue "localhost"
 
 chef_server_url "https://chef.#{chef_domain}"
 
