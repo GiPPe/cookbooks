@@ -2,10 +2,10 @@ include_recipe "mysql"
 
 if gentoo?
   package "dev-db/innotop"
-  package "dev-db/maatkit"
   package "dev-db/mysqltuner"
   package "dev-db/mytop"
-  package "dev-db/xtrabackup-bin" if zentoo?
+  package "dev-db/percona-toolkit"
+  package "dev-db/xtrabackup-bin"
   package "dev-ruby/mysql-ruby"
 
   # configuration files
@@ -52,33 +52,9 @@ if gentoo?
       end
     end
 
-    mysql_root_pass = vagrant? ? "root" : get_password("mysql/root")
-
-    template "/usr/sbin/mysql_pkg_config" do
-      source "mysql_pkg_config"
-      owner "root"
-      group "root"
-      mode "0755"
-      not_if { File.directory?("/var/lib/mysql/mysql") }
-      backup 0
-      variables(:root_pass => mysql_root_pass)
-    end
-
     execute "mysql_pkg_config" do
+      command "emerge --config dev-db/mysql"
       creates "/var/lib/mysql/mysql"
-    end
-
-    file "/usr/sbin/mysql_pkg_config" do
-      action :delete
-      backup 0
-    end
-
-    file "/root/.my.cnf" do
-      content "[client]\nuser = root\npass = #{mysql_root_pass}\n"
-      owner "root"
-      group "root"
-      mode "0600"
-      backup 0
     end
 
     cookbook_file "/usr/libexec/mysqld-wait-ready" do
@@ -95,22 +71,42 @@ if gentoo?
       action [:enable, :start]
     end
 
-    mysql_user "root" do
-      password mysql_root_pass
-      force_password true
-      host "%" if vagrant?
+    mysql_root_password = get_password("mysql/root")
+
+    mysql_database_user "root" do
+      connection node[:mysql][:connection]
+      host "%"
+      password mysql_root_password
+      grant_option true
+      action :grant
     end
 
-    mysql_grant "root" do
-      database "*"
-      user "root"
-      user_host "%" if vagrant?
-      grant_option true
+    node.set[:mysql][:connection][:host] = node[:fqdn]
+    node.set[:mysql][:connection][:password] = mysql_root_password
+
+    %W(@localhost @#{node[:hostname]} root@127.0.0.1 root@::1 root@localhost root@#{node[:hostname]}).each do |user_host|
+      user, host = user_host.split('@')
+      mysql_database_user user_host do
+        connection node[:mysql][:connection]
+        host host
+        username user
+        action :drop
+      end
     end
 
     mysql_database "test" do
-      owner "root"
+      connection node[:mysql][:connection]
     end
+
+    template "/root/.my.cnf" do
+      source "dotmy.cnf"
+      owner "root"
+      group "root"
+      mode "0600"
+      backup 0
+    end
+
+    include_recipe "mysql::backup"
   end
 
 elsif mac_os_x?
@@ -143,35 +139,12 @@ if nagios_client?
     mode "0644"
   end
 
-  # MySQL user for check_mysql_health and others
-  mysql_nagios_password = get_password("mysql/nagios")
-
-  file "/var/nagios/home/.my.cnf" do
-    content "[client]\nuser = nagios\npass = #{mysql_nagios_password}\n"
+  template "/var/nagios/home/.my.cnf" do
+    source "dotmy.cnf"
     owner "nagios"
     group "nagios"
     mode "0600"
     backup 0
-  end
-
-  mysql_user "nagios" do
-    force_password true
-    password mysql_nagios_password
-  end
-
-  mysql_grant "nagios" do
-    user "nagios"
-    privileges ["PROCESS", "REPLICATION CLIENT"]
-    database "*"
-  end
-
-  # do not use upstream version with wrapper hack
-  package "net-analyzer/nagios-check_mysql_health" do
-    action :remove
-  end
-
-  nagios_plugin "check_mysql_health_wrapper" do
-    action :delete
   end
 
   # instead use patched version with my.cnf support
@@ -189,7 +162,6 @@ if nagios_client?
       check_command "check_nrpe!check_mysql_#{name}"
       check_interval params[:check_interval]
       notification_interval params[:notification_interval]
-      servicegroups "mysql"
       enabled params[:enabled]
     end
   end

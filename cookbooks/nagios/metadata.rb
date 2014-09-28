@@ -10,5 +10,5 @@ supports "debian"
 supports "gentoo"
 
 depends "nginx"
-depends "splunk"
+depends "splunk6"
 depends "spawn-fcgi"

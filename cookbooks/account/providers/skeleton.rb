@@ -110,7 +110,7 @@ def authorized_keys_for(users)
   users = [users].flatten.compact.map do |u|
     u.to_sym
   end
-  node.run_state[:users].select do |u|
+  node.users.select do |u|
     users.include?(u[:id].to_sym) &&
       u[:authorized_keys] &&
       !u[:authorized_keys].empty?

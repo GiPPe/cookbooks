@@ -1,15 +1,26 @@
 #!/usr/bin/env ruby
-# gem install github_api highline rake
 
-require 'github_api'
-require 'highline/import'
-require 'rake'
+begin
+  require 'github_api'
+  require 'highline/import'
+  require 'rake'
+  require 'netrc'
+rescue LoadError
+  puts "Missing Gems! Install with `gem install github_api highline rake netrc`"
+  exit 1
+end
 
 RakeFileUtils.verbose_flag = false
 include RakeFileUtils
 
-username = ask("Username: ")
-password = ask("Password: ") { |q| q.echo = false }
+netrc = Netrc.read
+username, password = netrc["github.com"]
+
+if username.nil?
+  username = ask("Username: ")
+  password = ask("Password: ") { |q| q.echo = false }
+end
+
 org = File.basename(Dir.pwd)
 
 gh = Github.new({

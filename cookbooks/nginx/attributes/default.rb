@@ -1,6 +1,6 @@
 default[:nginx][:use_flags] = []
 
-default[:nginx][:worker_processes] = "4"
+default[:nginx][:worker_processes] = node[:cpu][:total]
 default[:nginx][:worker_connections] = "1024"
 
 default[:nginx][:tcp_nopush] = "on"

@@ -15,7 +15,7 @@ for x in /dev/sd*; do
 done
 
 for x in /dev/sd[a-z]; do
-    echo -ne "rm 1\nIgnore\nrm 2\nIgnore\nrm 128\nIgnore\nquit\n" | parted $x 2>&1 > /dev/null
+    parted -s $x mklabel gpt
 done
 
 partprobe
@@ -24,4 +24,4 @@ cd /tmp
 wget -q -O quickstart.tar.gz https://github.com/zentoo/quickstart/tarball/master
 tar -xzf quickstart.tar.gz
 cd *-quickstart-*
-exec ./quickstart profiles/<%= args.profile %>.sh
+exec ./quickstart -v -d profiles/<%= args.profile %>.sh

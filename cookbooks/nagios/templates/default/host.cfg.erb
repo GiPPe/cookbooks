@@ -42,6 +42,7 @@ define host {
 
   # legacy
   params.delete(:escalations)
+  params.delete(:servicegroups)
 %>
 define service {
   use generic-service

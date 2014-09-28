@@ -1,23 +1,75 @@
+SSL_CA_DIR = <%= SSL_CA_DIR %>
+SSL_CERT_DIR = <%= SSL_CERT_DIR %>
+
+
+[ ca ]
+default_ca = CA_default
+
+
+[ CA_default ]
+database         = $SSL_CA_DIR/index
+new_certs_dir    = $SSL_CA_DIR/newcerts
+
+certificate      = $SSL_CERT_DIR/ca.crt
+serial           = $SSL_CA_DIR/serial
+private_key      = $SSL_CA_DIR/ca.key
+RANDFILE         = $SSL_CA_DIR/.rand
+
+crl              = $SSL_CERT_DIR/ca.crl
+crl_dir          = $SSL_CA_DIR/crl
+crlnumber        = $SSL_CA_DIR/crlnumber
+
+default_days     = 365
+default_crl_days = 30
+default_md       = sha1
+
+policy           = policy_match
+email_in_dn      = no
+
+name_opt         = ca_default
+cert_opt         = ca_default
+
+copy_extensions  = none
+x509_extensions  = usr_cert
+
+preserve         = no
+
+
+[ policy_match ]
+countryName            = match
+stateOrProvinceName    = match
+localityName           = match
+organizationName       = match
+organizationalUnitName = optional
+commonName             = supplied
+emailAddress           = optional
+
+
 [ req ]
+default_bits       = 2048
+default_keyfile    = privkey.pem
+default_md         = sha1
 distinguished_name = req_distinguished_name
+x509_extensions    = v3_ca
+
 
 [ req_distinguished_name ]
 countryName                     = Country Name (2 letter code)
-countryName_default             = <%= SSL_COUNTRY_NAME %>
+countryName_default             = <%= $conf.ssl.country %>
 countryName_min                 = 2
 countryName_max                 = 2
 
 stateOrProvinceName             = State or Province Name (full name)
-stateOrProvinceName_default     = <%= SSL_STATE_NAME %>
+stateOrProvinceName_default     = <%= $conf.ssl.state %>
 
 localityName                    = Locality Name (eg, city)
-localityName_default            = <%= SSL_LOCALITY_NAME %>
+localityName_default            = <%= $conf.ssl.city %>
 
 0.organizationName              = Organization Name (eg, company)
-0.organizationName_default      = <%= COMPANY_NAME %>
+0.organizationName_default      = <%= $conf.company.name %>
 
 organizationalUnitName          = Organizational Unit Name (eg, section)
-organizationalUnitName_default  = <%= SSL_ORGANIZATIONAL_UNIT_NAME %>
+organizationalUnitName_default  = <%= $conf.ssl.unit %>
 
 commonName                      = Common Name (eg, YOUR name)
 commonName_max                  = 64
@@ -25,4 +77,20 @@ commonName_default              = <%= cn %>
 
 emailAddress                    = Email Address
 emailAddress_max                = 64
-emailAddress_default            = <%= SSL_EMAIL_ADDRESS %>
+emailAddress_default            = <%= $conf.ssl.email %>
+
+
+[ usr_cert ]
+basicConstraints       = CA:FALSE
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid,issuer
+
+
+[ v3_ca ]
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+basicConstraints       = CA:true
+
+
+[ crl_ext ]
+authorityKeyIdentifier = keyid:always,issuer:always

@@ -1,0 +1,9 @@
+{
+  "name": "aerospike",
+  "description": "Aerospike Database",
+  "run_list": [
+    "role[base]",
+    "role[c500k]",
+    "recipe[aerospike::server]"
+  ]
+}

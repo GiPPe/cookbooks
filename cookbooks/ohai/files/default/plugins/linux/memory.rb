@@ -16,16 +16,20 @@
 # limitations under the License.
 #
 
-provides "memory"
+Ohai.plugin(:Memory) do
+  provides "memory", "memory/swap"
 
-memory Mash.new
-memory[:swap] = Mash.new
+  collect_data(:linux) do
+    memory Mash.new
+    memory[:swap] = Mash.new
 
-File.open("/proc/meminfo").each do |line|
-  case line
-  when /^MemTotal:\s+(\d+) (.+)$/
-    memory[:total] = "#{$1}#{$2}"
-  when /^SwapTotal:\s+(\d+) (.+)$/
-    memory[:swap][:total] = "#{$1}#{$2}"
+    File.open("/proc/meminfo").each do |line|
+      case line
+      when /^MemTotal:\s+(\d+) (.+)$/
+        memory[:total] = "#{$1}#{$2}"
+      when /^SwapTotal:\s+(\d+) (.+)$/
+        memory[:swap][:total] = "#{$1}#{$2}"
+      end
+    end
   end
 end

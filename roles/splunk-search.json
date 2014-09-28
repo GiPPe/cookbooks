@@ -1,8 +1,0 @@
-{
-  "name": "splunk-search",
-  "description": "Splunk Search Head",
-  "run_list": [
-    "role[splunk]",
-    "recipe[splunk::search]"
-  ]
-}

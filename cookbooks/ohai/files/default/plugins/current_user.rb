@@ -1,12 +1,8 @@
-provides 'current_user'
+Ohai.plugin(:CurrentUser) do
+  provides 'current_user'
 
-require 'etc'
-
-def fix_encoding(str)
-  str.force_encoding(Encoding.default_external) if str.respond_to?(:force_encoding)
-  str
-end
-
-unless current_user
-  current_user fix_encoding(Etc.getlogin)
+  collect_data do
+    require 'etc'
+    current_user Etc.getlogin
+  end
 end

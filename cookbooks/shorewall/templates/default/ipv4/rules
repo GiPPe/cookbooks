@@ -20,8 +20,14 @@ ACCEPT net $FW icmp
 # accept ssh connections
 ACCEPT all all tcp ssh
 
+# accept nrpe connection from nagios
+<% if nagios_node %>
+ACCEPT net:<%= nagios_node[:ipaddress] %> all tcp 5666
+<% end %>
+
 # accept all connections from chef nodes
-<% node.run_state[:nodes].each do |n| %>
+<% nodes = node[:shorewall][:clustered] ? node.nodes.cluster(node.cluster_name) : node.nodes %>
+<% nodes.each do |n| %>
 <% next unless n[:ipaddress] %>
 ACCEPT net:<%= n[:ipaddress] %> all - -
 <% end %>

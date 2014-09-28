@@ -33,7 +33,7 @@ user "root" do
   comment "root"
   home "/root"
   shell "/bin/bash"
-  password "*" unless node.run_state[:users].empty?
+  password "*" unless node.users.empty?
 end
 
 %w(/root /root/.ssh).each do |dir|

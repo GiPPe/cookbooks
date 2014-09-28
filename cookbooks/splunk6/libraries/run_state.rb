@@ -51,7 +51,6 @@ module Splunk6RunStateHelpers
   end
 
   def splunk6_forwarder?
-    gentoo? &&
     splunk6_nodes.any? && [
       node.role?("splunk-master"),
       node.role?("splunk-peer"),

@@ -1,7 +1,0 @@
-{
-  "name": "hadoop-tasktracker",
-  "description": "Hadoop Tasktracker",
-  "run_list": [
-    "recipe[hadoop::tasktracker]"
-  ]
-}

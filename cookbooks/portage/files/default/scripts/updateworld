@@ -101,15 +101,6 @@ depclean
 emerge @preserved-rebuild --quiet || :
 emerge @preserved-rebuild --quiet --usepkg=n --getbinpkg=n || :
 
-# this fucker needs to be run after every upgrade, since noone can be sure what
-# has been broken. dude, srsly - can't we simply have PYTHON_TARGETS?
-eselect python update --python2
-
-if [[ $(ls -1d /usr/lib/python* | wc -l) != 1 ]]; then
-	python-updater -dmanual -- --quiet --usepkg --getbinpkg
-	python-updater -dmanual -- --quiet --usepkg=n --getbinpkg=n
-fi
-
 # same crap as with python ... except that perl-cleaner is even crappier
 current_perl=$(ls -1d /usr/lib/perl5/5.* | sort --version-sort --reverse | head -n1 | xargs -n1 basename)
 old_perl_dirs=$(ls -1d /usr/lib/perl5/5.* /usr/lib/perl5/site_perl/5.* /usr/lib/perl5/vendor_perl/5.* | grep -v ${current_perl} || :)

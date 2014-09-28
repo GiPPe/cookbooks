@@ -26,6 +26,7 @@ if debian_based?
     lm-sensors
     lshw
     lsof
+    man-db
     mc
     mtr
     ncdu
@@ -44,6 +45,7 @@ if debian_based?
     telnet
     traceroute
     tree
+    wget
     whois
     xz-utils
   )

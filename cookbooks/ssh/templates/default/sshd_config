@@ -15,13 +15,13 @@ HostKey /etc/ssh/ssh_host_dsa_key
 # authentication
 UsePAM yes
 PubkeyAuthentication yes
-<% if node.run_state[:users].select do |u| u.include?(:authorized_keys) end.empty? %>
+<% if node.users.select do |u| u.include?(:authorized_keys) end.empty? %>
 PasswordAuthentication yes
 <% else %>
 PasswordAuthentication <%= node[:ssh][:server][:password_auth] %>
 <% end %>
 ChallengeResponseAuthentication <%= node[:ssh][:server][:challange_response_auth] %>
-<% if node.run_state[:users].empty? %>
+<% if node.users.empty? %>
 PermitRootLogin yes
 <% else %>
 PermitRootLogin <%= node[:ssh][:server][:root_login] %>

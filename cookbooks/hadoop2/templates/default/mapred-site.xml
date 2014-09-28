@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <% if hadoop2_historyserver %>
+  <property>
+    <name>mapreduce.jobhistory.address</name>
+    <value><%= hadoop2_historyserver[:fqdn] %>:10020</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.webapp.address</name>
+    <value><%= hadoop2_historyserver[:fqdn] %>:19888</value>
+  </property>
+  <% end %>
+  <property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+  </property>
+  <property>
+    <name>mapreduce.tasktracker.http.address</name>
+    <value>0.0.0.0:0</value>
+  </property>
+  <property>
+    <name>mapreduce.jobtracker.http.address</name>
+    <value>0.0.0.0:0</value>
+  </property>
+  <property>
+    <name>mapreduce.map.speculative</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.speculative</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>mapreduce.job.reduces</name>
+    <value>21</value>
+  </property>
+  <property>
+    <name>mapreduce.job.jvm.numtasks</name>
+    <value>20</value>
+  </property>
+  <property>
+    <name>mapreduce.map.memory.mb</name>
+    <value>2048</value>
+  </property>
+  <property>
+    <name>mapreduce.map.java.opts</name>
+    <value>-server -XX:+UseConcMarkSweepGC -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Xmx1536m -Djava.io.tmpdir=<%= node[:hadoop2][:java_tmp] %></value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.memory.mb</name>
+    <value>8192</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.java.opts</name>
+    <value>-server -XX:+UseConcMarkSweepGC -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Xmx8g -Djava.io.tmpdir=<%= node[:hadoop2][:java_tmp] %></value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.shuffle.parallelcopies</name>
+    <value>50</value>
+  </property>
+  <property>
+    <name>mapreduce.task.io.sort.mb</name>
+    <value>256</value>
+  </property>
+  <property>
+    <name>mapreduce.task.io.sort.factor</name>
+    <value>20</value>
+  </property>
+  <property>
+    <name>mapreduce.jobtracker.handler.count</name>
+    <value>64</value>
+  </property>
+  <property>
+    <name>mapreduce.tasktracker.http.threads</name>
+    <value>20</value>
+  </property>
+  <property>
+    <name>mapreduce.task.timeout</name>
+    <value>1800000</value>
+  </property>
+  <!-- Compression -->
+  <property>
+    <!-- Off by default, because it breaks Druid indexing (at least, it does it
+         druid-0.6.10). Jobs should turn
+         it on if they need it. -->
+    <name>mapreduce.output.fileoutputformat.compress</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>mapreduce.map.output.compress</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>mapreduce.output.fileoutputformat.compress.type</name>
+    <value>BLOCK</value>
+  </property>
+  <property>
+    <name>mapreduce.map.output.compress.codec</name>
+    <value>org.apache.hadoop.io.compress.Lz4Codec</value>
+  </property>
+  <property>
+    <name>mapreduce.output.fileoutputformat.compress.codec</name>
+    <value>org.apache.hadoop.io.compress.GzipCodec</value>
+  </property>
+  <property>
+    <name>yarn.app.mapreduce.am.command-opts</name>
+    <value>-Xmx2g</value>
+  </property>
+  <!-- Job history server persistent state -->
+  <property>
+    <name>mapreduce.jobhistory.recovery.enable</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.recovery.store.class</name>
+    <value>org.apache.hadoop.mapreduce.v2.hs.HistoryServerFileSystemStateStoreService</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.recovery.store.fs.uri</name>
+    <value>file://${hadoop.tmp.dir}/mapred-jobhistory-state</value>
+  </property>
+</configuration>

@@ -20,7 +20,6 @@ if nagios_client?
 
   nagios_service "LIB-USERS" do
     check_command "check_nrpe!check_lib_users"
-    servicegroups "system"
     notification_period "never"
     env [:testing, :development]
   end

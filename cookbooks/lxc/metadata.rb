@@ -8,3 +8,6 @@ license "Apache v2.0"
 
 supports "debian"
 supports "gentoo"
+
+depends "debootstrap"
+depends "dnsmasq"

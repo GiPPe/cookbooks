@@ -1,4 +1,4 @@
-homedir = "/var/app/gitlab"
+homedir = "/var/app/git"
 
 %w(
   backups

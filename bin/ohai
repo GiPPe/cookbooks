@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'ohai/application'
+
+plugin_path = File.expand_path('../../cookbooks/ohai/files/default/plugins', __FILE__)
+
+Ohai::Config[:plugin_path] = [plugin_path]
+Ohai::Application.new.run

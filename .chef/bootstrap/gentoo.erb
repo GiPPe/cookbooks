@@ -11,6 +11,8 @@ echo ${hostname} > /etc/hostname
 hostname ${hostname}
 
 emerge -n net-misc/ntp
+systemctl stop ntpd
+pkill -9 ntp*
 timedatectl set-local-rtc 0
 ntpdate pool.ntp.org
 
@@ -18,25 +20,36 @@ emerge --sync
 emerge --nospinner --keep-going=n --noreplace --quiet app-admin/chef
 
 mkdir -p /etc/chef
-mkdir -p /var/log/chef
 
-(
-cat <<'EOP'
+cat > /etc/chef/validation.pem <<'EOP'
 <%= validation_key %>
 EOP
-) > /tmp/validation.pem
-awk NF /tmp/validation.pem > /etc/chef/validation.pem
-rm /tmp/validation.pem
 chmod 0600 /etc/chef/validation.pem
 
-(
-cat <<'EOP'
-log_level        :info
-log_location     STDOUT
-chef_server_url  <%= @chef_config[:chef_server_url].inspect %>
-validation_client_name <%= @chef_config[:validation_client_name].inspect %>
+<% if encrypted_data_bag_secret -%>
+cat > /etc/chef/encrypted_data_bag_secret <<'EOP'
+<%= encrypted_data_bag_secret %>
 EOP
-) > /etc/chef/client.rb
+chmod 0600 /etc/chef/encrypted_data_bag_secret
+<% end -%>
 
-/usr/bin/chef-client
-/usr/bin/chef-client'
+<%# Generate Ohai Hints -%>
+<% unless @chef_config[:knife][:hints].nil? || @chef_config[:knife][:hints].empty? -%>
+mkdir -p /etc/chef/ohai/hints
+
+<% @chef_config[:knife][:hints].each do |name, hash| -%>
+cat > /etc/chef/ohai/hints/<%= name %>.json <<'EOP'
+<%= hash.to_json %>
+EOP
+<% end -%>
+<% end -%>
+
+cat > /etc/chef/client.rb <<'EOP'
+<%= config_content %>
+EOP
+
+cat > /etc/chef/first-boot.json <<'EOP'
+<%= first_boot.to_json %>
+EOP
+
+<%= start_chef %>'

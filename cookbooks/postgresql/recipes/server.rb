@@ -2,15 +2,11 @@ include_recipe "postgresql"
 
 package "dev-db/postgresql-server"
 
-pkg = package "dev-ruby/pg" do
-  action :nothing
-end
-pkg.run_action(:install)
-Gem.clear_paths
+version = "9.3"
+homedir = "/var/lib/postgresql/#{version}"
+datadir = "#{homedir}/data"
 
-version = "9.1"
-datadir = "/var/lib/postgresql/#{version}/data"
-confdir = "/etc/postgresql-#{version}"
+node.set[:postgresql][:connection][:host] = node[:fqdn]
 
 directory datadir do
   owner "postgres"
@@ -26,16 +22,22 @@ execute "postgresql-initdb" do
   creates File.join(datadir, "PG_VERSION")
 end
 
-template "#{confdir}/postgresql.conf" do
+directory "#{datadir}/pg_log_archive" do
+  owner "postgres"
+  group "postgres"
+  mode "0700"
+end
+
+template "#{datadir}/postgresql.conf" do
   source "postgresql.conf"
   owner "postgres"
   group "postgres"
   mode "0600"
-  variables :p => node[:postgresql][:server]
   notifies :reload, "service[postgresql]"
+  variables datadir: datadir
 end
 
-template "#{confdir}/pg_hba.conf" do
+template "#{datadir}/pg_hba.conf" do
   source "pg_hba.conf"
   owner "postgres"
   group "postgres"
@@ -43,7 +45,7 @@ template "#{confdir}/pg_hba.conf" do
   notifies :reload, "service[postgresql]"
 end
 
-template "#{confdir}/pg_ident.conf" do
+template "#{datadir}/pg_ident.conf" do
   source "pg_ident.conf"
   owner "postgres"
   group "postgres"
@@ -51,32 +53,42 @@ template "#{confdir}/pg_ident.conf" do
   notifies :reload, "service[postgresql]"
 end
 
+directory "/etc/postgresql-#{version}" do
+  action :delete
+  recursive true
+end
+
 systemd_tmpfiles "postgresql"
 systemd_unit "postgresql@.service"
 
 service "postgresql" do
-  service_name "postgresql-#{version}" unless systemd_running?
-  service_name "postgresql@#{version}.service" if systemd_running?
+  service_name "postgresql@#{version}.service"
   action [:enable, :start]
   supports [:reload]
 end
 
-pg_pass = get_password("postgresql/postgres")
+backupdir = "#{homedir}/backup"
 
-bash "postgresql-password" do
-  user "postgres"
-  code <<-EOH
-echo "ALTER ROLE postgres PASSWORD '#{pg_pass}';" | psql
-  EOH
-  not_if do
-    begin
-      require 'pg'
-      conn = PGconn.connect("localhost", 5432, nil, nil, nil, "postgres", pg_pass)
-    rescue LoadError
-      Chef::Log.warn("ruby postgres driver missing. skipping postgresql-password")
-      true
-    rescue
-      false
-    end
-  end
+directory backupdir do
+  owner "postgres"
+  group "postgres"
+  mode "0700"
+end
+
+systemd_timer "postgresql-backup" do
+  schedule %w(OnCalendar=daily)
+  unit({
+    command: [
+      "/bin/bash -c 'rm -rf #{backupdir}/*'",
+      "/usr/bin/pg_basebackup -D #{backupdir} -x",
+    ],
+    user: "postgres",
+    group: "postgres",
+  })
+end
+
+duply_backup "postgresql" do
+  source "#{datadir}/pg_backup"
+  max_full_backups 30
+  max_full_age 1
 end

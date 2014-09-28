@@ -2,6 +2,11 @@ include_attribute "base"
 
 default_unless[:contacts][:mysql] = "root@#{node[:fqdn]}"
 
+# connection info (overriden in server recipe)
+default[:mysql][:connection][:host] = 'localhost'
+default[:mysql][:connection][:username] = 'root'
+default[:mysql][:connection][:password] = ''
+
 # paths
 default[:mysql][:server][:sharedstatedir] = "/usr/share/mysql"
 default[:mysql][:server][:sysconfdir] = "/etc/mysql"
@@ -35,7 +40,7 @@ default[:mysql][:server][:replicate_do_table] = false
 default[:mysql][:server][:slave_transaction_retries] = 10
 default[:mysql][:server][:auto_increment_increment] = 1
 default[:mysql][:server][:auto_increment_offset] = 1
-default[:mysql][:server][:binlog_format] = 'row'
+default[:mysql][:server][:binlog_format] = "row"
 
 # General Performance Options
 default[:mysql][:server][:table_open_cache] = "1024"
@@ -48,7 +53,7 @@ default[:mysql][:server][:group_concat_max_len] = "1024"
 # Client Connection Optimization
 default[:mysql][:server][:max_connections] = "128"
 default[:mysql][:server][:thread_cache_size] = node[:mysql][:server][:max_connections]
-default[:mysql][:server][:max_allowed_packet] = "16M"
+default[:mysql][:server][:max_allowed_packet] = "64M"
 default[:mysql][:server][:wait_timeout] = "28800"
 default[:mysql][:server][:connect_timeout] = "10"
 

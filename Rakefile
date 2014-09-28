@@ -12,11 +12,30 @@ if Process.euid > 0
   Bundler.setup if defined?(Bundler)
 end
 
+# The top of the repository checkout
+ROOT = File.expand_path("..", __FILE__)
+CONFIG_FILE = File.expand_path(File.join(ROOT, ".chef", "config.rb"))
+
+# directories for entities
+BAGS_DIR = File.expand_path(File.join(ROOT, "data_bags"))
+COOKBOOKS_DIR = File.expand_path(File.join(ROOT, "cookbooks"))
+ENVIRONMENTS_DIR = File.expand_path(File.join(ROOT, "environments"))
+SITE_COOKBOOKS_DIR = File.expand_path(File.join(ROOT, "site-cookbooks"))
+TEMPLATES_DIR = File.expand_path(File.join(ROOT, "tasks", "templates"))
+
+# Directories needed by the SSL tasks
+SSL_CA_DIR = File.expand_path(File.join(ROOT, "ca"))
+SSL_CERT_DIR = File.expand_path(File.join(ROOT, "site-cookbooks/certificates/files/default/certificates"))
+SSL_CONFIG_FILE = File.expand_path(File.join(ROOT, ".chef", "openssl.cnf"))
+
+require 'liquid/boot'
+
 require 'chef'
 require 'json'
 
-# load constants from rake config file.
-require File.expand_path('../config/rake', __FILE__)
+# make rake more silent
+RakeFileUtils.verbose_flag = false
+Chef::Log.level = :error
 
 # load chef config
 begin

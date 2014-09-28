@@ -33,7 +33,7 @@ template "/usr/lib/nagios/plugins/notify" do
 end
 
 # retrieve data from the search index
-contacts = node.run_state[:users].select do |u|
+contacts = node.users.select do |u|
   u[:tags] and not (u[:tags] & ["hostmaster", "nagios"]).empty?
 end.sort_by do |u|
   u[:id]
@@ -70,7 +70,7 @@ end.flatten.compact.map do |v|
   end
 end
 
-hosts = (vhosts + hosts).sort_by do |n|
+hosts = (vhosts + hosts.to_a).sort_by do |n|
   n[:fqdn]
 end
 
@@ -79,7 +79,7 @@ hostgroups = {}
 
 hosts.each do |h|
   # group per cluster
-  cluster = h[:cluster][:name] rescue "default"
+  cluster = h.cluster_name
 
   hostgroups[cluster] ||= []
   hostgroups[cluster] << h[:fqdn]
@@ -93,20 +93,8 @@ hosts.each do |h|
   end
 end
 
-# build service groups
-servicegroups = []
-hosts.each do |h|
-  next unless h[:nagios]
-  next unless h[:nagios][:services]
-  h[:nagios][:services].each do |name, params|
-    if params[:servicegroups]
-      servicegroups |= params[:servicegroups].split(",")
-    end
-  end
-end
-
 # remove sample objects
-%w(hosts localhost printer services switch windows).each do |f|
+%w(hosts localhost printer services switch windows servicegroups).each do |f|
   file "/etc/nagios/objects/#{f}.cfg" do
     action :delete
   end
@@ -143,15 +131,28 @@ nagios_conf "hostgroups" do
   variables :hostgroups => hostgroups
 end
 
-nagios_conf "servicegroups" do
-  variables :servicegroups => servicegroups
-end
-
 hosts.each do |host|
   nagios_conf "host-#{host[:fqdn]}" do
     template "host.cfg.erb"
     variables :host => host
   end
+end
+
+ruby_block "cleanup-nagios" do
+  block do
+    Dir["/etc/nagios/objects/host-*.cfg"].each do |f|
+      fqdn = File.basename(f, ".cfg").sub(/host-/, '')
+      next if hosts.any? { |h| h[:fqdn] == fqdn }
+      File.unlink(f)
+    end
+  end
+  only_if do
+    Dir["/etc/nagios/objects/host-*.cfg"].select do |f|
+      fqdn = File.basename(f, ".cfg").sub(/host-/, '')
+      !hosts.any? { |h| h[:fqdn] == fqdn }
+    end
+  end
+  notifies :restart, "service[nagios]"
 end
 
 include_recipe "nagios::extras"

@@ -1,0 +1,14 @@
+[Unit]
+Description=YARN %I
+After=network.target
+
+[Service]
+User=hadoop2
+Group=hadoop2
+Environment=TZ=UTC
+ExecStart=/var/app/hadoop2/current/bin/mapred %I
+SyslogIdentifier=mapred-%I
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

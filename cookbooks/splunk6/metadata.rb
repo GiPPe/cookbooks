@@ -11,5 +11,5 @@ supports "gentoo"
 
 depends "java"
 depends "nginx"
-depends "hadoop"
+depends "hadoop2"
 depends "htpasswd"

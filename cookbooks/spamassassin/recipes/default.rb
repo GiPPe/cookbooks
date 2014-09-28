@@ -9,7 +9,6 @@ user "spamd" do
 end
 
 %w(
-  dev-python/pyzor
   mail-filter/dcc
   mail-filter/razor
   mail-filter/spamassassin

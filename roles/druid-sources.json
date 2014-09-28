@@ -1,0 +1,44 @@
+{
+  "name": "druid-sources",
+  "description": "Druid Sources",
+  "override_attributes": {
+    "druid": {
+      "sources": {
+        "metrics": {
+          "granularity": "minute",
+          "timestamp": {
+            "column": "ts",
+            "format": "iso"
+          },
+          "aggregators": {
+            "count": "doubleSum",
+            "m1": "doubleSum",
+            "m15": "doubleSum",
+            "m5": "doubleSum",
+            "max": "doubleSum",
+            "mean": "doubleSum",
+            "mean_rate": "doubleSum",
+            "median": "doubleSum",
+            "min": "doubleSum",
+            "p75": "doubleSum",
+            "p95": "doubleSum",
+            "p98": "doubleSum",
+            "p99": "doubleSum",
+            "p999": "doubleSum",
+            "stdev": "doubleSum",
+            "value": "doubleSum"
+          },
+          "dimensions": [
+            "cluster",
+            "env",
+            "host",
+            "name",
+            "release",
+            "service",
+            "type"
+          ]
+        }
+      }
+    }
+  }
+}

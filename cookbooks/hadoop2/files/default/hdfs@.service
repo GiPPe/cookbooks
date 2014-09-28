@@ -1,0 +1,14 @@
+[Unit]
+Description=HDFS %I
+After=network.target
+
+[Service]
+User=hadoop2
+Group=hadoop2
+Environment=TZ=UTC
+ExecStart=/var/app/hadoop2/current/bin/hdfs %I
+SyslogIdentifier=hdfs-%I
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

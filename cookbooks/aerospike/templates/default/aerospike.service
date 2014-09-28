@@ -1,0 +1,14 @@
+[Unit]
+Description=Aerospike Server
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/asd
+User=root
+Group=root
+Restart=always
+SyslogIdentifier=%p
+LimitNOFILE=<%= node[:aerospike][:fd_max] %>
+
+[Install]
+WantedBy=multi-user.target

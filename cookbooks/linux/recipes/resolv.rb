@@ -3,7 +3,7 @@ template "/etc/hosts" do
   group "root"
   mode "0644"
   source "hosts"
-  variables :nodes => node.run_state[:nodes]
+  variables :nodes => node.nodes
 end
 
 template "/etc/resolv.conf" do

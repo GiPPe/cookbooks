@@ -24,8 +24,14 @@ Ping(ACCEPT) net $FW
 # accept ssh connections
 ACCEPT all all tcp ssh
 
+# accept nrpe connection from nagios
+<% if nagios_node && nagios_node[:ip6address] %>
+ACCEPT net:<%= nagios_node[:ip6address] %> all tcp 5666
+<% end %>
+
 # accept all connections from chef nodes
-<% node.run_state[:nodes].each do |n| %>
+<% nodes = node[:shorewall][:clustered] ? node.nodes.cluster(node.cluster_name) : node.nodes %>
+<% nodes.each do |n| %>
 <% next unless n[:ip6address] %>
 ACCEPT net:[<%= n[:ip6address] %>] all - -
 <% end %>

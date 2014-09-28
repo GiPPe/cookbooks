@@ -12,6 +12,3 @@ password    optional    pam_permit.so
 session     required    pam_limits.so
 session     required    pam_env.so
 session     optional    pam_permit.so
-<% if systemd_running? %>
-session     optional    pam_systemd.so
-<% end %>

@@ -1,5 +1,6 @@
 #
 # Author:: Nathan L Smith (<nlloyds@gmail.com>)
+# Author:: Tim Smith (<tsmith@limelight.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -16,8 +17,26 @@
 # limitations under the License.
 #
 
-provides "cpu"
+Ohai.plugin(:CPU) do
+  provides "cpu"
 
-cpu Mash.new
-cpu[:real]  = from("sysctl -n hw.physicalcpu").to_i
-cpu[:total] = from("sysctl -n hw.logicalcpu").to_i
+  collect_data(:darwin) do
+    cpu Mash.new
+    so = shell_out("sysctl -n hw.physicalcpu")
+    cpu[:real] = so.stdout.to_i
+    so = shell_out("sysctl -n hw.logicalcpu")
+    cpu[:total] = so.stdout.to_i
+    so = shell_out("sysctl -n machdep.cpu.vendor")
+    cpu[:vendor_id] = so.stdout
+    so = shell_out("sysctl -n machdep.cpu.brand_string")
+    cpu[:model_name] = so.stdout
+    so = shell_out("sysctl -n machdep.cpu.model")
+    cpu[:model] = so.stdout.to_i
+    so = shell_out("sysctl -n machdep.cpu.family")
+    cpu[:family] = so.stdout.to_i
+    so = shell_out("sysctl -n machdep.cpu.stepping")
+    cpu[:stepping] = so.stdout.to_i
+    so = shell_out("sysctl -n machdep.cpu.features")
+    cpu[:flags] = so.stdout.downcase.split(' ')
+  end
+end

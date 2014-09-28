@@ -16,11 +16,31 @@ nodes.all do |node|
 
     # zentoo next
     a[:portage].delete("SYNC") rescue nil
+
+    # cleanup
+    a.delete(:tags) if a[:tags].empty?
   end
 
-  a = node.normal_attrs
-  a.keys.each do |attr|
-    a.delete(attr) rescue nil
+  # legacy normal attributes
+  %w(
+    backup
+    chef_domain
+    classification
+    cron
+    lftp
+    nagios
+    packages
+    php
+    portage
+    primary_interface
+    primary_ipaddress
+    shorewall
+    shorewall6
+    splunk
+    ssh
+    sudo
+  ).each do |attr|
+    node.normal_attrs.delete(attr) rescue nil
   end
 
   node.save

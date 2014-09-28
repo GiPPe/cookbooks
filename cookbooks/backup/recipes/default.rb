@@ -4,7 +4,7 @@ directory "/backup" do
   mode "0755"
 end
 
-node.run_state[:users].select do |user|
+node.users.select do |user|
   user[:tags] and user[:tags].include?("backup")
 end.each do |user|
   account_skeleton user[:id] do
@@ -36,7 +36,7 @@ end.each do |user|
   # duplicity does not create directories recusrively ... *sigh*
   #
   if user[:id] == "backup"
-    node.run_state[:nodes].each do |n|
+    node.nodes.each do |n|
       next unless n[:backup]
       next unless n[:backup][:configs]
       next if n[:backup][:configs].empty?

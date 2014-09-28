@@ -23,7 +23,6 @@ end
 if nagios_client?
   nagios_service "SSH" do
     check_command "check_ssh!22"
-    servicegroups "system"
     env [:testing, :development]
   end
 end

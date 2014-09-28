@@ -1,34 +1,31 @@
 include_recipe "druid"
 
-node.default[:druid][:logger] = true
-
-systemd_unit "druid-realtime.service" do
-  template "druid-service"
-  variables({
-    druid_service: "realtime",
-  })
-
-  notifies :restart, "service[druid-realtime]", :immediately
+template "/etc/druid/realtime.spec" do
+  source "realtime.spec"
+  owner "root"
+  group "root"
+  mode "0644"
 end
 
-template "/usr/libexec/druid-realtime" do
-  source "druid-runner.sh"
+template "/var/app/druid/bin/druid-realtime" do
+  source "runner.sh"
   owner "root"
   group "root"
   mode "0755"
-  variables({
-    druid_service:  "realtime",
-    druid_port:     node[:druid][:realtime][:port],
-    druid_mx:       node[:druid][:realtime][:mx],
-    druid_dm:       node[:druid][:realtime][:dm],
-  })
-  
-  notifies :restart, "service[druid-realtime]", :immediately
+  notifies :restart, "service[druid-realtime]"
+  variables service: "realtime"
+end
+
+systemd_unit "druid-realtime.service" do
+  template "druid.service"
+  notifies :restart, "service[druid-realtime]"
 end
 
 service "druid-realtime" do
   action [:enable, :start]
-  subscribes :restart, "template[/etc/druid/runtime.properties]"
   subscribes :restart, "template[/etc/druid/log4j.properties]"
   subscribes :restart, "template[/etc/druid/realtime.spec]"
+  subscribes :restart, "template[/etc/druid/runtime.properties]"
+  subscribes :restart, "template[/var/app/druid/bin/druid-realtime]"
+  subscribes :restart, "systemd_unit[druid-realtime]"
 end

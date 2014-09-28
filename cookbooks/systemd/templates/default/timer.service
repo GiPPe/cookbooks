@@ -3,7 +3,11 @@ Description=<%= @description %>
 
 [Service]
 Type=simple
-ExecStart=<%= @command %>
+<% commands = [@command].flatten %>
+<% commands[0..-2].each do |cmd| %>
+ExecStartPre=<%= cmd %>
+<% end %>
+ExecStart=<%= commands.last %>
 <% if @timeout %>
 TimeoutStartSec=<%= @timeout %>
 <% end %>

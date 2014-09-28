@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <% if hadoop2_namenodes.count > 1 %>
+    <value>hdfs://<%= node[:hadoop2][:cluster] %></value>
+    <% elsif hadoop2_namenodes.count == 1 %>
+    <value>hdfs://<%= hadoop2_namenodes.first[:fqdn] %></value>
+    <% else %>
+    <value>file://</value>
+    <% end %>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value><%= node[:hadoop2][:tmp_dir] %>/${user.name}</value>
+  </property>
+  <property>
+    <name>net.topology.node.switch.mapping.impl</name>
+    <value>org.apache.hadoop.net.TableMapping</value>
+  </property>
+  <property>
+    <name>net.topology.table.file.name</name>
+    <value>/etc/hadoop2/topology.data</value>
+  </property>
+  <property>
+    <name>ha.zookeeper.parent-znode</name>
+    <value>/ha</value>
+  </property>
+  <% if node[:hadoop2][:fs][:s3][:access_key] %>
+  <property>
+    <name>fs.s3.awsAccessKeyId</name>
+    <value><%= node[:hadoop2][:fs][:s3][:access_key] %></value>
+  </property>
+  <property>
+    <name>fs.s3.awsSecretAccessKey</name>
+    <value><%= node[:hadoop2][:fs][:s3][:secret_key] %></value>
+  </property>
+  <property>
+    <name>fs.s3n.awsAccessKeyId</name>
+    <value><%= node[:hadoop2][:fs][:s3][:access_key] %></value>
+  </property>
+  <property>
+    <name>fs.s3n.awsSecretAccessKey</name>
+    <value><%= node[:hadoop2][:fs][:s3][:secret_key] %></value>
+  </property>
+  <% end %>
+</configuration>

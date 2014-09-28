@@ -11,37 +11,31 @@ mysql_dom_password = get_password("mysql/nepal_mail_dom")
 mysql_user_password = get_password("mysql/nepal_mail_user")
 mysql_alias_password = get_password("mysql/nepal_mail_alias")
 
-mysql_user "nepal_mail_dom" do
+mysql_database_user "nepal_mail_dom" do
+  connection node[:mysql][:connection]
+  host "%"
   password mysql_dom_password
-  force_password true
-end
-
-mysql_grant "nepal_mail_dom" do
-  user "nepal_mail_dom"
-  database "nepal"
+  database_name "nepal"
   privileges %w(SELECT)
+  action :grant
 end
 
-mysql_user "nepal_mail_user" do
+mysql_database_user "nepal_mail_user" do
+  connection node[:mysql][:connection]
+  host "%"
   password mysql_user_password
-  force_password true
-end
-
-mysql_grant "nepal_mail_user" do
-  user "nepal_mail_user"
-  database "nepal"
+  database_name "nepal"
   privileges %w(SELECT)
+  action :grant
 end
 
-mysql_user "nepal_mail_alias" do
+mysql_database_user "nepal_mail_alias" do
+  connection node[:mysql][:connection]
+  host "%"
   password mysql_alias_password
-  force_password true
-end
-
-mysql_grant "nepal_mail_alias" do
-  user "nepal_mail_alias"
-  database "nepal"
+  database_name "nepal"
   privileges %w(SELECT)
+  action :grant
 end
 
 %w(

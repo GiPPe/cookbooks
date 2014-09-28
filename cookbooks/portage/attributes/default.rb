@@ -20,17 +20,14 @@ default[:portage][:ACCEPT_KEYWORDS] = nil
 default[:portage][:FEATURES] = %w(buildpkg)
 default[:portage][:OPTS] = %w(--usepkg=y --getbinpkg=y)
 default[:portage][:MAKEOPTS] = "-j1"
-
-# language support
-default[:portage][:LINGUAS] = %w(en)
+default[:portage][:overlays] = []
 
 # repo settings
 if gentoo?
   default[:portage][:repo] = File.read("/usr/portage/profiles/repo_name").chomp
 
   if node[:portage][:repo] =~ /^zentoo/
-    default[:portage][:profile] = "#{node[:portage][:portdir]}/profiles/default/linux/#{node[:portage][:arch]}/11.0"
-
+    default[:portage][:profile] = "#{node[:portage][:portdir]}/profiles/default/linux/#{node[:portage][:arch]}/zentoo"
     default[:portage][:SYNC] = "rsync://mirror.zenops.net/zentoo-portage"
     default[:portage][:BINHOST] = "http://mirror.zenops.net/zentoo/${ARCH}/packages"
     default[:portage][:MIRRORS] = %w(
@@ -39,7 +36,6 @@ if gentoo?
     )
   elsif node[:portage][:repo] == "gentoo"
     default[:portage][:profile] = "#{node[:portage][:portdir]}/profiles/default/linux/#{node[:portage][:arch]}/13.0"
-
     default[:portage][:SYNC] = "rsync://rsync.de.gentoo.org/gentoo-portage"
     default[:portage][:MIRRORS] = %w(
     http://ftp.spline.de/pub/gentoo

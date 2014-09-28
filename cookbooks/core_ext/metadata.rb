@@ -9,3 +9,5 @@ license "Apache v2.0"
 supports "debian"
 supports "gentoo"
 supports "mac_os_x"
+
+depends "base"

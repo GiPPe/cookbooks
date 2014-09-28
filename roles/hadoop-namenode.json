@@ -1,7 +1,0 @@
-{
-  "name": "hadoop-namenode",
-  "description": "Hadoop Namenode",
-  "run_list": [
-    "recipe[hadoop::namenode]"
-  ]
-}

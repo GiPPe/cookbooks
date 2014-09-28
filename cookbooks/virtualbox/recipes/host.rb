@@ -1,5 +1,12 @@
 if gentoo?
-  package "app-emulation/virtualbox"
+	if zentoo?
+		package "app-emulation/virtualbox"
+	else
+		portage_package_use "media-libs/libsdl" do
+			use %w(X)
+		end
+		package "app-emulation/virtualbox-bin"
+	end
   package "app-emulation/vagrant"
 
   if root?

@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+kernel_version=$(make kernelversion)
+tmpdir=$(mktemp -d)
+
+# build kernel
+make "$@"
+mkdir ${tmpdir}/boot
+cp .config ${tmpdir}/boot/config-${kernel_version}
+cp arch/x86/boot/bzImage ${tmpdir}/boot/kernel-${kernel_version}
+
+# build modules
+make INSTALL_MOD_PATH=${tmpdir} modules_install
+
+# crappy kernel module build scripts
+export FEATURES="-userpriv"
+
+# install virtualbox modules
+ROOT=${tmpdir} KERNEL_DIR=$(realpath $PWD) \
+	emerge --getbinpkg=n --usepkg=n --nodeps \
+	app-emulation/virtualbox-modules
+
+# install zfs modules
+ROOT=${tmpdir} KERNEL_DIR=$(realpath $PWD) \
+	emerge --getbinpkg=n --usepkg=n --nodeps \
+	sys-kernel/spl sys-fs/zfs-kmod
+
+# generate initramfs
+emerge dracut -u
+dracut --force ${tmpdir}/boot/initramfs-${kernel_version}.img
+
+# cleanup and install to /
+rm -rf ${tmpdir}/{etc,tmp,var,sbin,usr}
+rsync -rltgoDK ${tmpdir}/ /
+
+# create image
+tar cvf linux-${kernel_version}.tar -C ${tmpdir} .
+xz linux-${kernel_version}.tar
+rm -rf ${tmpdir}
+
+echo "Image is at $(realpath linux-${kernel_version}.tar.xz)"

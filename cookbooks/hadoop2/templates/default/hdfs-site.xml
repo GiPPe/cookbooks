@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>dfs.nameservices</name>
+    <value><%= node[:hadoop2][:cluster] %></value>
+  </property>
+  <property>
+    <name>dfs.replication</name>
+    <value>2</value>
+  </property>
+  <property>
+    <name>dfs.replication.max</name>
+    <value>10</value>
+  </property>
+  <property>
+    <name>dfs.permissions.enabled</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>dfs.domain.socket.path</name>
+    <value>/var/run/hadoop2/dn_socket</value>
+  </property>
+  <property>
+    <name>dfs.hosts.exclude</name>
+    <value>/etc/hadoop2/dfs.hosts.exclude</value>
+  </property>
+  <!-- client -->
+  <property>
+    <name>dfs.client.read.shortcircuit</name>
+    <value>false</value>
+  </property>
+  <!-- journalnode -->
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>/var/app/hadoop2/storage/journalnode</value>
+  </property>
+  <!-- namenode -->
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>file:///var/app/hadoop2/storage/namenode</value>
+  </property>
+  <property>
+    <name>dfs.namenode.handler.count</name>
+    <value>40</value>
+  </property>
+  <property>
+    <name>dfs.namenode.rpc-bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <!-- datanode -->
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>file:///var/app/hadoop2/storage/datanode</value>
+  </property>
+  <property>
+    <name>dfs.datanode.balance.bandwidthPerSec</name>
+    <value>20971520</value>
+  </property>
+  <property>
+    <name>dfs.datanode.handler.count</name>
+    <value>40</value>
+  </property>
+  <property>
+    <name>dfs.datanode.du.reserved</name>
+    <value><%= node[:hadoop2][:du][:reserved] %></value>
+  </property>
+  <% if hadoop2_namenodes.count > 1 %>
+  <!-- HA -->
+  <property>
+    <name>dfs.ha.namenodes.<%= node[:hadoop2][:cluster] %></name>
+    <value><%= hadoop2_namenodes.map { |n| "nn#{n[:cluster][:host][:id]}" }.join(',') %></value>
+  </property>
+  <property>
+    <name>dfs.namenode.shared.edits.dir</name>
+    <value>qjournal://<%= hadoop2_journalnodes.map { |n| "#{n[:fqdn]}:8485" }.join(";") %>/<%= node[:hadoop2][:cluster] %></value>
+  </property>
+  <property>
+    <name>dfs.client.failover.proxy.provider.<%= node[:hadoop2][:cluster] %></name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+  </property>
+  <property>
+    <name>dfs.ha.fencing.methods</name>
+    <value>shell(/bin/true)</value>
+  </property>
+  <property>
+    <name>dfs.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>ha.zookeeper.quorum</name>
+    <value><%= zookeeper_connect('/hadoop2', node[:hadoop2][:zookeeper][:cluster]) %></value>
+  </property>
+  <% hadoop2_namenodes.each do |n| %>
+  <property>
+    <name>dfs.namenode.rpc-address.<%= node[:hadoop2][:cluster] %>.nn<%= n[:cluster][:host][:id] %></name>
+    <value><%= n[:fqdn] %>:8020</value>
+  </property>
+  <property>
+    <name>dfs.namenode.http-address.<%= node[:hadoop2][:cluster] %>.nn<%= n[:cluster][:host][:id] %></name>
+    <value><%= n[:fqdn] %>:50070</value>
+  </property>
+  <% end %>
+  <% end %>
+</configuration>

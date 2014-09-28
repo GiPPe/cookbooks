@@ -1,4 +1,4 @@
-if gentoo?
+if zentoo?
   # portage package provider will take care of using sudo
   package "dev-ruby/rvm" do
     action :nothing

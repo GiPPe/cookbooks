@@ -1,8 +1,6 @@
 include_recipe "kafka"
 
-folders = ['/var/log/kafka'] + node[:kafka][:storage].split(',')
-
-folders.each do |dir|
+node[:kafka][:storage].split(',').each do |dir|
   directory dir do
     owner "kafka"
     group "kafka"
@@ -10,24 +8,28 @@ folders.each do |dir|
   end
 end
 
-node.default[:kafka][:zookeeper][:cluster] = node.cluster_name
-
-template "/etc/kafka/server.config" do
-  source "server.config"
+template "/var/app/kafka/current/config/server.properties" do
+  source "server.properties"
   owner "root"
   group "kafka"
   mode "0640"
   notifies :restart, "service[kafka]"
+  notifies :create, "ruby_block[kafka-zk-chroot]"
+end
+
+include_recipe "zookeeper::ruby"
+
+ruby_block "kafka-zk-chroot" do
+  action :nothing
+  block do
+    Gem.clear_paths
+    require 'zk'
+    ZK.new(zookeeper_connect(node[:kafka][:zookeeper][:root], node[:kafka][:zookeeper][:cluster]))
+  end
 end
 
 systemd_unit "kafka.service"
 
 service "kafka" do
   action [:enable, :start]
-end
-
-if nagios_client?
-
-  # Nothing generic, add a site-specific cookbook
-
 end
