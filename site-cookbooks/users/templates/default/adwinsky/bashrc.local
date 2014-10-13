@@ -1,22 +1,6 @@
 # blacklist for bash completion
 FIGNORE=".o:~:CVS:.svn:.git:metadata.json"
 
-# project aliases
-for i in $(ls -d ~/Projects/github.com/liquidm/* )
-do
-  name="pl${i##*/}"
-  export $name="$i"
-  alias $name="cd $i"
-done
-
-for i in $(ls -d ~/Projects/github.com/adwinsky/* )
-do
-  name="pa${i##*/}"
-  export $name="$i"
-  alias $name="cd $i"
-done
-
-
 # git aliases
 alias ga="git add -A"
 alias gap="git add -p"
