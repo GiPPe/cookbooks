@@ -6,6 +6,33 @@ bind i setw synchronize-panes
 
 bind-key -r + resize-pane -Z
 
+bind '"' split-window -c '#{pane_current_path}'
+bind c new-window -c '#{pane_current_path}'
+bind % split-window -h -c '#{pane_current_path}'
+
+unbind Left
+unbind Down
+unbind Up
+unbind Right
+
+bind -n S-Up select-pane -U
+bind -n S-Down select-pane -D
+bind -n S-Left select-pane -L
+bind -n S-Right select-pane -R
+
+bind -n C-Up switch-client -p
+bind -n C-Down switch-client -n
+bind -n C-Left previous-window
+bind -n C-Right next-window
+
+
+setw -g mode-mouse on
+# setw -g automatic-rename off
+
+# set-option -g allow-rename off
+set -g set-titles on
+set -g set-titles-string "#T : #h > #S > #W"
+
 set-option -g default-command "reattach-to-user-namespace -l bash"
 set-window-option -g mode-keys vi
 
@@ -13,3 +40,4 @@ bind-key -t vi-copy 'v' begin-selection
 bind-key -t vi-copy 'y' copy-selection
 
 setw -g mode-mouse on
+

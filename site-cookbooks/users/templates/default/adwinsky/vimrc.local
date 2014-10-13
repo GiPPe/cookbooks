@@ -764,3 +764,6 @@ nnoremap <Leader>D :call MyCloseDiff()<cr>zR<cr>
 autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 au FileType go setl sw=4 sts=2 et
 
+" enable go imports on save
+let g:go_fmt_command = "goimports"
+
