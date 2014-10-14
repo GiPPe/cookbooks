@@ -1,3 +1,6 @@
 ForwardAgent yes
 ForwardX11Trusted yes
 HashKnownHosts no
+
+Host *.lqm.io
+IdentityFile /Users/adwinsky/.ssh/liquidm
