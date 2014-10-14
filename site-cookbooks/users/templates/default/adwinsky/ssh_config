@@ -4,3 +4,6 @@ HashKnownHosts no
 
 Host *.lqm.io
 IdentityFile ~/.ssh/liquidm
+
+Host github.com
+IdentityFile ~/.ssh/liquidm
