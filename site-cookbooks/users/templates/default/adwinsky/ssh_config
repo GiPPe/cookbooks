@@ -3,4 +3,4 @@ ForwardX11Trusted yes
 HashKnownHosts no
 
 Host *.lqm.io
-IdentityFile /Users/adwinsky/.ssh/liquidm
+IdentityFile ~/.ssh/liquidm

@@ -8,6 +8,7 @@
     "recipe[base]",
     "recipe[bash]",
     "recipe[git]",
+    "recipe[ssh]",
     "recipe[tmux]",
     "recipe[vim]"
   ]
