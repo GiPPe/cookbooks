@@ -41,3 +41,5 @@ bind-key -t vi-copy 'y' copy-selection
 
 setw -g mode-mouse on
 
+# set prefix key to ctrl+t
+bind-key -n C-t send-prefix

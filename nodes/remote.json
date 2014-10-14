@@ -1,0 +1,14 @@
+{
+  "name": "base",
+  "description": "base role for all nodes",
+  "default_attributes": {
+    "chef_domain": "lqm.io"
+  },
+  "run_list": [
+    "recipe[base]",
+    "recipe[bash]",
+    "recipe[git]",
+    "recipe[tmux]",
+    "recipe[vim]"
+  ]
+}
