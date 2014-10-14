@@ -10,11 +10,6 @@ bind '"' split-window -c '#{pane_current_path}'
 bind c new-window -c '#{pane_current_path}'
 bind % split-window -h -c '#{pane_current_path}'
 
-unbind Left
-unbind Down
-unbind Up
-unbind Right
-
 bind -n S-Up select-pane -U
 bind -n S-Down select-pane -D
 bind -n S-Left select-pane -L
