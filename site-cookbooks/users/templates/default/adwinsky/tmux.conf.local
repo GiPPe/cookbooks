@@ -6,9 +6,9 @@ bind i setw synchronize-panes
 
 bind-key -r + resize-pane -Z
 
-bind '"' split-window -c '#{pane_current_path}'
-bind c new-window -c '#{pane_current_path}'
-bind % split-window -h -c '#{pane_current_path}'
+if-shell "[[ `tmux -V` == *1.9 ]]" "bind '\"' split-window -c '#{pane_current_path}'"
+if-shell "[[ `tmux -V` == *1.9 ]]" "bind c new-window -c '#{pane_current_path}'"
+if-shell "[[ `tmux -V` == *1.9 ]]" "bind % split-window -h -c '#{pane_current_path}'"
 
 bind -n S-Up select-pane -U
 bind -n S-Down select-pane -D
