@@ -33,9 +33,7 @@ setw -g mode-mouse on
 set -g set-titles on
 set -g set-titles-string "#T : #h > #S > #W"
 
-<% unless node[:attributes][:remote] == true %>
 set-option -g default-command "reattach-to-user-namespace -l bash"
-<% end %>
 set-window-option -g mode-keys vi
 
 bind-key -t vi-copy 'v' begin-selection
