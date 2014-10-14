@@ -1,6 +1,7 @@
 {
-  "name": "base",
-  "description": "base role for all nodes",
+  "name": "remote",
+  "description": "remote",
+  "remote" : true,
   "default_attributes": {
     "chef_domain": "lqm.io"
   },
