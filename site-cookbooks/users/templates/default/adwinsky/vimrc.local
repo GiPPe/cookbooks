@@ -764,8 +764,8 @@ nnoremap <Leader>D :call MyCloseDiff()<cr>zR<cr>
 autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 au FileType go setl sw=4 sts=2 et
 
-" enable go imports on save
-let g:go_fmt_command = "goimports"
+" imports
+noremap <Leader>gi :GoImports<CR>
 
 " disable read only warnings
 command! W write !sudo tee % > /dev/null | redr
