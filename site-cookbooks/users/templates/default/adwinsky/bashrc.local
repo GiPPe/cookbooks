@@ -64,7 +64,7 @@ java_yourkit() {
 jruby_debug
 
 # Go settings
-export GOPATH=~/.go
+export GOPATH=~/src
 
 # add repo tools
 export PATH="${PATH}:~/.go/bin:~/vendor/depot_tools"
