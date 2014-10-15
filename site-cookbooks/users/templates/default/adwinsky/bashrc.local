@@ -69,6 +69,7 @@ export GOPATH=~
 # add repo tools
 export PATH="${PATH}:~/vendor/depot_tools"
 export PATH="${PATH}:~/bin"
+export PATH="${PATH}:/usr/local/go/bin"
 
 # vagrant colors break with colored output from chef
 export VAGRANT_NO_COLOR=1
