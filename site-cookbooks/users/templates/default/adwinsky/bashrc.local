@@ -64,10 +64,11 @@ java_yourkit() {
 jruby_debug
 
 # Go settings
-export GOPATH=~/src
+export GOPATH=~
 
 # add repo tools
-export PATH="${PATH}:~/.go/bin:~/vendor/depot_tools"
+export PATH="${PATH}:~/vendor/depot_tools"
+export PATH="${PATH}:~/bin"
 
 # vagrant colors break with colored output from chef
 export VAGRANT_NO_COLOR=1
