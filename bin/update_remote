@@ -1,0 +1,6 @@
+#!/bin/bash
+# Example usage:
+# update_remote id1.eu1.lqm.io adwinsky
+
+ssh $1 "cd src/github.com/$2/chef && git pull"
+ssh $1 "cd src/github.com/$2/chef && chef-client -z -j nodes/remote.json"

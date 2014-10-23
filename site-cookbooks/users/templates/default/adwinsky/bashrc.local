@@ -27,7 +27,7 @@ alias con="bundle exec rails console"
 # chef helper
 alias kcu="knife cookbook upload"
 
-function udo { sudo -u $(ls -ld . | awk '{print $4}') $1; }
+function udo { sudo -u $(ls -ld . | awk '{print $3}') $1; }
 
 # always use system ruby to start vim
 vim() {
