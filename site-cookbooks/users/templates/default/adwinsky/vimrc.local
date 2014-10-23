@@ -127,6 +127,7 @@ NeoBundle 'fatih/vim-go'
 NeoBundle 'AndrewRadev/go-oracle.vim'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'bling/vim-bufferline'
 
 "return '[\s]' if trailing white space is detected
 "return '' otherwise
