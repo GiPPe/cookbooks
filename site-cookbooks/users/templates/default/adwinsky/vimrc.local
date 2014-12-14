@@ -126,7 +126,7 @@ NeoBundle 'fatih/vim-go'
 NeoBundle 'AndrewRadev/go-oracle.vim'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'christoomey/vim-tmux-navigator'
-
+NeoBundle "godlygeek/csapprox"
 
 "return '[\s]' if trailing white space is detected
 "return '' otherwise
