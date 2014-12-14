@@ -125,9 +125,8 @@ NeoBundle 'Shougo/vimshell.git'
 NeoBundle 'mattn/emmet-vim.git'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'AndrewRadev/go-oracle.vim'
-NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'majutsushi/tagbar'
-NeoBundle 'bling/vim-bufferline'
+NeoBundle 'christoomey/vim-tmux-navigator'
 
 "return '[\s]' if trailing white space is detected
 "return '' otherwise
@@ -786,5 +785,18 @@ au FileType go nmap <Leader>ds <Plug>(go-def-split)
 " disable read only warnings
 command! W write !sudo tee % > /dev/null | redr
 
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 
+" :h g:incsearch#auto_nohlsearch
+set hlsearch
+let g:incsearch#auto_nohlsearch = 1
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
 
+let g:incsearch#magic = '\v'
