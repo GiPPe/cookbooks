@@ -128,6 +128,9 @@ NeoBundle 'majutsushi/tagbar'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle "godlygeek/csapprox"
 
+" do not open extra window for go omnicompletion
+set completeopt=menu
+
 "return '[\s]' if trailing white space is detected
 "return '' otherwise
 function! StatuslineTrailingSpaceWarning()
