@@ -1,0 +1,9 @@
+ForwardAgent yes
+ForwardX11Trusted yes
+HashKnownHosts no
+
+Host *.lqm.io
+IdentityFile ~/.ssh/liquidm
+
+Host github.com
+IdentityFile ~/.ssh/github

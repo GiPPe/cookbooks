@@ -1,0 +1,16 @@
+{
+  "name": "remote",
+  "description": "remote",
+  "remote" : true,
+  "default_attributes": {
+    "chef_domain": "lqm.io"
+  },
+  "run_list": [
+    "recipe[base]",
+    "recipe[bash]",
+    "recipe[git]",
+    "recipe[ssh]",
+    "recipe[tmux]",
+    "recipe[vim]"
+  ]
+}

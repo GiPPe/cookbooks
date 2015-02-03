@@ -46,7 +46,6 @@ if mac_os_x?
   end
 
   include_recipe "mac::iterm"
-  include_recipe "mac::alfred2"
   include_recipe "mac::chrome"
 
 else
